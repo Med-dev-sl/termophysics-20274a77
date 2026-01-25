@@ -60,6 +60,20 @@ export function ChatMessage({ role, content, isLoading }: ChatMessageProps) {
                 code: ({ children }) => (
                   <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>
                 ),
+                img: ({ src, alt }) => (
+                  <div className="my-4 rounded-xl overflow-hidden border border-border shadow-lg bg-card">
+                    <img 
+                      src={src} 
+                      alt={alt || "Physics illustration"} 
+                      className="w-full h-auto max-h-80 object-contain bg-white"
+                      loading="lazy"
+                    />
+                    <div className="px-3 py-2 text-xs text-muted-foreground bg-muted/50 flex items-center gap-2">
+                      <span className="inline-block w-2 h-2 rounded-full bg-termo-light-orange animate-pulse-soft" />
+                      AI-generated illustration
+                    </div>
+                  </div>
+                ),
               }}
             >
               {content}
