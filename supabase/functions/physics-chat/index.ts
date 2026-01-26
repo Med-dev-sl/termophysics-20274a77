@@ -35,21 +35,7 @@ Focus on visual elements that clearly represent the concept. Be specific about c
 The image should be suitable for an educational platform with a professional scientific aesthetic.
 Keep the prompt under 200 words. Return ONLY the prompt, no explanations.`;
 
-// Keywords that suggest an illustration would be helpful
-const ILLUSTRATION_KEYWORDS = [
-  "diagram", "visualize", "show", "illustrate", "picture", "image", "draw",
-  "heat transfer", "wave", "atom", "electron", "orbit", "force", "vector",
-  "field", "magnetic", "electric", "circuit", "pendulum", "spring", "collision",
-  "refraction", "reflection", "lens", "mirror", "spectrum", "interference",
-  "diffraction", "nuclear", "fission", "fusion", "gravity", "motion",
-  "acceleration", "velocity", "momentum", "energy", "thermodynamic", "entropy",
-  "pressure", "volume", "temperature", "radiation", "conduction", "convection"
-];
-
-function shouldGenerateImage(userMessage: string): boolean {
-  const lowerMessage = userMessage.toLowerCase();
-  return ILLUSTRATION_KEYWORDS.some(keyword => lowerMessage.includes(keyword));
-}
+// Always generate illustrations for physics explanations
 
 async function generateImagePrompt(concept: string, apiKey: string): Promise<string> {
   const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -77,6 +63,8 @@ async function generateImagePrompt(concept: string, apiKey: string): Promise<str
 
 async function generateImage(prompt: string, apiKey: string): Promise<string | null> {
   try {
+    console.log("Generating image for:", prompt.substring(0, 100));
+    
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
@@ -86,20 +74,41 @@ async function generateImage(prompt: string, apiKey: string): Promise<string | n
       body: JSON.stringify({
         model: "google/gemini-2.5-flash-image",
         messages: [
-          { role: "user", content: `Create a professional, educational physics diagram: ${prompt}. Style: clean, scientific, labeled, blue and orange color scheme, white background.` }
+          { 
+            role: "user", 
+            content: `Create a professional, educational physics diagram illustrating: ${prompt}. 
+            
+Style requirements:
+- Clean, scientific illustration
+- Clear labels and annotations
+- Blue and orange color scheme on white background
+- Educational and easy to understand
+- Show key concepts visually with arrows and labels
+- Include relevant physics symbols and formulas if applicable` 
+          }
         ],
         modalities: ["image", "text"]
       }),
     });
 
     if (!response.ok) {
-      console.error("Image generation failed:", response.status);
+      const errorText = await response.text();
+      console.error("Image generation failed:", response.status, errorText);
       return null;
     }
 
     const data = await response.json();
+    console.log("Image response received");
+    
     const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
-    return imageUrl || null;
+    
+    if (imageUrl) {
+      console.log("Image generated successfully");
+      return imageUrl;
+    } else {
+      console.log("No image URL in response");
+      return null;
+    }
   } catch (error) {
     console.error("Image generation error:", error);
     return null;
@@ -124,21 +133,18 @@ serve(async (req) => {
     }
 
     const lastUserMessage = messages.filter((m: { role: string }) => m.role === "user").pop()?.content || "";
-    const needsImage = shouldGenerateImage(lastUserMessage);
-
-    // Start image generation in parallel if needed
-    let imagePromise: Promise<string | null> | null = null;
-    if (needsImage) {
-      imagePromise = (async () => {
-        try {
-          const imagePrompt = await generateImagePrompt(lastUserMessage, LOVABLE_API_KEY);
-          return await generateImage(imagePrompt, LOVABLE_API_KEY);
-        } catch (error) {
-          console.error("Image pipeline error:", error);
-          return null;
-        }
-      })();
-    }
+    
+    // Always generate image for physics explanations
+    console.log("Starting image generation for:", lastUserMessage.substring(0, 50));
+    const imagePromise = (async () => {
+      try {
+        const imagePrompt = await generateImagePrompt(lastUserMessage, LOVABLE_API_KEY);
+        return await generateImage(imagePrompt, LOVABLE_API_KEY);
+      } catch (error) {
+        console.error("Image pipeline error:", error);
+        return null;
+      }
+    })();
 
     // Get text response
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
@@ -178,12 +184,7 @@ serve(async (req) => {
       );
     }
 
-    // If no image needed, just stream the response
-    if (!needsImage || !imagePromise) {
-      return new Response(response.body, {
-        headers: { ...corsHeaders, "Content-Type": "text/event-stream" },
-      });
-    }
+    // Transform stream to inject image at the end
 
     // Transform stream to inject image at the end
     const reader = response.body!.getReader();
