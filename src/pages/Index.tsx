@@ -5,8 +5,12 @@ import { ChatInput } from "@/components/ChatInput";
 import { SuggestedQuestions } from "@/components/SuggestedQuestions";
 import { PhysicsIcon } from "@/components/PhysicsIcon";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { AuthModal } from "@/components/AuthModal";
+import { ConversationsSidebar } from "@/components/ConversationsSidebar";
 import { streamPhysicsChat } from "@/lib/physics-chat";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { useConversation } from "@/hooks/useConversation";
 
 interface Message {
   id: string;
@@ -17,8 +21,18 @@ interface Message {
 const Index = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [authModalOpen, setAuthModalOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const {
+    conversationId,
+    createConversation,
+    saveMessage,
+    loadConversation,
+    resetConversation,
+  } = useConversation();
 
   const scrollToBottom = () => {
     if (scrollRef.current) {
@@ -39,6 +53,17 @@ const Index = () => {
 
     setMessages((prev) => [...prev, userMessage]);
     setIsLoading(true);
+
+    // Create or use existing conversation for logged-in users
+    let currentConvId = conversationId;
+    if (user && !currentConvId) {
+      currentConvId = await createConversation(content);
+    }
+
+    // Save user message
+    if (user && currentConvId) {
+      await saveMessage(currentConvId, "user", content);
+    }
 
     let assistantContent = "";
     const assistantId = (Date.now() + 1).toString();
@@ -64,8 +89,12 @@ const Index = () => {
           )
         );
       },
-      onDone: () => {
+      onDone: async () => {
         setIsLoading(false);
+        // Save assistant message
+        if (user && currentConvId && assistantContent) {
+          await saveMessage(currentConvId, "assistant", assistantContent);
+        }
       },
       onError: (error) => {
         setIsLoading(false);
@@ -80,11 +109,41 @@ const Index = () => {
     });
   };
 
+  const handleSelectConversation = async (id: string | null) => {
+    if (!id) {
+      handleNewConversation();
+      return;
+    }
+    
+    const loadedMessages = await loadConversation(id);
+    setMessages(loadedMessages);
+  };
+
+  const handleNewConversation = () => {
+    setMessages([]);
+    resetConversation();
+  };
+
   const hasMessages = messages.length > 0;
 
   return (
     <div className="min-h-screen bg-background">
-      <Header />
+      <Header
+        onMenuClick={() => setSidebarOpen(true)}
+        onAuthClick={() => setAuthModalOpen(true)}
+      />
+
+      {user && (
+        <ConversationsSidebar
+          open={sidebarOpen}
+          onClose={() => setSidebarOpen(false)}
+          currentConversationId={conversationId}
+          onSelectConversation={handleSelectConversation}
+          onNewConversation={handleNewConversation}
+        />
+      )}
+
+      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
 
       <main className="pt-16 min-h-screen flex flex-col">
         {!hasMessages ? (
@@ -99,11 +158,23 @@ const Index = () => {
               <span className="termo-gradient-text">Physics</span>
             </h2>
 
-            <p className="text-lg text-muted-foreground text-center max-w-xl mb-10">
+            <p className="text-lg text-muted-foreground text-center max-w-xl mb-4">
               Ask any physics question and get detailed explanations with
               illustrations. From thermodynamics to quantum mechanics, we've got
               you covered.
             </p>
+
+            {!user && (
+              <p className="text-sm text-muted-foreground text-center mb-6">
+                <button
+                  onClick={() => setAuthModalOpen(true)}
+                  className="text-termo-light-orange hover:underline font-medium"
+                >
+                  Sign in
+                </button>{" "}
+                to save your chat history
+              </p>
+            )}
 
             <div className="w-full max-w-2xl mb-8">
               <SuggestedQuestions onSelect={handleSend} />
