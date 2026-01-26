@@ -65,29 +65,26 @@ async function generateImage(prompt: string, apiKey: string): Promise<string | n
   try {
     console.log("Generating image for:", prompt.substring(0, 100));
     
-    const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+    const response = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${apiKey}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        model: "google/gemini-2.5-flash-image",
-        messages: [
-          { 
-            role: "user", 
-            content: `Create a professional, educational physics diagram illustrating: ${prompt}. 
-            
+        model: "dall-e-3",
+        prompt: `Create a professional, educational physics diagram illustrating: ${prompt}. 
+        
 Style requirements:
 - Clean, scientific illustration
 - Clear labels and annotations
 - Blue and orange color scheme on white background
 - Educational and easy to understand
 - Show key concepts visually with arrows and labels
-- Include relevant physics symbols and formulas if applicable` 
-          }
-        ],
-        modalities: ["image", "text"]
+- Include relevant physics symbols and formulas if applicable`,
+        n: 1,
+        size: "1024x1024",
+        quality: "hd"
       }),
     });
 
@@ -100,7 +97,7 @@ Style requirements:
     const data = await response.json();
     console.log("Image response received");
     
-    const imageUrl = data.choices?.[0]?.message?.images?.[0]?.image_url?.url;
+    const imageUrl = data.data?.[0]?.url;
     
     if (imageUrl) {
       console.log("Image generated successfully");
