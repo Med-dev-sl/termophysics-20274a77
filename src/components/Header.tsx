@@ -1,4 +1,5 @@
-import { Atom, Menu, LogOut, User } from "lucide-react";
+import { Atom, Menu, LogOut, User, LayoutDashboard } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import {
@@ -15,6 +16,7 @@ interface HeaderProps {
 
 export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
   const { user, signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -54,6 +56,10 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Dashboard
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={signOut} className="text-destructive">
                   <LogOut className="h-4 w-4 mr-2" />
                   Sign Out

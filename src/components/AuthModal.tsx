@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -16,6 +17,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState<"user" | "teacher">("user");
   const [loading, setLoading] = useState(false);
   const { signUp, signIn } = useAuth();
   const { toast } = useToast();
@@ -25,7 +27,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
     setLoading(true);
 
     const { error } = isSignUp
-      ? await signUp(email, password)
+      ? await signUp(email, password, role)
       : await signIn(email, password);
 
     setLoading(false);
@@ -46,6 +48,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       onOpenChange(false);
       setEmail("");
       setPassword("");
+      setRole("user");
     }
   };
 
@@ -81,6 +84,20 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
               minLength={6}
             />
           </div>
+          {isSignUp && (
+            <div className="space-y-2">
+              <Label htmlFor="role">I am a</Label>
+              <Select value={role} onValueChange={(v) => setRole(v as "user" | "teacher")}>
+                <SelectTrigger>
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="user">Learner</SelectItem>
+                  <SelectItem value="teacher">Teacher</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           <Button type="submit" className="w-full" variant="hero" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             {isSignUp ? "Sign Up" : "Sign In"}
