@@ -1,0 +1,35 @@
+workflows:
+  android-workflow:
+    name: TermoPhysics Android APK
+    instance_type: mac_mini_m1
+    max_build_duration: 60
+    environment:
+      node: latest
+      java: 21
+      groups:
+        - supabase_keys
+      vars:
+        PACKAGE_NAME: "com.termophysics.app"
+      # IMPORTANT: Ensure VITE_SUPABASE_URL and VITE_SUPABASE_PUBLISHABLE_KEY
+      # are added to your Codemagic environment variables if they are not picked up.
+    scripts:
+      - name: Install dependencies
+        script: |
+          npm install
+      - name: Build web project
+        script: |
+          npm run build
+      - name: Capacitor Sync
+        script: |
+          npx cap sync android
+      - name: Build Android Debug APK
+        script: |
+          cd android
+          chmod +x gradlew
+          ./gradlew assembleDebug
+    artifacts:
+      - android/app/build/outputs/apk/debug/*.apk
+    publishing:
+      email:
+        recipients:
+          - user@example.com # Replace with your email to get build notifications
