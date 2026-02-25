@@ -1,0 +1,134 @@
+{
+  "landing": {
+    "nav": {
+      "about": "About",
+      "team": "Team",
+      "contact": "Contact",
+      "launchApp": "Launch App"
+    },
+    "hero": {
+      "title": "Learn Physics with AI",
+      "description": "TermoPhysics is an innovative AI-powered platform that transforms complex physics concepts into interactive learning experiences with visual illustrations and personalized explanations.",
+      "getStarted": "Get Started",
+      "learnMore": "Learn More"
+    },
+    "features": {
+      "title": "Why TermoPhysics?",
+      "aiTitle": "AI-Powered Learning",
+      "aiDesc": "Get instant explanations for any physics concept with advanced AI technology that adapts to your learning style.",
+      "visualTitle": "Visual Illustrations",
+      "visualDesc": "Generate custom visual representations of physics concepts using our state-of-the-art image generation technology.",
+      "pathTitle": "Personalized Paths",
+      "pathDesc": "Save your conversations and track your learning progress with our integrated chat history system."
+    },
+    "about": {
+      "title": "About TermoPhysics",
+      "desc1": "TermoPhysics was founded with a mission to revolutionize physics education through artificial intelligence and interactive visualization.",
+      "desc2": "Our platform combines cutting-edge AI technology with intuitive design to make physics concepts accessible and engaging for learners of all levels, from high school students to university scholars.",
+      "desc3": "Whether you're struggling with thermodynamics, quantum mechanics, or classical physics, TermoPhysics provides personalized guidance and visual explanations that click."
+    },
+    "team": {
+      "title": "Meet Our Team",
+      "coming": "Coming Soon",
+      "desc": "We're building an amazing team of experts in AI, physics education, and design.",
+      "checkBack": "Check back soon to meet the talented individuals behind TermoPhysics!"
+    },
+    "contact": {
+      "title": "Get In Touch",
+      "email": "Email",
+      "phone": "Phone",
+      "office": "Office",
+      "emailContact": "contact@termophysics.com",
+      "emailSupport": "support@termophysics.com",
+      "phoneMain": "+1 (555) 123-4567",
+      "phoneSecondary": "+1 (555) 987-6543",
+      "street": "123 Innovation Street",
+      "city": "San Francisco, CA 94105"
+    },
+    "cta": {
+      "title": "Ready to Master Physics?",
+      "desc": "Join thousands of students already learning with TermoPhysics. Start your journey today!",
+      "launchNow": "Launch the App Now"
+    }
+  },
+  "footer": {
+    "brand": "Learn physics with AI-powered explanations and visual illustrations.",
+    "product": "Product",
+    "productLinks": {
+      "launch": "Launch App",
+      "features": "Features",
+      "pricing": "Pricing",
+      "faq": "FAQ"
+    },
+    "company": "Company",
+    "companyLinks": {
+      "about": "About Us",
+      "team": "Team",
+      "contact": "Contact",
+      "blog": "Blog"
+    },
+    "legal": "Legal",
+    "legalLinks": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookies": "Cookie Policy",
+      "disclaimer": "Disclaimer"
+    },
+    "copyright": "All rights reserved."
+  },
+  "inquiry": {
+    "name": "Name",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "subject": "Subject",
+    "message": "Message",
+    "messagePlaceholder": "Your message...",
+    "send": "Send Inquiry",
+    "sending": "Sending...",
+    "success": "Thank You!",
+    "successReceived": "We've received your inquiry and will get back to you shortly.",
+    "error": "Error",
+    "errorFill": "Please fill in all fields",
+    "errorSubmit": "Failed to send inquiry. Please try again.",
+    "fillAll": "Please fill in all fields"
+  },
+  "header": {
+    "tagline": "AI-Powered Physics Learning",
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "signingOut": "Signing out...",
+    "signedOut": "Signed out successfully",
+    "seeYouLater": "See you next time!"
+  },
+  "chat": {
+    "placeholder": "Ask anything about physics...",
+    "send": "Send",
+    "generating": "Generating image...",
+    "download": "Download",
+    "copy": "Copy",
+    "selectModel": "Select image model",
+    "generateImage": "Generate Image",
+    "conversations": "Conversations",
+    "newChat": "New Chat",
+    "deleteConfirm": "Delete this conversation?",
+    "suggestedQuestions": "Suggested Questions",
+    "concept": "Physics Concept or Term",
+    "conceptExample": "e.g., Quantum entanglement, Newton's laws...",
+    "describePhysics": "Describe the physics concept you want visualized",
+    "promptRequired": "Please enter a physics concept or term",
+    "downloaded": "Downloaded",
+    "imageSaved": "Image saved successfully",
+    "downloadFailed": "Download Failed",
+    "downloadError": "Could not download image",
+    "copied": "Copied",
+    "promptCopied": "Prompt copied to clipboard",
+    "generateDescription": "Generate visual representations of physics concepts and terms",
+    "hero": {
+      "title": "Explore the Laws of",
+      "physics": "Physics",
+      "description": "Ask any physics question and get detailed explanations with illustrations. From thermodynamics to quantum mechanics, we've got you covered.",
+      "saveHistory": "to save your chat history"
+    },
+    "error": "Error"
+  }
+}

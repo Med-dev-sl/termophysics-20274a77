@@ -1,0 +1,134 @@
+{
+  "landing": {
+    "nav": {
+      "about": "关于",
+      "team": "团队",
+      "contact": "联系",
+      "launchApp": "启动应用"
+    },
+    "hero": {
+      "title": "用人工智能学习物理",
+      "description": "TermoPhysics 是一个创新的人工智能平台，将复杂的物理概念转变为具有视觉插图和个性化解释的交互式学习体验。",
+      "getStarted": "开始",
+      "learnMore": "了解更多"
+    },
+    "features": {
+      "title": "为什么选择 TermoPhysics？",
+      "aiTitle": "人工智能驱动的学习",
+      "aiDesc": "获得任何物理概念的即时解释，使用先进的 AI 技术，适应您的学习风格。",
+      "visualTitle": "视觉插图",
+      "visualDesc": "使用我们最先进的图像生成技术生成物理概念的定制视觉表示。",
+      "pathTitle": "个性化路径",
+      "pathDesc": "保存您的对话并使用我们集成的聊天历史系统跟踪您的学习进度。"
+    },
+    "about": {
+      "title": "关于 TermoPhysics",
+      "desc1": "TermoPhysics 成立的使命是通过人工智能和交互式可视化革新物理教育。",
+      "desc2": "我们的平台将尖端人工智能技术与直观设计相结合，使物理概念对所有学生都易于理解和吸引人，从高中生到大学学者。",
+      "desc3": "无论您是在与热力学、量子力学还是经典物理作斗争，TermoPhysics 都提供个性化的指导和有效的视觉解释。"
+    },
+    "team": {
+      "title": "认识我们的团队",
+      "coming": "即将推出",
+      "desc": "我们正在建立一个由 AI、物理教育和设计专家组成的出色团队。",
+      "checkBack": "很快回来见见 TermoPhysics 背后的有才华的人士！"
+    },
+    "contact": {
+      "title": "联系我们",
+      "email": "电子邮件",
+      "phone": "电话",
+      "office": "办公室",
+      "emailContact": "contact@termophysics.com",
+      "emailSupport": "support@termophysics.com",
+      "phoneMain": "+1 (555) 123-4567",
+      "phoneSecondary": "+1 (555) 987-6543",
+      "street": "123 Innovation Street",
+      "city": "San Francisco, CA 94105"
+    },
+    "cta": {
+      "title": "准备掌握物理？",
+      "desc": "加入已经使用 TermoPhysics 学习的数千名学生。今天开始您的旅程！",
+      "launchNow": "现在启动应用"
+    }
+  },
+  "footer": {
+    "brand": "通过人工智能驱动的解释和视觉插图学习物理。",
+    "product": "产品",
+    "productLinks": {
+      "launch": "启动应用",
+      "features": "功能",
+      "pricing": "定价",
+      "faq": "常见问题"
+    },
+    "company": "公司",
+    "companyLinks": {
+      "about": "关于我们",
+      "team": "团队",
+      "contact": "联系",
+      "blog": "博客"
+    },
+    "legal": "法律",
+    "legalLinks": {
+      "privacy": "隐私政策",
+      "terms": "服务条款",
+      "cookies": "Cookie 政策",
+      "disclaimer": "免责声明"
+    },
+    "copyright": "版权所有。"
+  },
+  "inquiry": {
+    "name": "名称",
+    "email": "电子邮件",
+    "emailPlaceholder": "您的@email.com",
+    "subject": "主题",
+    "message": "消息",
+    "messagePlaceholder": "您的消息...",
+    "send": "发送查询",
+    "sending": "发送中...",
+    "success": "谢谢！",
+    "successReceived": "我们已收到您的询问，将尽快与您联系。",
+    "error": "错误",
+    "errorFill": "请填写所有字段",
+    "errorSubmit": "无法发送查询。请重试。",
+    "fillAll": "请填写所有字段"
+  },
+  "header": {
+    "tagline": "人工智能驱动的物理学习",
+    "signIn": "登录",
+    "signOut": "登出",
+    "signingOut": "正在登出...",
+    "signedOut": "成功登出",
+    "seeYouLater": "再见！"
+  },
+  "chat": {
+    "placeholder": "问一个关于物理的问题...",
+    "send": "发送",
+    "generating": "生成图像中...",
+    "download": "下载",
+    "copy": "复制",
+    "selectModel": "选择图像模型",
+    "generateImage": "生成图像",
+    "conversations": "对话",
+    "newChat": "新聊天",
+    "deleteConfirm": "删除此对话？",
+    "suggestedQuestions": "建议的问题",
+    "concept": "物理概念或术语",
+    "conceptExample": "例如，量子纠缠，牛顿定律...",
+    "describePhysics": "描述您想可视化的物理概念",
+    "promptRequired": "请输入物理概念或术语",
+    "downloaded": "已下载",
+    "imageSaved": "图像已成功保存",
+    "downloadFailed": "下载失败",
+    "downloadError": "无法下载图像",
+    "copied": "已复制",
+    "promptCopied": "提示已复制到剪贴板",
+    "generateDescription": "生成物理概念和术语的视觉表示",
+    "hero": {
+      "title": "探索物理的法则",
+      "physics": "物理学",
+      "description": "提出任何物理问题，获得详细的解释和插图。从热力学到量子力学，我们应有尽有。",
+      "saveHistory": "保存你的聊天历史"
+    },
+    "error": "错误"
+  }
+}

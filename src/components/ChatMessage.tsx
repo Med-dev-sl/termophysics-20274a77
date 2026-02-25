@@ -14,23 +14,23 @@ export function ChatMessage({ role, content, isLoading }: ChatMessageProps) {
   return (
     <div
       className={cn(
-        "flex gap-4 animate-fade-up",
+        "flex gap-2 sm:gap-4 animate-fade-up",
         isUser ? "flex-row-reverse" : "flex-row"
       )}
     >
       <div
         className={cn(
-          "flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center",
+          "flex-shrink-0 w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center",
           isUser
             ? "bg-termo-light-orange/20 text-termo-light-orange"
             : "bg-primary/10 text-primary"
         )}
       >
-        {isUser ? <User className="w-5 h-5" /> : <Atom className="w-5 h-5" />}
+        {isUser ? <User className="w-4 h-4 sm:w-5 sm:h-5" /> : <Atom className="w-4 h-4 sm:w-5 sm:h-5" />}
       </div>
       <div
         className={cn(
-          "flex-1 max-w-[80%] rounded-2xl px-5 py-4",
+          "flex-1 max-w-[85%] sm:max-w-[80%] rounded-2xl px-3 sm:px-5 py-3 sm:py-4 text-sm sm:text-base",
           isUser
             ? "bg-termo-light-orange text-termo-deep-blue-dark rounded-tr-sm"
             : "bg-card shadow-md border border-border rounded-tl-sm"
@@ -49,26 +49,26 @@ export function ChatMessage({ role, content, isLoading }: ChatMessageProps) {
           )}>
             <ReactMarkdown
               components={{
-                p: ({ children }) => <p className="mb-2 last:mb-0">{children}</p>,
-                h1: ({ children }) => <h1 className="text-lg font-bold mb-2 mt-3 first:mt-0">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-base font-bold mb-2 mt-3">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-sm font-bold mb-1 mt-2">{children}</h3>,
+                p: ({ children }) => <p className="mb-2 last:mb-0 text-xs sm:text-sm">{children}</p>,
+                h1: ({ children }) => <h1 className="text-base sm:text-lg font-bold mb-2 mt-3 first:mt-0">{children}</h1>,
+                h2: ({ children }) => <h2 className="text-sm sm:text-base font-bold mb-2 mt-3">{children}</h2>,
+                h3: ({ children }) => <h3 className="text-xs sm:text-sm font-bold mb-1 mt-2">{children}</h3>,
                 ul: ({ children }) => <ul className="list-disc pl-4 mb-2 space-y-1">{children}</ul>,
                 ol: ({ children }) => <ol className="list-decimal pl-4 mb-2 space-y-1">{children}</ol>,
-                li: ({ children }) => <li className="text-sm">{children}</li>,
+                li: ({ children }) => <li className="text-xs sm:text-sm">{children}</li>,
                 strong: ({ children }) => <strong className="font-semibold">{children}</strong>,
                 code: ({ children }) => (
                   <code className="bg-muted px-1.5 py-0.5 rounded text-xs font-mono">{children}</code>
                 ),
                 img: ({ src, alt }) => (
-                  <div className="my-4 rounded-xl overflow-hidden border border-border shadow-lg bg-card">
+                  <div className="my-3 sm:my-4 rounded-xl overflow-hidden border border-border shadow-lg bg-card">
                     <img 
                       src={src} 
                       alt={alt || "Physics illustration"} 
-                      className="w-full h-auto max-h-80 object-contain bg-white"
+                      className="w-full h-auto max-h-60 sm:max-h-80 object-contain bg-white"
                       loading="lazy"
                     />
-                    <div className="px-3 py-2 text-xs text-muted-foreground bg-muted/50 flex items-center gap-2">
+                    <div className="px-2 sm:px-3 py-2 text-xs text-muted-foreground bg-muted/50 flex items-center gap-2">
                       <span className="inline-block w-2 h-2 rounded-full bg-termo-light-orange animate-pulse-soft" />
                       AI-generated illustration
                     </div>

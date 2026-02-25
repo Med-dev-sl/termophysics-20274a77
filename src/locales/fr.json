@@ -1,0 +1,134 @@
+{
+  "landing": {
+    "nav": {
+      "about": "À propos",
+      "team": "Équipe",
+      "contact": "Contact",
+      "launchApp": "Lancer l'application"
+    },
+    "hero": {
+      "title": "Apprenez la physique avec l'IA",
+      "description": "TermoPhysics est une plateforme innovante basée sur l'IA qui transforme les concepts complexes de la physique en expériences d'apprentissage interactives avec des illustrations visuelles et des explications personnalisées.",
+      "getStarted": "Commencer",
+      "learnMore": "En savoir plus"
+    },
+    "features": {
+      "title": "Pourquoi TermoPhysics?",
+      "aiTitle": "Apprentissage basé sur l'IA",
+      "aiDesc": "Obtenez des explications instantanées pour n'importe quel concept de physique grâce à une technologie d'IA avancée qui s'adapte à votre style d'apprentissage.",
+      "visualTitle": "Illustrations visuelles",
+      "visualDesc": "Générez des représentations visuelles personnalisées des concepts de physique en utilisant notre technologie de génération d'images de pointe.",
+      "pathTitle": "Chemins personnalisés",
+      "pathDesc": "Enregistrez vos conversations et suivez votre progression d'apprentissage avec notre système d'historique de chat intégré."
+    },
+    "about": {
+      "title": "À propos de TermoPhysics",
+      "desc1": "TermoPhysics a été fondée avec la mission de révolutionner l'enseignement de la physique par l'intelligence artificielle et la visualisation interactive.",
+      "desc2": "Notre plateforme combine la technologie d'IA de pointe avec une conception intuitive pour rendre les concepts de physique accessibles et attrayants pour les étudiants de tous les niveaux, des lycéens aux universitaires.",
+      "desc3": "Que vous luttiez contre la thermodynamique, la mécanique quantique ou la physique classique, TermoPhysics fournit des conseils personnalisés et des explications visuelles qui fonctionnent."
+    },
+    "team": {
+      "title": "Rencontrez notre équipe",
+      "coming": "Bientôt",
+      "desc": "Nous construisons une équipe incroyable d'experts en IA, en éducation physique et en design.",
+      "checkBack": "Revenez bientôt pour rencontrer les individus talentueux derrière TermoPhysics!"
+    },
+    "contact": {
+      "title": "Entrez en contact",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "office": "Bureau",
+      "emailContact": "contact@termophysics.com",
+      "emailSupport": "support@termophysics.com",
+      "phoneMain": "+1 (555) 123-4567",
+      "phoneSecondary": "+1 (555) 987-6543",
+      "street": "123 Innovation Street",
+      "city": "San Francisco, CA 94105"
+    },
+    "cta": {
+      "title": "Prêt à maîtriser la physique?",
+      "desc": "Rejoignez des milliers d'étudiants qui apprennent déjà avec TermoPhysics. Commencez votre voyage aujourd'hui!",
+      "launchNow": "Lancer l'application maintenant"
+    }
+  },
+  "footer": {
+    "brand": "Apprenez la physique avec des explications basées sur l'IA et des illustrations visuelles.",
+    "product": "Produit",
+    "productLinks": {
+      "launch": "Lancer l'application",
+      "features": "Caractéristiques",
+      "pricing": "Tarification",
+      "faq": "FAQ"
+    },
+    "company": "Entreprise",
+    "companyLinks": {
+      "about": "À propos de nous",
+      "team": "Équipe",
+      "contact": "Contact",
+      "blog": "Blog"
+    },
+    "legal": "Juridique",
+    "legalLinks": {
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "cookies": "Politique relative aux cookies",
+      "disclaimer": "Clause de non-responsabilité"
+    },
+    "copyright": "Tous droits réservés."
+  },
+  "inquiry": {
+    "name": "Nom",
+    "email": "E-mail",
+    "emailPlaceholder": "votre@email.com",
+    "subject": "Sujet",
+    "message": "Message",
+    "messagePlaceholder": "Votre message...",
+    "send": "Envoyer la demande",
+    "sending": "Envoi en cours...",
+    "success": "Merci!",
+    "successReceived": "Nous avons reçu votre demande et vous recontacterons bientôt.",
+    "error": "Erreur",
+    "errorFill": "Veuillez remplir tous les champs",
+    "errorSubmit": "Impossible d'envoyer la demande. Veuillez réessayer.",
+    "fillAll": "Veuillez remplir tous les champs"
+  },
+  "header": {
+    "tagline": "Apprentissage de la physique basé sur l'IA",
+    "signIn": "Connexion",
+    "signOut": "Déconnexion",
+    "signingOut": "Déconnexion en cours...",
+    "signedOut": "Déconnecté avec succès",
+    "seeYouLater": "À bientôt!"
+  },
+  "chat": {
+    "placeholder": "Posez une question sur la physique...",
+    "send": "Envoyer",
+    "generating": "Génération d'image...",
+    "download": "Télécharger",
+    "copy": "Copier",
+    "selectModel": "Sélectionner le modèle d'image",
+    "generateImage": "Générer une Image",
+    "conversations": "Conversations",
+    "newChat": "Nouveau Chat",
+    "deleteConfirm": "Supprimer cette conversation?",
+    "suggestedQuestions": "Questions Suggérées",
+    "concept": "Concept ou Terme de Physique",
+    "conceptExample": "par exemple, Intrication quantique, Lois de Newton...",
+    "describePhysics": "Décrivez le concept de physique que vous souhaitez visualiser",
+    "promptRequired": "Veuillez entrer un concept ou un terme de physique",
+    "downloaded": "Téléchargé",
+    "imageSaved": "Image enregistrée avec succès",
+    "downloadFailed": "Échec du Téléchargement",
+    "downloadError": "Impossible de télécharger l'image",
+    "copied": "Copié",
+    "promptCopied": "Demande copiée dans le presse-papiers",
+    "generateDescription": "Générer des représentations visuelles des concepts et des termes de physique",
+    "hero": {
+      "title": "Explorez les Lois de la",
+      "physics": "Physique",
+      "description": "Posez toute question de physique et obtenez des explications détaillées avec des illustrations. De la thermodynamique à la mécanique quantique, nous vous couvrons.",
+      "saveHistory": "pour enregistrer votre historique de chat"
+    },
+    "error": "Erreur"
+  }
+}

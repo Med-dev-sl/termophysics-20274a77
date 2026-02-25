@@ -1,0 +1,134 @@
+{
+  "landing": {
+    "nav": {
+      "about": "Über",
+      "team": "Team",
+      "contact": "Kontakt",
+      "launchApp": "App starten"
+    },
+    "hero": {
+      "title": "Lernen Sie Physik mit KI",
+      "description": "TermoPhysics ist eine innovative KI-gestützte Plattform, die komplexe Physikkonzepte in interaktive Lernerfahrungen mit visuellen Illustrationen und personalisierten Erklärungen umwandelt.",
+      "getStarted": "Loslegen",
+      "learnMore": "Mehr erfahren"
+    },
+    "features": {
+      "title": "Warum TermoPhysics?",
+      "aiTitle": "KI-gestütztes Lernen",
+      "aiDesc": "Erhalten Sie sofortige Erklärungen für jedes Physikkonzept mit fortschrittlicher KI-Technologie, die sich Ihrem Lernstil anpasst.",
+      "visualTitle": "Visuelle Darstellungen",
+      "visualDesc": "Generieren Sie benutzerdefinierte visuelle Darstellungen von Physikkonzepten mit unserer hochmodernen Bildgenerierungstechnologie.",
+      "pathTitle": "Personalisierte Pfade",
+      "pathDesc": "Speichern Sie Ihre Gespräche und verfolgen Sie Ihre Lernfortschritte mit unserem integrierten Chat-Verlaufssystem."
+    },
+    "about": {
+      "title": "Über TermoPhysics",
+      "desc1": "TermoPhysics wurde gegründet, um Physikunterricht durch künstliche Intelligenz und interaktive Visualisierung zu revolutionieren.",
+      "desc2": "Unsere Plattform kombiniert hochmoderne KI-Technologie mit intuitivem Design, um Physikkonzepte für Schüler aller Niveaus zugänglich und attraktiv zu machen, von Gymnasiasten bis zu Universitätswissenschaftlern.",
+      "desc3": "Egal ob Sie sich mit Thermodynamik, Quantenmechanik oder klassischer Physik abmühen, TermoPhysics bietet personalisierte Anleitung und visuelle Erklärungen, die funktionieren."
+    },
+    "team": {
+      "title": "Lernen Sie unser Team kennen",
+      "coming": "Demnächst",
+      "desc": "Wir bauen ein erstaunliches Team von Experten in KI, Physikunterricht und Design auf.",
+      "checkBack": "Besuchen Sie uns bald wieder, um die talentierten Personen hinter TermoPhysics kennenzulernen!"
+    },
+    "contact": {
+      "title": "Kontakt aufnehmen",
+      "email": "E-Mail",
+      "phone": "Telefon",
+      "office": "Büro",
+      "emailContact": "contact@termophysics.com",
+      "emailSupport": "support@termophysics.com",
+      "phoneMain": "+1 (555) 123-4567",
+      "phoneSecondary": "+1 (555) 987-6543",
+      "street": "123 Innovation Street",
+      "city": "San Francisco, CA 94105"
+    },
+    "cta": {
+      "title": "Bereit, Physik zu beherrschen?",
+      "desc": "Schließen Sie sich Tausenden von Schülern an, die bereits mit TermoPhysics lernen. Beginnen Sie Ihre Reise heute!",
+      "launchNow": "App jetzt starten"
+    }
+  },
+  "footer": {
+    "brand": "Lernen Sie Physik mit KI-gestützten Erklärungen und visuellen Darstellungen.",
+    "product": "Produkt",
+    "productLinks": {
+      "launch": "App starten",
+      "features": "Funktionen",
+      "pricing": "Preisgestaltung",
+      "faq": "Häufig gestellte Fragen"
+    },
+    "company": "Unternehmen",
+    "companyLinks": {
+      "about": "Über uns",
+      "team": "Team",
+      "contact": "Kontakt",
+      "blog": "Blog"
+    },
+    "legal": "Rechtlich",
+    "legalLinks": {
+      "privacy": "Datenschutzrichtlinie",
+      "terms": "Nutzungsbedingungen",
+      "cookies": "Cookie-Richtlinie",
+      "disclaimer": "Haftungsausschluss"
+    },
+    "copyright": "Alle Rechte vorbehalten."
+  },
+  "inquiry": {
+    "name": "Name",
+    "email": "E-Mail",
+    "emailPlaceholder": "ihre@email.de",
+    "subject": "Betreff",
+    "message": "Nachricht",
+    "messagePlaceholder": "Ihre Nachricht...",
+    "send": "Anfrage senden",
+    "sending": "Wird gesendet...",
+    "success": "Danke!",
+    "successReceived": "Wir haben Ihre Anfrage erhalten und werden uns bald bei Ihnen melden.",
+    "error": "Fehler",
+    "errorFill": "Bitte füllen Sie alle Felder aus",
+    "errorSubmit": "Anfrage konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "fillAll": "Bitte füllen Sie alle Felder aus"
+  },
+  "header": {
+    "tagline": "KI-gestütztes Physikunterricht",
+    "signIn": "Anmelden",
+    "signOut": "Abmelden",
+    "signingOut": "Wird abgemeldet...",
+    "signedOut": "Erfolgreich abgemeldet",
+    "seeYouLater": "Bis bald!"
+  },
+  "chat": {
+    "placeholder": "Stellen Sie eine Frage zur Physik...",
+    "send": "Senden",
+    "generating": "Bild wird generiert...",
+    "download": "Herunterladen",
+    "copy": "Kopieren",
+    "selectModel": "Bildmodell auswählen",
+    "generateImage": "Bild generieren",
+    "conversations": "Unterhaltungen",
+    "newChat": "Neuer Chat",
+    "deleteConfirm": "Diese Unterhaltung löschen?",
+    "suggestedQuestions": "Vorgeschlagene Fragen",
+    "concept": "Physikalisches Konzept oder Begriff",
+    "conceptExample": "z.B. Quantenverschränkung, Newtonsche Gesetze...",
+    "describePhysics": "Beschreiben Sie das physikalische Konzept, das Sie visualisieren möchten",
+    "promptRequired": "Bitte geben Sie ein physikalisches Konzept oder einen Begriff ein",
+    "downloaded": "Heruntergeladen",
+    "imageSaved": "Bild erfolgreich gespeichert",
+    "downloadFailed": "Download fehlgeschlagen",
+    "downloadError": "Bild konnte nicht heruntergeladen werden",
+    "copied": "Kopiert",
+    "promptCopied": "Eingabeaufforderung in die Zwischenablage kopiert",
+    "generateDescription": "Generieren Sie visuelle Darstellungen physikalischer Konzepte und Begriffe",
+    "hero": {
+      "title": "Erkunden Sie die Gesetze der",
+      "physics": "Physik",
+      "description": "Stellen Sie eine beliebige Frage zur Physik und erhalten Sie detaillierte Erklärungen mit Illustrationen. Von Thermodynamik bis Quantenmechanik, wir haben alles.",
+      "saveHistory": "um deinen Chat-Verlauf zu speichern"
+    },
+    "error": "Fehler"
+  }
+}

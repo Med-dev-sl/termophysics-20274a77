@@ -1,0 +1,134 @@
+{
+  "landing": {
+    "nav": {
+      "about": "について",
+      "team": "チーム",
+      "contact": "お問い合わせ",
+      "launchApp": "アプリを起動"
+    },
+    "hero": {
+      "title": "AIで物理を学ぶ",
+      "description": "TermoPhysicsは、複雑な物理概念をビジュアルイラストとパーソナライズされた説明を備えたインタラクティブな学習体験に変換する革新的なAIを搭載したプラットフォームです。",
+      "getStarted": "始める",
+      "learnMore": "詳しく知る"
+    },
+    "features": {
+      "title": "TermoPhysicsを選ぶ理由は？",
+      "aiTitle": "AI搭載の学習",
+      "aiDesc": "高度なAI技術を使用して、任意の物理概念についての即座の説明を取得し、あなたの学習スタイルに適応します。",
+      "visualTitle": "ビジュアルイラスト",
+      "visualDesc": "最先端の画像生成技術を使用して、物理概念のカスタムビジュアル表現を生成します。",
+      "pathTitle": "パーソナライズされたパス",
+      "pathDesc": "会話を保存し、統合されたチャット履歴システムで学習の進捗を追跡します。"
+    },
+    "about": {
+      "title": "TermoPhysicsについて",
+      "desc1": "TermoPhysicsは、人工知能とインタラクティブな視覚化を通じて物理教育に革命をもたらすというミッションで設立されました。",
+      "desc2": "当社のプラットフォームは、最先端のAI技術と直感的なデザインを組み合わせて、高校生から大学の学者まで、すべてのレベルの学習者にとって物理概念をアクセス可能で魅力的にします。",
+      "desc3": "熱力学、量子力学、または古典物理学に対処しているかどうかにかかわらず、TermoPhysicsはパーソナライズされたガイダンスと機能する視覚的説明を提供します。"
+    },
+    "team": {
+      "title": "チームについて知る",
+      "coming": "近日公開",
+      "desc": "AI、物理教育、デザインの専門家で構成される素晴らしいチームを構築中です。",
+      "checkBack": "TermoPhysicsの背後にある才能ある人々に会うために、もう一度チェックしてください！"
+    },
+    "contact": {
+      "title": "お問い合わせ",
+      "email": "メール",
+      "phone": "電話",
+      "office": "オフィス",
+      "emailContact": "contact@termophysics.com",
+      "emailSupport": "support@termophysics.com",
+      "phoneMain": "+1 (555) 123-4567",
+      "phoneSecondary": "+1 (555) 987-6543",
+      "street": "123 Innovation Street",
+      "city": "San Francisco, CA 94105"
+    },
+    "cta": {
+      "title": "物理をマスターする準備はできていますか？",
+      "desc": "TermoPhysicsで既に学習している数千人の学生に参加します。今日、あなたの旅を始めてください！",
+      "launchNow": "今すぐアプリを起動"
+    }
+  },
+  "footer": {
+    "brand": "AI搭載の説明とビジュアルイラストで物理を学びます。",
+    "product": "製品",
+    "productLinks": {
+      "launch": "アプリを起動",
+      "features": "機能",
+      "pricing": "価格設定",
+      "faq": "よくある質問"
+    },
+    "company": "会社",
+    "companyLinks": {
+      "about": "私たちについて",
+      "team": "チーム",
+      "contact": "お問い合わせ",
+      "blog": "ブログ"
+    },
+    "legal": "法律",
+    "legalLinks": {
+      "privacy": "プライバシーポリシー",
+      "terms": "利用規約",
+      "cookies": "Cookieポリシー",
+      "disclaimer": "免責事項"
+    },
+    "copyright": "著作権所有。"
+  },
+  "inquiry": {
+    "name": "名前",
+    "email": "メール",
+    "emailPlaceholder": "あなた@email.com",
+    "subject": "件名",
+    "message": "メッセージ",
+    "messagePlaceholder": "あなたのメッセージ...",
+    "send": "問い合わせを送信",
+    "sending": "送信中...",
+    "success": "ありがとうございます！",
+    "successReceived": "お問い合わせを受け取り、すぐにご連絡させていただきます。",
+    "error": "エラー",
+    "errorFill": "すべてのフィールドに入力してください",
+    "errorSubmit": "問い合わせを送信できませんでした。もう一度やり直してください。",
+    "fillAll": "すべてのフィールドに入力してください"
+  },
+  "header": {
+    "tagline": "AI搭載の物理学習",
+    "signIn": "ログイン",
+    "signOut": "ログアウト",
+    "signingOut": "ログアウト中...",
+    "signedOut": "正常にログアウト",
+    "seeYouLater": "また近いうちに！"
+  },
+  "chat": {
+    "placeholder": "物理について何か質問してください...",
+    "send": "送信",
+    "generating": "画像を生成中...",
+    "download": "ダウンロード",
+    "copy": "コピー",
+    "selectModel": "画像モデルを選択",
+    "generateImage": "画像を生成",
+    "conversations": "会話",
+    "newChat": "新しいチャット",
+    "deleteConfirm": "この会話を削除しますか？",
+    "suggestedQuestions": "おすすめの質問",
+    "concept": "物理概念または用語",
+    "conceptExample": "例:量子もつれ、ニュートンの法則...",
+    "describePhysics": "可視化したい物理の概念を説明してください",
+    "promptRequired": "物理の概念または用語を入力してください",
+    "downloaded": "ダウンロード完了",
+    "imageSaved": "画像は正常に保存されました",
+    "downloadFailed": "ダウンロード失敗",
+    "downloadError": "画像をダウンロードできませんでした",
+    "copied": "コピー済み",
+    "promptCopied": "プロンプトをクリップボードにコピー",
+    "generateDescription": "物理の概念と用語の視覚的表現を生成する",
+    "hero": {
+      "title": "物理の法則を探求する",
+      "physics": "物理学",
+      "description": "物理に関する質問をして、図解付きの詳細な説明を得てください。熱力学から量子力学まで、すべてをカバーしています。",
+      "saveHistory": "チャット履歴を保存する"
+    },
+    "error": "エラー"
+  }
+}
