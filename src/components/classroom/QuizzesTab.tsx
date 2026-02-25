@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Brain, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { QuizQuestionManager } from "./QuizQuestionManager";
+import { QuizTaker } from "./QuizTaker";
 
 interface Quiz {
   id: string;
@@ -37,31 +39,24 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const [timeLimit, setTimeLimit] = useState("");
   const [creating, setCreating] = useState(false);
 
-  // Teacher manage questions state
-  const [questions, setQuestions] = useState<any[]>([]);
-  const [manageQuestionsOpen, setManageQuestionsOpen] = useState(false);
-  const [newQuestionText, setNewQuestionText] = useState("");
-  const [newQuestionType, setNewQuestionType] = useState<"mcq" | "short_answer" | "file_upload">("short_answer");
+  // Question manager
+  const [manageQuizId, setManageQuizId] = useState<string | null>(null);
+  const [manageQuizTitle, setManageQuizTitle] = useState("");
 
-  // Teacher view results state
-  const [submissions, setSubmissions] = useState<any[]>([]);
-  const [viewSubmissionsOpen, setViewSubmissionsOpen] = useState(false);
-  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
-  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
-
-  // Student take quiz state
-  const [takeQuizOpen, setTakeQuizOpen] = useState(false);
-  const [studentAnswers, setStudentAnswers] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-
-  // Student submission tracking
+  // Student quiz taking
+  const [takeQuizId, setTakeQuizId] = useState<string | null>(null);
+  const [takeQuizTitle, setTakeQuizTitle] = useState("");
   const [userSubmissions, setUserSubmissions] = useState<Set<string>>(new Set());
+
+  // Teacher view results
+  const [viewResultsOpen, setViewResultsOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
   useEffect(() => {
     fetchQuizzes();
-    if (!isTeacher && user) {
-      fetchUserSubmissions();
-    }
+    if (!isTeacher && user) fetchUserSubmissions();
   }, [classroomId, user, isTeacher]);
 
   const fetchQuizzes = async () => {
@@ -80,48 +75,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       .from("quiz_submissions")
       .select("quiz_id")
       .eq("student_id", user.id);
-
-    if (data) {
-      setUserSubmissions(new Set(data.map(s => s.quiz_id)));
-    }
-  };
-
-  const fetchQuestions = async (quizId: string) => {
-    const { data } = await supabase
-      .from("quiz_questions")
-      .select("*")
-      .eq("quiz_id", quizId)
-      .order("sort_order", { ascending: true });
-    setQuestions(data || []);
-  };
-
-  const fetchSubmissions = async (quiz: Quiz) => {
-    setSelectedQuiz(quiz);
-    setLoadingSubmissions(true);
-    setViewSubmissionsOpen(true);
-
-    const { data: subData, error: subError } = await supabase
-      .from("quiz_submissions")
-      .select(`
-        *,
-        profiles:student_id (
-          display_name,
-          email
-        ),
-        quiz_answers (
-          id,
-          answer_text,
-          question_id
-        )
-      `)
-      .eq("quiz_id", quiz.id);
-
-    if (subError) {
-      toast({ variant: "destructive", title: "Error", description: subError.message });
-    } else {
-      setSubmissions(subData || []);
-    }
-    setLoadingSubmissions(false);
+    if (data) setUserSubmissions(new Set(data.map(s => s.quiz_id)));
   };
 
   const handleCreate = async () => {
@@ -146,60 +100,22 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     }
   };
 
-  const handleAddQuestion = async () => {
-    if (!selectedQuiz || !newQuestionText.trim()) return;
-    const { error } = await supabase.from("quiz_questions").insert({
-      quiz_id: selectedQuiz.id,
-      question_text: newQuestionText.trim(),
-      question_type: newQuestionType,
-      sort_order: questions.length,
-    });
+  const fetchSubmissions = async (quiz: Quiz) => {
+    setSelectedQuiz(quiz);
+    setLoadingSubmissions(true);
+    setViewResultsOpen(true);
+
+    const { data, error } = await supabase
+      .from("quiz_submissions")
+      .select(`*, profiles:student_id (display_name, email), quiz_answers (id, answer_text, question_id, is_correct, score)`)
+      .eq("quiz_id", quiz.id);
 
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
-      toast({ title: "Question added!" });
-      setNewQuestionText("");
-      fetchQuestions(selectedQuiz.id);
+      setSubmissions(data || []);
     }
-  };
-
-  const handleSubmitQuiz = async () => {
-    if (!user || !selectedQuiz || questions.length === 0) return;
-    setSubmitting(true);
-
-    try {
-      // 1. Create submission
-      const { data: submission, error: subError } = await supabase
-        .from("quiz_submissions")
-        .insert({
-          quiz_id: selectedQuiz.id,
-          student_id: user.id,
-        })
-        .select()
-        .single();
-
-      if (subError) throw subError;
-
-      // 2. Insert answers
-      const answersToInsert = questions.map((q) => ({
-        submission_id: submission.id,
-        question_id: q.id,
-        answer_text: studentAnswers[q.id] || "",
-      }));
-
-      const { error: ansError } = await supabase.from("quiz_answers").insert(answersToInsert);
-      if (ansError) throw ansError;
-
-      toast({ title: "Quiz submitted successfully!" });
-      setTakeQuizOpen(false);
-      setStudentAnswers({});
-      fetchUserSubmissions();
-    } catch (error: any) {
-      toast({ variant: "destructive", title: "Submission failed", description: error.message });
-    } finally {
-      setSubmitting(false);
-    }
+    setLoadingSubmissions(false);
   };
 
   if (loading) return <p className="text-muted-foreground">Loading quizzes...</p>;
@@ -239,7 +155,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                   <div className="flex items-center gap-2">
                     {isTeacher ? (
                       <>
-                        <Button variant="ghost" size="sm" onClick={() => { setSelectedQuiz(q); fetchQuestions(q.id); setManageQuestionsOpen(true); }}>
+                        <Button variant="ghost" size="sm" onClick={() => { setManageQuizId(q.id); setManageQuizTitle(q.title); }}>
                           Questions
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => fetchSubmissions(q)}>
@@ -250,14 +166,8 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                       <Button
                         variant={userSubmissions.has(q.id) ? "outline" : "hero"}
                         size="sm"
-                        onClick={() => {
-                          if (!userSubmissions.has(q.id)) {
-                            setSelectedQuiz(q);
-                            fetchQuestions(q.id);
-                            setTakeQuizOpen(true);
-                          }
-                        }}
                         disabled={userSubmissions.has(q.id)}
+                        onClick={() => { setTakeQuizId(q.id); setTakeQuizTitle(q.title); }}
                       >
                         {userSubmissions.has(q.id) ? "Already Submitted" : "Take Quiz"}
                       </Button>
@@ -282,8 +192,25 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
         </div>
       )}
 
-      {/* Teacher view submissions dialog */}
-      <Dialog open={viewSubmissionsOpen} onOpenChange={setViewSubmissionsOpen}>
+      {/* Teacher question manager */}
+      <QuizQuestionManager
+        quizId={manageQuizId || ""}
+        quizTitle={manageQuizTitle}
+        open={!!manageQuizId}
+        onOpenChange={(open) => { if (!open) setManageQuizId(null); }}
+      />
+
+      {/* Student quiz taker */}
+      <QuizTaker
+        quizId={takeQuizId || ""}
+        quizTitle={takeQuizTitle}
+        open={!!takeQuizId}
+        onOpenChange={(open) => { if (!open) setTakeQuizId(null); }}
+        onSubmitted={fetchUserSubmissions}
+      />
+
+      {/* Teacher view results */}
+      <Dialog open={viewResultsOpen} onOpenChange={setViewResultsOpen}>
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Quiz Results: {selectedQuiz?.title}</DialogTitle>
@@ -297,128 +224,37 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
               <div className="grid gap-4">
                 {submissions.map((s) => (
                   <Card key={s.id}>
-                    <CardContent className="pt-6 space-y-4">
+                    <CardContent className="pt-6 space-y-2">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-bold text-termo-deep-blue">
-                            {s.profiles?.display_name || "Unknown Student"}
-                          </p>
+                          <p className="font-bold">{s.profiles?.display_name || "Unknown Student"}</p>
                           <p className="text-xs text-muted-foreground">{s.profiles?.email}</p>
                         </div>
                         <div className="text-right">
-                          <div className="bg-termo-light-orange/10 text-termo-light-orange px-3 py-1 rounded-full text-sm font-bold">
-                            Score: {s.total_score ?? "N/A"} / {selectedQuiz?.max_score}
+                          <div className="bg-accent/20 text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
+                            Score: {s.total_score ?? "Pending"} / {selectedQuiz?.max_score}
                           </div>
                           <p className="text-[10px] text-muted-foreground mt-1">
                             {format(new Date(s.submitted_at), "MMM d, h:mm a")}
                           </p>
                         </div>
                       </div>
-
-                      {/* Display individual answers */}
-                      <div className="space-y-2 border-t pt-4 mt-2">
-                        <p className="text-xs font-bold uppercase text-muted-foreground">Answers:</p>
-                        {s.quiz_answers?.map((ans: any, i: number) => {
-                          const question = questions.find(q => q.id === ans.question_id);
-                          return (
-                            <div key={ans.id} className="text-sm bg-muted/30 p-2 rounded">
-                              <p className="font-medium text-xs">Q: {question?.question_text || "Deleted Question"}</p>
-                              <p className="mt-1">A: {ans.answer_text || <span className="italic text-muted-foreground">No answer</span>}</p>
-                            </div>
-                          );
-                        })}
+                      <div className="space-y-1 border-t pt-2">
+                        {s.quiz_answers?.map((ans: any, i: number) => (
+                          <div key={ans.id} className="text-sm bg-muted/30 p-2 rounded flex justify-between">
+                            <span>{ans.answer_text || <span className="italic text-muted-foreground">No answer</span>}</span>
+                            {ans.is_correct !== null && (
+                              <span className={ans.is_correct ? "text-green-500" : "text-destructive"}>
+                                {ans.is_correct ? "✓" : "✗"} {ans.score ?? 0}pts
+                              </span>
+                            )}
+                          </div>
+                        ))}
                       </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Teacher manage questions dialog */}
-      <Dialog open={manageQuestionsOpen} onOpenChange={setManageQuestionsOpen}>
-        <DialogContent className="max-w-2xl">
-          <DialogHeader><DialogTitle>Manage Questions: {selectedQuiz?.title}</DialogTitle></DialogHeader>
-          <div className="space-y-6 py-4">
-            <div className="space-y-4 border p-4 rounded-lg bg-muted/50">
-              <h4 className="font-bold">Add New Question</h4>
-              <div className="space-y-2">
-                <Label>Question Text</Label>
-                <Input value={newQuestionText} onChange={(e) => setNewQuestionText(e.target.value)} placeholder="What is the laws of thermodynamics?" />
-              </div>
-              <div className="space-y-2">
-                <Label>Type</Label>
-                <select
-                  className="w-full p-2 rounded-md border bg-background"
-                  value={newQuestionType}
-                  onChange={(e: any) => setNewQuestionType(e.target.value)}
-                >
-                  <option value="short_answer">Short Answer</option>
-                  <option value="mcq">Multiple Choice (MCQ)</option>
-                  <option value="file_upload">File Upload</option>
-                </select>
-              </div>
-              <Button onClick={handleAddQuestion} className="w-full" variant="hero" disabled={!newQuestionText.trim()}>
-                Add Question
-              </Button>
-            </div>
-
-            <div className="space-y-3">
-              <h4 className="font-bold">Current Questions ({questions.length})</h4>
-              {questions.length === 0 ? (
-                <p className="text-sm text-muted-foreground">No questions added yet.</p>
-              ) : (
-                questions.map((q, idx) => (
-                  <div key={q.id} className="p-3 border rounded-md bg-background flex justify-between items-center">
-                    <div>
-                      <span className="text-xs font-bold text-muted-foreground mr-2">#{idx + 1}</span>
-                      <span className="text-sm">{q.question_text}</span>
-                      <span className="ml-2 text-[10px] uppercase bg-muted px-1 rounded">{q.question_type}</span>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
-
-      {/* Student take quiz dialog */}
-      <Dialog open={takeQuizOpen} onOpenChange={setTakeQuizOpen}>
-        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>Taking Quiz: {selectedQuiz?.title}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-6 py-4">
-            {questions.length === 0 ? (
-              <p className="text-center py-8 text-muted-foreground">This quiz has no questions yet.</p>
-            ) : (
-              <>
-                {questions.map((q, idx) => (
-                  <div key={q.id} className="space-y-3 p-4 border rounded-lg">
-                    <p className="font-bold">Q{idx + 1}: {q.question_text}</p>
-                    {q.question_type === "mcq" ? (
-                      <p className="text-xs text-muted-foreground italic">Multiple choice options coming soon...</p>
-                    ) : (
-                      <Textarea
-                        value={studentAnswers[q.id] || ""}
-                        onChange={(e) => setStudentAnswers(prev => ({ ...prev, [q.id]: e.target.value }))}
-                        placeholder="Type your answer here..."
-                      />
-                    )}
-                  </div>
-                ))}
-                <Button
-                  onClick={handleSubmitQuiz}
-                  disabled={submitting}
-                  className="w-full"
-                  variant="hero"
-                >
-                  {submitting ? "Submitting..." : "Submit All Answers"}
-                </Button>
-              </>
             )}
           </div>
         </DialogContent>
