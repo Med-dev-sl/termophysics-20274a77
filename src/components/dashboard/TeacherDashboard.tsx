@@ -32,55 +32,80 @@ export function TeacherDashboard() {
   const [subject, setSubject] = useState("");
   const [creating, setCreating] = useState(false);
 
+  const [newClassCode, setNewClassCode] = useState<string | null>(null);
+  const [showShareModal, setShowShareModal] = useState(false);
+
   useEffect(() => {
-    fetchClassrooms();
+    if (user) {
+      fetchClassrooms();
+    }
   }, [user]);
 
   const fetchClassrooms = async () => {
     if (!user) return;
-    const { data } = await supabase
+    setLoading(true);
+    const { data, error } = await supabase
       .from("classrooms")
       .select("*")
+      .eq("teacher_id", user.id)
       .order("created_at", { ascending: false });
-    setClassrooms(data || []);
+
+    if (error) {
+      console.error("Error fetching classrooms:", error);
+    } else {
+      setClassrooms(data || []);
+    }
     setLoading(false);
   };
 
   const handleCreate = async () => {
     if (!user || !name.trim()) return;
     setCreating(true);
-    const { error } = await supabase.from("classrooms").insert({
+
+    const { data, error } = await supabase.from("classrooms").insert({
       name: name.trim(),
       description: description.trim() || null,
       subject: subject.trim() || null,
       teacher_id: user.id,
-    });
+    }).select().single();
+
     setCreating(false);
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
-      toast({ title: "Classroom created!" });
+      toast({ title: "Classroom created successfully!" });
       setDialogOpen(false);
       setName("");
       setDescription("");
       setSubject("");
+      if (data) {
+        setNewClassCode(data.class_code);
+        setShowShareModal(true);
+      }
       fetchClassrooms();
     }
   };
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({ title: "Class code copied!" });
+    toast({
+      title: "Class code copied!",
+      description: "Share this code with your students so they can join."
+    });
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading classrooms...</p>;
+  if (loading && classrooms.length === 0) return (
+    <div className="flex items-center justify-center py-12">
+      <p className="text-muted-foreground">Loading classrooms...</p>
+    </div>
+  );
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-display font-bold">My Classrooms</h2>
-          <p className="text-muted-foreground">Manage your classes, assignments, and quizzes</p>
+          <p className="text-muted-foreground">Manage your classes and share codes with students</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
@@ -103,7 +128,7 @@ export function TeacherDashboard() {
               </div>
               <div className="space-y-2">
                 <Label>Description</Label>
-                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A brief description..." />
+                <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A brief description for your students..." />
               </div>
               <Button onClick={handleCreate} disabled={creating || !name.trim()} className="w-full" variant="hero">
                 {creating ? "Creating..." : "Create Classroom"}
@@ -113,11 +138,36 @@ export function TeacherDashboard() {
         </Dialog>
       </div>
 
+      {/* Success/Share Modal */}
+      <Dialog open={showShareModal} onOpenChange={setShowShareModal}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="text-center">Classroom Ready!</DialogTitle>
+          </DialogHeader>
+          <div className="flex flex-col items-center justify-center space-y-4 py-4">
+            <p className="text-center text-muted-foreground">
+              Share this code with your students to let them join your classroom:
+            </p>
+            <div className="flex items-center gap-3 bg-muted p-4 rounded-xl border-2 border-dashed border-termo-light-orange/30 w-full justify-center">
+              <span className="text-3xl font-mono font-bold tracking-widest text-termo-light-orange">
+                {newClassCode}
+              </span>
+              <Button variant="ghost" size="icon" onClick={() => copyCode(newClassCode || "")}>
+                <Copy className="h-5 w-5" />
+              </Button>
+            </div>
+            <Button onClick={() => setShowShareModal(false)} className="w-full">
+              Got it
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       {classrooms.length === 0 ? (
         <Card className="termo-card">
           <CardContent className="flex flex-col items-center justify-center py-12">
             <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground text-center">No classrooms yet. Create your first one!</p>
+            <p className="text-muted-foreground text-center">No classrooms yet. Create your first one to start teaching!</p>
           </CardContent>
         </Card>
       ) : (
@@ -125,22 +175,51 @@ export function TeacherDashboard() {
           {classrooms.map((c) => (
             <Card
               key={c.id}
-              className="termo-card cursor-pointer hover:shadow-lg transition-shadow"
-              onClick={() => navigate(`/classroom/${c.id}`)}
+              className="termo-card overflow-hidden hover:shadow-lg transition-all group"
             >
-              <CardHeader>
-                <CardTitle className="font-display">{c.name}</CardTitle>
+              <div className="h-2 bg-gradient-to-r from-termo-deep-blue to-termo-light-orange" />
+              <CardHeader className="cursor-pointer" onClick={() => navigate(`/classroom/${c.id}`)}>
+                <CardTitle className="font-display group-hover:text-termo-light-orange transition-colors">{c.name}</CardTitle>
                 {c.subject && <CardDescription>{c.subject}</CardDescription>}
               </CardHeader>
               <CardContent>
                 {c.description && (
-                  <p className="text-sm text-muted-foreground mb-3">{c.description}</p>
+                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{c.description}</p>
                 )}
-                <div className="flex items-center gap-2 text-sm">
-                  <span className="font-mono bg-muted px-2 py-1 rounded text-xs">{c.class_code}</span>
-                  <Button variant="ghost" size="icon" className="h-6 w-6" onClick={(e) => { e.stopPropagation(); copyCode(c.class_code); }}>
-                    <Copy className="h-3 w-3" />
-                  </Button>
+                <div className="pt-4 border-t border-border mt-auto">
+                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 block">
+                    Student Join Code
+                  </Label>
+                  <div className="flex items-center justify-between bg-muted/50 p-2 rounded-lg border border-border">
+                    <span className="font-mono font-bold text-termo-deep-blue dark:text-termo-light-orange">
+                      {c.class_code}
+                    </span>
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="h-8 gap-1 text-xs"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        copyCode(c.class_code);
+                      }}
+                    >
+                      <Copy className="h-3 w-3" />
+                      Copy
+                    </Button>
+                  </div>
+                  <div className="mt-4 flex justify-between items-center">
+                    <div className="flex items-center text-xs text-muted-foreground gap-1">
+                      <Users className="h-3 w-3" />
+                      <span>Classroom Dashboard</span>
+                    </div>
+                    <Button
+                      variant="link"
+                      className="text-xs h-auto p-0"
+                      onClick={() => navigate(`/classroom/${c.id}`)}
+                    >
+                      Go to Classroom →
+                    </Button>
+                  </div>
                 </div>
               </CardContent>
             </Card>

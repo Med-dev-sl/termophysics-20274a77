@@ -14,7 +14,6 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
-<<<<<<< HEAD
   <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
@@ -25,6 +24,8 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Landing />} />
               <Route path="/chat" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/classroom/:id" element={<ClassroomDetail />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
@@ -33,25 +34,6 @@ const App = () => (
       </AuthProvider>
     </QueryClientProvider>
   </ThemeProvider>
-=======
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/classroom/:id" element={<ClassroomDetail />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
->>>>>>> 888407d08013960791f21de1a0a4b1dca2d6c2ef
 );
 
 export default App;

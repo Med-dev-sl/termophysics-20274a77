@@ -26,14 +26,28 @@ export function StudentsTab({ classroomId }: StudentsTabProps) {
   }, [classroomId]);
 
   const fetchStudents = async () => {
-    const { data } = await supabase
-      .from("classroom_enrollments")
-      .select("id, student_id, enrolled_at, profiles!classroom_enrollments_student_id_fkey(display_name, email)")
-      .eq("classroom_id", classroomId);
+    try {
+      const { data, error } = await supabase
+        .from("classroom_enrollments")
+        .select(`
+          id, 
+          student_id, 
+          enrolled_at, 
+          profiles:student_id (
+            display_name, 
+            email
+          )
+        `)
+        .eq("classroom_id", classroomId);
 
-    // The join may not work due to missing FK, fallback gracefully
-    setEnrollments((data as any) || []);
-    setLoading(false);
+      if (error) throw error;
+      setEnrollments((data as any) || []);
+    } catch (error: any) {
+      console.error("Error fetching students:", error);
+      toast({ variant: "destructive", title: "Could not load students", description: error.message });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleRemove = async (enrollmentId: string) => {

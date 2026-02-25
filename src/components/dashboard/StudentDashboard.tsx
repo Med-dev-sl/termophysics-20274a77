@@ -54,10 +54,17 @@ export function StudentDashboard() {
       .from("classrooms")
       .select("id")
       .eq("class_code", classCode.trim())
-      .single();
+      .maybeSingle();
 
-    if (findError || !classroom) {
-      toast({ variant: "destructive", title: "Invalid code", description: "No classroom found with that code." });
+    if (findError) {
+      console.error("Error finding classroom:", findError);
+      toast({ variant: "destructive", title: "Search failed", description: findError.message });
+      setJoining(false);
+      return;
+    }
+
+    if (!classroom) {
+      toast({ variant: "destructive", title: "Invalid code", description: "No classroom found with that code. Please check the code and try again." });
       setJoining(false);
       return;
     }
