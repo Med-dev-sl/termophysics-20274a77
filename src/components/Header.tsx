@@ -1,4 +1,5 @@
-import { Atom, Menu, LogOut, User } from "lucide-react";
+import { Atom, Menu, LogOut, User, LayoutDashboard } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
@@ -18,6 +19,7 @@ interface HeaderProps {
 
 export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
   const { user, signOut } = useAuth();
+<<<<<<< HEAD
   const { toast } = useToast();
   const [signingOut, setSigningOut] = useState(false);
 
@@ -48,6 +50,9 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
       setSigningOut(false);
     }
   };
+=======
+  const navigate = useNavigate();
+>>>>>>> 888407d08013960791f21de1a0a4b1dca2d6c2ef
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border safe-area-inset-top">
@@ -88,7 +93,15 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
+<<<<<<< HEAD
                 <DropdownMenuItem onClick={handleSignOut} disabled={signingOut} className="text-destructive text-sm">
+=======
+                <DropdownMenuItem onClick={() => navigate("/dashboard")}>
+                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                  Dashboard
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut} className="text-destructive">
+>>>>>>> 888407d08013960791f21de1a0a4b1dca2d6c2ef
                   <LogOut className="h-4 w-4 mr-2" />
                   {signingOut ? "Signing out..." : "Sign Out"}
                 </DropdownMenuItem>
