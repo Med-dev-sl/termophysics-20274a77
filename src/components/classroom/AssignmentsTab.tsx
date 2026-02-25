@@ -44,6 +44,11 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
   const [submitFile, setSubmitFile] = useState<File | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
+  // Teacher view submissions state
+  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [viewSubmissionsOpen, setViewSubmissionsOpen] = useState(false);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
+
   useEffect(() => {
     fetchAssignments();
   }, [classroomId]);
@@ -56,6 +61,30 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
       .order("created_at", { ascending: false });
     setAssignments(data || []);
     setLoading(false);
+  };
+
+  const fetchSubmissions = async (assignment: Assignment) => {
+    setSelectedAssignment(assignment);
+    setLoadingSubmissions(true);
+    setViewSubmissionsOpen(true);
+
+    const { data, error } = await supabase
+      .from("assignment_submissions")
+      .select(`
+        *,
+        profiles:student_id (
+          display_name,
+          email
+        )
+      `)
+      .eq("assignment_id", assignment.id);
+
+    if (error) {
+      toast({ variant: "destructive", title: "Error", description: error.message });
+    } else {
+      setSubmissions(data || []);
+    }
+    setLoadingSubmissions(false);
   };
 
   const handleCreate = async () => {
@@ -167,7 +196,11 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
                     <ClipboardList className="h-4 w-4 text-muted-foreground" />
                     {a.title}
                   </CardTitle>
-                  {!isTeacher && (
+                  {isTeacher ? (
+                    <Button variant="outline" size="sm" onClick={() => fetchSubmissions(a)}>
+                      View Submissions
+                    </Button>
+                  ) : (
                     <Button variant="outline" size="sm" onClick={() => { setSelectedAssignment(a); setSubmitDialogOpen(true); }}>Submit</Button>
                   )}
                 </div>
@@ -185,6 +218,60 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           ))}
         </div>
       )}
+
+      {/* Teacher view submissions dialog */}
+      <Dialog open={viewSubmissionsOpen} onOpenChange={setViewSubmissionsOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Submissions: {selectedAssignment?.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {loadingSubmissions ? (
+              <p className="text-center text-muted-foreground">Loading submissions...</p>
+            ) : submissions.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
+            ) : (
+              <div className="grid gap-4">
+                {submissions.map((s) => (
+                  <Card key={s.id}>
+                    <CardContent className="pt-6 space-y-4">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="font-bold text-termo-deep-blue">
+                            {s.profiles?.display_name || "Unknown Student"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">{s.profiles?.email}</p>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-xs text-muted-foreground">
+                            Submitted: {format(new Date(s.submitted_at), "MMM d, h:mm a")}
+                          </p>
+                          {s.is_late && <span className="text-[10px] text-destructive font-bold uppercase">Late</span>}
+                        </div>
+                      </div>
+
+                      {s.content && (
+                        <div className="bg-muted p-3 rounded-lg text-sm whitespace-pre-wrap">
+                          {s.content}
+                        </div>
+                      )}
+
+                      {s.file_url && (
+                        <Button variant="secondary" size="sm" asChild className="w-full flex items-center gap-2">
+                          <a href={s.file_url} target="_blank" rel="noopener noreferrer">
+                            <Download className="h-4 w-4" />
+                            Download {s.file_name || "File"}
+                          </a>
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

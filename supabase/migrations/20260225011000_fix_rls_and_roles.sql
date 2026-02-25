@@ -84,13 +84,27 @@ CREATE POLICY "Teachers can view profiles of enrolled students"
     )
   );
 
--- 4. Add explicit FK from classroom_enrollments to profiles to help PostgREST joins
--- We ignore error if it already exists
+-- 4. Add explicit FKs from relevant tables to profiles to help PostgREST joins
 DO $$ 
 BEGIN
+  -- classroom_enrollments FK
   IF NOT EXISTS (SELECT 1 FROM information_schema.constraint_column_usage WHERE constraint_name = 'classroom_enrollments_profiles_fkey') THEN
     ALTER TABLE public.classroom_enrollments
     ADD CONSTRAINT classroom_enrollments_profiles_fkey
+    FOREIGN KEY (student_id) REFERENCES public.profiles(user_id) ON DELETE CASCADE;
+  END IF;
+
+  -- assignment_submissions FK
+  IF NOT EXISTS (SELECT 1 FROM information_schema.constraint_column_usage WHERE constraint_name = 'assignment_submissions_profiles_fkey') THEN
+    ALTER TABLE public.assignment_submissions
+    ADD CONSTRAINT assignment_submissions_profiles_fkey
+    FOREIGN KEY (student_id) REFERENCES public.profiles(user_id) ON DELETE CASCADE;
+  END IF;
+
+  -- quiz_submissions FK
+  IF NOT EXISTS (SELECT 1 FROM information_schema.constraint_column_usage WHERE constraint_name = 'quiz_submissions_profiles_fkey') THEN
+    ALTER TABLE public.quiz_submissions
+    ADD CONSTRAINT quiz_submissions_profiles_fkey
     FOREIGN KEY (student_id) REFERENCES public.profiles(user_id) ON DELETE CASCADE;
   END IF;
 END $$;

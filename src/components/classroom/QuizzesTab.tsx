@@ -37,6 +37,12 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const [timeLimit, setTimeLimit] = useState("");
   const [creating, setCreating] = useState(false);
 
+  // Teacher view submissions state
+  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [viewSubmissionsOpen, setViewSubmissionsOpen] = useState(false);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+
   useEffect(() => {
     fetchQuizzes();
   }, [classroomId]);
@@ -49,6 +55,30 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       .order("created_at", { ascending: false });
     setQuizzes(data || []);
     setLoading(false);
+  };
+
+  const fetchSubmissions = async (quiz: Quiz) => {
+    setSelectedQuiz(quiz);
+    setLoadingSubmissions(true);
+    setViewSubmissionsOpen(true);
+
+    const { data, error } = await supabase
+      .from("quiz_submissions")
+      .select(`
+        *,
+        profiles:student_id (
+          display_name,
+          email
+        )
+      `)
+      .eq("quiz_id", quiz.id);
+
+    if (error) {
+      toast({ variant: "destructive", title: "Error", description: error.message });
+    } else {
+      setSubmissions(data || []);
+    }
+    setLoadingSubmissions(false);
   };
 
   const handleCreate = async () => {
@@ -102,10 +132,17 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           {quizzes.map((q) => (
             <Card key={q.id}>
               <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center gap-2">
-                  <Brain className="h-4 w-4 text-muted-foreground" />
-                  {q.title}
-                </CardTitle>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg flex items-center gap-2">
+                    <Brain className="h-4 w-4 text-muted-foreground" />
+                    {q.title}
+                  </CardTitle>
+                  {isTeacher && (
+                    <Button variant="outline" size="sm" onClick={() => fetchSubmissions(q)}>
+                      View Results
+                    </Button>
+                  )}
+                </div>
                 <div className="flex gap-3 text-xs text-muted-foreground">
                   {q.due_date && (
                     <span className="flex items-center gap-1">
@@ -123,6 +160,47 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           ))}
         </div>
       )}
+
+      {/* Teacher view submissions dialog */}
+      <Dialog open={viewSubmissionsOpen} onOpenChange={setViewSubmissionsOpen}>
+        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Quiz Results: {selectedQuiz?.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            {loadingSubmissions ? (
+              <p className="text-center text-muted-foreground">Loading results...</p>
+            ) : submissions.length === 0 ? (
+              <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
+            ) : (
+              <div className="grid gap-4">
+                {submissions.map((s) => (
+                  <Card key={s.id}>
+                    <CardContent className="pt-6">
+                      <div className="flex justify-between items-center">
+                        <div>
+                          <p className="font-bold text-termo-deep-blue">
+                            {s.profiles?.display_name || "Unknown Student"}
+                          </p>
+                          <p className="text-xs text-muted-foreground">{s.profiles?.email}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="bg-termo-light-orange/10 text-termo-light-orange px-3 py-1 rounded-full text-sm font-bold">
+                            Score: {s.total_score ?? "N/A"} / {selectedQuiz?.max_score}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground mt-1">
+                            {format(new Date(s.submitted_at), "MMM d, h:mm a")}
+                          </p>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
