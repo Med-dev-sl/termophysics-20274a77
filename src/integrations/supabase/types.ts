@@ -62,6 +62,13 @@ export type Database = {
             referencedRelation: "assignments"
             referencedColumns: ["id"]
           },
+          {
+            foreignKeyName: "assignment_submissions_profiles_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
         ]
       }
       assignments: {
@@ -134,6 +141,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "classrooms"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "classroom_enrollments_profiles_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
           },
         ]
       }
@@ -419,6 +433,13 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "quiz_submissions_profiles_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["user_id"]
+          },
+          {
             foreignKeyName: "quiz_submissions_quiz_id_fkey"
             columns: ["quiz_id"]
             isOneToOne: false
@@ -504,6 +525,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      is_classroom_teacher: { Args: { cid: string }; Returns: boolean }
     }
     Enums: {
       app_role: "admin" | "user" | "teacher"

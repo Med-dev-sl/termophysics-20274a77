@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, Brain, Calendar } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
+import { QuizQuestionManager } from "./QuizQuestionManager";
+import { QuizTaker } from "./QuizTaker";
 
 interface Quiz {
   id: string;
@@ -37,6 +39,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const [timeLimit, setTimeLimit] = useState("");
   const [creating, setCreating] = useState(false);
 
+<<<<<<< HEAD
   // Teacher manage questions state
   const [questions, setQuestions] = useState<any[]>([]);
   const [manageQuestionsOpen, setManageQuestionsOpen] = useState(false);
@@ -47,26 +50,26 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const [newPoints, setNewPoints] = useState("10");
 
 
+=======
+  // Question manager
+  const [manageQuizId, setManageQuizId] = useState<string | null>(null);
+  const [manageQuizTitle, setManageQuizTitle] = useState("");
+>>>>>>> e5dc59821c3b2d78c5ec6f26081b104dd638d0b2
 
-  // Teacher view results state
-  const [submissions, setSubmissions] = useState<any[]>([]);
-  const [viewSubmissionsOpen, setViewSubmissionsOpen] = useState(false);
-  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
-  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
-
-  // Student take quiz state
-  const [takeQuizOpen, setTakeQuizOpen] = useState(false);
-  const [studentAnswers, setStudentAnswers] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-
-  // Student submission tracking
+  // Student quiz taking
+  const [takeQuizId, setTakeQuizId] = useState<string | null>(null);
+  const [takeQuizTitle, setTakeQuizTitle] = useState("");
   const [userSubmissions, setUserSubmissions] = useState<Set<string>>(new Set());
+
+  // Teacher view results
+  const [viewResultsOpen, setViewResultsOpen] = useState(false);
+  const [selectedQuiz, setSelectedQuiz] = useState<Quiz | null>(null);
+  const [submissions, setSubmissions] = useState<any[]>([]);
+  const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
   useEffect(() => {
     fetchQuizzes();
-    if (!isTeacher && user) {
-      fetchUserSubmissions();
-    }
+    if (!isTeacher && user) fetchUserSubmissions();
   }, [classroomId, user, isTeacher]);
 
   const fetchQuizzes = async () => {
@@ -85,48 +88,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       .from("quiz_submissions")
       .select("quiz_id")
       .eq("student_id", user.id);
-
-    if (data) {
-      setUserSubmissions(new Set(data.map(s => s.quiz_id)));
-    }
-  };
-
-  const fetchQuestions = async (quizId: string) => {
-    const { data } = await supabase
-      .from("quiz_questions")
-      .select("*")
-      .eq("quiz_id", quizId)
-      .order("sort_order", { ascending: true });
-    setQuestions(data || []);
-  };
-
-  const fetchSubmissions = async (quiz: Quiz) => {
-    setSelectedQuiz(quiz);
-    setLoadingSubmissions(true);
-    setViewSubmissionsOpen(true);
-
-    const { data: subData, error: subError } = await supabase
-      .from("quiz_submissions")
-      .select(`
-        *,
-        profiles:student_id (
-          display_name,
-          email
-        ),
-        quiz_answers (
-          id,
-          answer_text,
-          question_id
-        )
-      `)
-      .eq("quiz_id", quiz.id);
-
-    if (subError) {
-      toast({ variant: "destructive", title: "Error", description: subError.message });
-    } else {
-      setSubmissions(subData || []);
-    }
-    setLoadingSubmissions(false);
+    if (data) setUserSubmissions(new Set(data.map(s => s.quiz_id)));
   };
 
   const handleCreate = async () => {
@@ -151,6 +113,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     }
   };
 
+<<<<<<< HEAD
   const handleAddQuestion = async () => {
     if (!selectedQuiz || !newQuestionText.trim()) return;
     const { error } = await supabase.from("quiz_questions").insert({
@@ -162,12 +125,24 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       points: parseInt(newPoints) || 10,
       sort_order: questions.length,
     });
+=======
+  const fetchSubmissions = async (quiz: Quiz) => {
+    setSelectedQuiz(quiz);
+    setLoadingSubmissions(true);
+    setViewResultsOpen(true);
+
+    const { data, error } = await supabase
+      .from("quiz_submissions")
+      .select(`*, profiles:student_id (display_name, email), quiz_answers (id, answer_text, question_id, is_correct, score)`)
+      .eq("quiz_id", quiz.id);
+>>>>>>> e5dc59821c3b2d78c5ec6f26081b104dd638d0b2
 
 
 
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
+<<<<<<< HEAD
       toast({ title: "Question added!" });
       setNewQuestionText("");
       setNewCorrectAnswer("");
@@ -228,7 +203,11 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       toast({ variant: "destructive", title: "Submission failed", description: error.message });
     } finally {
       setSubmitting(false);
+=======
+      setSubmissions(data || []);
+>>>>>>> e5dc59821c3b2d78c5ec6f26081b104dd638d0b2
     }
+    setLoadingSubmissions(false);
   };
 
 
@@ -269,7 +248,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                   <div className="flex items-center gap-2">
                     {isTeacher ? (
                       <>
-                        <Button variant="ghost" size="sm" onClick={() => { setSelectedQuiz(q); fetchQuestions(q.id); setManageQuestionsOpen(true); }}>
+                        <Button variant="ghost" size="sm" onClick={() => { setManageQuizId(q.id); setManageQuizTitle(q.title); }}>
                           Questions
                         </Button>
                         <Button variant="outline" size="sm" onClick={() => fetchSubmissions(q)}>
@@ -280,14 +259,8 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                       <Button
                         variant={userSubmissions.has(q.id) ? "outline" : "hero"}
                         size="sm"
-                        onClick={() => {
-                          if (!userSubmissions.has(q.id)) {
-                            setSelectedQuiz(q);
-                            fetchQuestions(q.id);
-                            setTakeQuizOpen(true);
-                          }
-                        }}
                         disabled={userSubmissions.has(q.id)}
+                        onClick={() => { setTakeQuizId(q.id); setTakeQuizTitle(q.title); }}
                       >
                         {userSubmissions.has(q.id) ? "Already Submitted" : "Take Quiz"}
                       </Button>
@@ -312,8 +285,25 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
         </div>
       )}
 
-      {/* Teacher view submissions dialog */}
-      <Dialog open={viewSubmissionsOpen} onOpenChange={setViewSubmissionsOpen}>
+      {/* Teacher question manager */}
+      <QuizQuestionManager
+        quizId={manageQuizId || ""}
+        quizTitle={manageQuizTitle}
+        open={!!manageQuizId}
+        onOpenChange={(open) => { if (!open) setManageQuizId(null); }}
+      />
+
+      {/* Student quiz taker */}
+      <QuizTaker
+        quizId={takeQuizId || ""}
+        quizTitle={takeQuizTitle}
+        open={!!takeQuizId}
+        onOpenChange={(open) => { if (!open) setTakeQuizId(null); }}
+        onSubmitted={fetchUserSubmissions}
+      />
+
+      {/* Teacher view results */}
+      <Dialog open={viewResultsOpen} onOpenChange={setViewResultsOpen}>
         <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Quiz Results: {selectedQuiz?.title}</DialogTitle>
@@ -327,23 +317,22 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
               <div className="grid gap-4">
                 {submissions.map((s) => (
                   <Card key={s.id}>
-                    <CardContent className="pt-6 space-y-4">
+                    <CardContent className="pt-6 space-y-2">
                       <div className="flex justify-between items-center">
                         <div>
-                          <p className="font-bold text-termo-deep-blue">
-                            {s.profiles?.display_name || "Unknown Student"}
-                          </p>
+                          <p className="font-bold">{s.profiles?.display_name || "Unknown Student"}</p>
                           <p className="text-xs text-muted-foreground">{s.profiles?.email}</p>
                         </div>
                         <div className="text-right">
-                          <div className="bg-termo-light-orange/10 text-termo-light-orange px-3 py-1 rounded-full text-sm font-bold">
-                            Score: {s.total_score ?? "N/A"} / {selectedQuiz?.max_score}
+                          <div className="bg-accent/20 text-accent-foreground px-3 py-1 rounded-full text-sm font-bold">
+                            Score: {s.total_score ?? "Pending"} / {selectedQuiz?.max_score}
                           </div>
                           <p className="text-[10px] text-muted-foreground mt-1">
                             {format(new Date(s.submitted_at), "MMM d, h:mm a")}
                           </p>
                         </div>
                       </div>
+<<<<<<< HEAD
 
                       {/* Display individual answers */}
                       <div className="space-y-2 border-t pt-4 mt-2">
@@ -368,6 +357,19 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
 
                           );
                         })}
+=======
+                      <div className="space-y-1 border-t pt-2">
+                        {s.quiz_answers?.map((ans: any, i: number) => (
+                          <div key={ans.id} className="text-sm bg-muted/30 p-2 rounded flex justify-between">
+                            <span>{ans.answer_text || <span className="italic text-muted-foreground">No answer</span>}</span>
+                            {ans.is_correct !== null && (
+                              <span className={ans.is_correct ? "text-green-500" : "text-destructive"}>
+                                {ans.is_correct ? "✓" : "✗"} {ans.score ?? 0}pts
+                              </span>
+                            )}
+                          </div>
+                        ))}
+>>>>>>> e5dc59821c3b2d78c5ec6f26081b104dd638d0b2
                       </div>
                     </CardContent>
                   </Card>
@@ -377,6 +379,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           </div>
         </DialogContent>
       </Dialog>
+<<<<<<< HEAD
 
       {/* Teacher manage questions dialog */}
       <Dialog open={manageQuestionsOpen} onOpenChange={setManageQuestionsOpen}>
@@ -536,6 +539,8 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           </div>
         </DialogContent>
       </Dialog>
+=======
+>>>>>>> e5dc59821c3b2d78c5ec6f26081b104dd638d0b2
     </div>
   );
 }
