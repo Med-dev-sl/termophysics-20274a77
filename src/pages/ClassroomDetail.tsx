@@ -70,13 +70,14 @@ const ClassroomDetail = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="notes">
-          <TabsList>
-            <TabsTrigger value="notes">Notes</TabsTrigger>
-            <TabsTrigger value="assignments">Assignments</TabsTrigger>
-            <TabsTrigger value="quizzes">Quizzes</TabsTrigger>
-            {isOwner && <TabsTrigger value="students">Students</TabsTrigger>}
+        <Tabs defaultValue="notes" className="w-full">
+          <TabsList className="w-full justify-start overflow-x-auto no-scrollbar bg-transparent border-b rounded-none px-0 h-auto gap-6">
+            <TabsTrigger value="notes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Notes</TabsTrigger>
+            <TabsTrigger value="assignments" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Assignments</TabsTrigger>
+            <TabsTrigger value="quizzes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Quizzes</TabsTrigger>
+            {isOwner && <TabsTrigger value="students" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Students</TabsTrigger>}
           </TabsList>
+
           <TabsContent value="notes" className="mt-6">
             <NotesTab classroomId={classroom.id} isTeacher={isOwner} />
           </TabsContent>

@@ -42,6 +42,11 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const [manageQuestionsOpen, setManageQuestionsOpen] = useState(false);
   const [newQuestionText, setNewQuestionText] = useState("");
   const [newQuestionType, setNewQuestionType] = useState<"mcq" | "short_answer" | "file_upload">("short_answer");
+  const [newCorrectAnswer, setNewCorrectAnswer] = useState("");
+  const [newOptions, setNewOptions] = useState<string[]>(["", "", "", ""]);
+  const [newPoints, setNewPoints] = useState("10");
+
+
 
   // Teacher view results state
   const [submissions, setSubmissions] = useState<any[]>([]);
@@ -152,15 +157,23 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       quiz_id: selectedQuiz.id,
       question_text: newQuestionText.trim(),
       question_type: newQuestionType,
+      correct_answer: newCorrectAnswer.trim() || null,
+      options: newQuestionType === "mcq" ? newOptions.filter(opt => opt.trim() !== "") : null,
+      points: parseInt(newPoints) || 10,
       sort_order: questions.length,
     });
+
+
 
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
       toast({ title: "Question added!" });
       setNewQuestionText("");
+      setNewCorrectAnswer("");
+      setNewOptions(["", "", "", ""]);
       fetchQuestions(selectedQuiz.id);
+
     }
   };
 
@@ -169,12 +182,29 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     setSubmitting(true);
 
     try {
+      let totalScore = 0;
+      const answersToInsert = questions.map((q) => {
+        const studentAnswer = studentAnswers[q.id] || "";
+        const isCorrect = q.correct_answer && studentAnswer.toLowerCase().trim() === q.correct_answer.toLowerCase().trim();
+        const score = isCorrect ? (q.points || 10) : 0;
+        if (isCorrect) totalScore += score;
+
+        return {
+          question_id: q.id,
+          answer_text: studentAnswer,
+          is_correct: isCorrect,
+          score: score,
+        };
+      });
+
       // 1. Create submission
       const { data: submission, error: subError } = await supabase
         .from("quiz_submissions")
         .insert({
           quiz_id: selectedQuiz.id,
           student_id: user.id,
+          total_score: totalScore,
+          graded_at: new Date().toISOString(), // Auto-graded
         })
         .select()
         .single();
@@ -182,16 +212,15 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       if (subError) throw subError;
 
       // 2. Insert answers
-      const answersToInsert = questions.map((q) => ({
+      const finalAnswers = answersToInsert.map(ans => ({
+        ...ans,
         submission_id: submission.id,
-        question_id: q.id,
-        answer_text: studentAnswers[q.id] || "",
       }));
 
-      const { error: ansError } = await supabase.from("quiz_answers").insert(answersToInsert);
+      const { error: ansError } = await supabase.from("quiz_answers").insert(finalAnswers);
       if (ansError) throw ansError;
 
-      toast({ title: "Quiz submitted successfully!" });
+      toast({ title: "Quiz submitted and auto-graded!", description: `Your score: ${totalScore}` });
       setTakeQuizOpen(false);
       setStudentAnswers({});
       fetchUserSubmissions();
@@ -201,6 +230,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
       setSubmitting(false);
     }
   };
+
 
   if (loading) return <p className="text-muted-foreground">Loading quizzes...</p>;
 
@@ -321,10 +351,21 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                         {s.quiz_answers?.map((ans: any, i: number) => {
                           const question = questions.find(q => q.id === ans.question_id);
                           return (
-                            <div key={ans.id} className="text-sm bg-muted/30 p-2 rounded">
-                              <p className="font-medium text-xs">Q: {question?.question_text || "Deleted Question"}</p>
+                            <div key={ans.id} className={`text-sm p-2 rounded ${ans.is_correct ? 'bg-green-500/10 border border-green-500/20' : 'bg-red-500/10 border border-red-500/20'}`}>
+                              <div className="flex justify-between items-start">
+                                <p className="font-medium text-xs">Q: {question?.question_text || "Deleted Question"}</p>
+                                <span className={`text-[10px] font-bold ${ans.is_correct ? 'text-green-600' : 'text-red-600'}`}>
+                                  {ans.is_correct ? 'Correct' : 'Incorrect'} ({ans.score || 0} pts)
+                                </span>
+                              </div>
                               <p className="mt-1">A: {ans.answer_text || <span className="italic text-muted-foreground">No answer</span>}</p>
+                              {!ans.is_correct && question?.correct_answer && (
+                                <p className="text-[10px] text-muted-foreground mt-1">
+                                  Correct answer: <span className="font-medium text-foreground">{question.correct_answer}</span>
+                                </p>
+                              )}
                             </div>
+
                           );
                         })}
                       </div>
@@ -360,9 +401,50 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                   <option value="file_upload">File Upload</option>
                 </select>
               </div>
+
+              {newQuestionType === "mcq" && (
+                <div className="space-y-2">
+                  <Label>Options (MCQ Only)</Label>
+                  <div className="grid grid-cols-2 gap-2">
+                    {newOptions.map((opt, i) => (
+                      <Input
+                        key={i}
+                        value={opt}
+                        onChange={(e) => {
+                          const updated = [...newOptions];
+                          updated[i] = e.target.value;
+                          setNewOptions(updated);
+                        }}
+                        placeholder={`Option ${i + 1}`}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {(newQuestionType === "mcq" || newQuestionType === "short_answer") && (
+                <div className="space-y-2">
+                  <Label>Correct Answer</Label>
+                  <Input
+                    value={newCorrectAnswer}
+                    onChange={(e) => setNewCorrectAnswer(e.target.value)}
+                    placeholder={newQuestionType === "mcq" ? "Must match one of the options" : "Correct answer for grading"}
+                  />
+                  <p className="text-[10px] text-muted-foreground italic">
+                    Note: For MCQ, ensure the answer exactly matches one of the options.
+                  </p>
+                </div>
+              )}
+
+              <div className="space-y-2">
+                <Label>Points</Label>
+                <Input type="number" value={newPoints} onChange={(e) => setNewPoints(e.target.value)} />
+              </div>
+
               <Button onClick={handleAddQuestion} className="w-full" variant="hero" disabled={!newQuestionText.trim()}>
                 Add Question
               </Button>
+
             </div>
 
             <div className="space-y-3">
@@ -376,7 +458,24 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                       <span className="text-xs font-bold text-muted-foreground mr-2">#{idx + 1}</span>
                       <span className="text-sm">{q.question_text}</span>
                       <span className="ml-2 text-[10px] uppercase bg-muted px-1 rounded">{q.question_type}</span>
+                      {q.correct_answer && (
+                        <p className="text-[10px] text-termo-light-orange font-bold mt-1">
+                          Correct: {q.correct_answer}
+                        </p>
+                      )}
+                      {q.options && q.options.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mt-1">
+                          {q.options.map((opt: string, i: number) => (
+                            <span key={i} className="text-[9px] bg-muted/50 px-1 rounded">{opt}</span>
+                          ))}
+                        </div>
+                      )}
+                      <p className="text-[10px] text-muted-foreground mt-1 font-bold">
+                        Points: {q.points || 10}
+                      </p>
                     </div>
+
+
                   </div>
                 ))
               )}
@@ -399,8 +498,21 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                 {questions.map((q, idx) => (
                   <div key={q.id} className="space-y-3 p-4 border rounded-lg">
                     <p className="font-bold">Q{idx + 1}: {q.question_text}</p>
-                    {q.question_type === "mcq" ? (
-                      <p className="text-xs text-muted-foreground italic">Multiple choice options coming soon...</p>
+                    {q.question_type === "mcq" && q.options ? (
+                      <div className="space-y-2 pt-2">
+                        {q.options.map((opt: string, i: number) => (
+                          <div
+                            key={i}
+                            onClick={() => setStudentAnswers(prev => ({ ...prev, [q.id]: opt }))}
+                            className={`p-3 rounded-md border cursor-pointer transition-colors ${studentAnswers[q.id] === opt
+                              ? "bg-termo-light-orange/10 border-termo-light-orange text-termo-light-orange font-medium"
+                              : "hover:bg-muted"
+                              }`}
+                          >
+                            <span className="mr-2 font-bold">{String.fromCharCode(65 + i)}.</span> {opt}
+                          </div>
+                        ))}
+                      </div>
                     ) : (
                       <Textarea
                         value={studentAnswers[q.id] || ""}
@@ -408,6 +520,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                         placeholder="Type your answer here..."
                       />
                     )}
+
                   </div>
                 ))}
                 <Button

@@ -171,17 +171,18 @@ export function TeacherDashboard() {
           </CardContent>
         </Card>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {classrooms.map((c) => (
             <Card
               key={c.id}
-              className="termo-card overflow-hidden hover:shadow-lg transition-all group"
+              className="glass-card overflow-hidden hover:shadow-lg transition-all group active-scale border-none"
             >
               <div className="h-2 bg-gradient-to-r from-termo-deep-blue to-termo-light-orange" />
-              <CardHeader className="cursor-pointer" onClick={() => navigate(`/classroom/${c.id}`)}>
-                <CardTitle className="font-display group-hover:text-termo-light-orange transition-colors">{c.name}</CardTitle>
-                {c.subject && <CardDescription>{c.subject}</CardDescription>}
+              <CardHeader className="cursor-pointer pb-2" onClick={() => navigate(`/classroom/${c.id}`)}>
+                <CardTitle className="font-display group-hover:text-termo-light-orange transition-colors text-xl">{c.name}</CardTitle>
+                {c.subject && <CardDescription className="font-medium text-termo-light-orange/80">{c.subject}</CardDescription>}
               </CardHeader>
+
               <CardContent>
                 {c.description && (
                   <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{c.description}</p>

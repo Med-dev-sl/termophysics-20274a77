@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">TermoPhysics</string>
+    <string name="title_activity_main">TermoPhysics</string>
+    <string name="package_name">com.termophysics.app</string>
+    <string name="custom_url_scheme">com.termophysics.app</string>
+</resources>

@@ -75,18 +75,12 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
           </div>
         </div>
         <nav className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-          <span className="hidden lg:block text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
-            AI-Powered Physics Learning
-          </span>
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm">
-                  <User className="h-3 w-3 sm:h-4 sm:w-4" />
-                  <span className="hidden sm:inline max-w-[100px] truncate text-xs sm:text-sm">
-                    {user.email}
-                  </span>
+                <Button variant="ghost" size="icon" className="rounded-full">
+                  <User className="h-5 w-5" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -106,6 +100,7 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
             </Button>
           )}
         </nav>
+
       </div>
     </header>
   );
