@@ -95,7 +95,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading notes...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading notes..." className="py-8" />;
 
   return (
     <div className="space-y-4">
