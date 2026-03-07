@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface AuthModalProps {
   open: boolean;
