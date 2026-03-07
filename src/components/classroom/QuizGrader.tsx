@@ -154,8 +154,6 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
                     {loading ? (
                         <LoadingSpinner size="md" text="Loading answers..." className="py-12" />
                     ) : (
-                        </div>
-                    ) : (
                         <>
                             {answers.map((a, idx) => (
                                 <div key={a.id} className="p-4 border rounded-lg bg-card shadow-sm space-y-3">
