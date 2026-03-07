@@ -22,6 +22,7 @@ interface EnrolledClassroom {
 export function StudentDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState<EnrolledClassroom[]>([]);
   const [loading, setLoading] = useState(true);
