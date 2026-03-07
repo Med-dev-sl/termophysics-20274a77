@@ -101,7 +101,7 @@ export function TeacherDashboard() {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-tour="dashboard-content">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-display font-bold">My Classrooms</h2>
@@ -109,7 +109,7 @@ export function TeacherDashboard() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="hero">
+            <Button variant="hero" data-tour="new-classroom">
               <Plus className="h-4 w-4 mr-2" /> New Classroom
             </Button>
           </DialogTrigger>
