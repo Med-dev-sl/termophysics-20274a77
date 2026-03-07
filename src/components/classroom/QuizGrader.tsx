@@ -152,8 +152,8 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
 
                 <div className="space-y-6 py-4">
                     {loading ? (
-                        <div className="flex justify-center p-12">
-                            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                        <LoadingSpinner size="md" text="Loading answers..." className="py-12" />
+                    ) : (
                         </div>
                     ) : (
                         <>
