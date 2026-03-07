@@ -6,6 +6,7 @@ interface TiltCardProps {
   className?: string;
   glowColor?: string;
   intensity?: number;
+  onClick?: () => void;
 }
 
 export function TiltCard({ children, className = "", glowColor = "rgba(245, 158, 11, 0.15)", intensity = 15 }: TiltCardProps) {
