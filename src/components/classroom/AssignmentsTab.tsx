@@ -226,7 +226,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           <div className="space-y-4">
             <div className="space-y-2"><Label>Your Answer</Label><Textarea value={submitContent} onChange={(e) => setSubmitContent(e.target.value)} placeholder="Write your answer..." rows={4} /></div>
             <div className="space-y-2"><Label>Upload File (optional)</Label><Input type="file" onChange={(e) => setSubmitFile(e.target.files?.[0] || null)} /></div>
-            <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">{submitting ? "Submitting..." : "Submit"}</Button>
+            <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">{submitting ? <><ButtonSpinner /> Submitting...</> : "Submit"}</Button>
           </div>
         </DialogContent>
       </Dialog>
