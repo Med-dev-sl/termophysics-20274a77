@@ -213,7 +213,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
               <div className="space-y-2"><Label>Description</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Instructions..." rows={3} /></div>
               <div className="space-y-2"><Label>Due Date</Label><Input type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} /></div>
               <div className="space-y-2"><Label>Max Score</Label><Input type="number" value={maxScore} onChange={(e) => setMaxScore(e.target.value)} /></div>
-              <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">{creating ? "Creating..." : "Create"}</Button>
+              <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">{creating ? <><ButtonSpinner /> Creating...</> : "Create"}</Button>
             </div>
           </DialogContent>
         </Dialog>
