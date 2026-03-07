@@ -15,7 +15,7 @@ import {
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "AI Chat", url: "/chat", icon: MessageSquare },
+  { title: "AI Chat", url: "/chat", icon: MessageSquare, tourId: "ai-chat-link" },
 ];
 
 export function AppSidebar() {
