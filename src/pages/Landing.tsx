@@ -473,14 +473,11 @@ export default function Landing() {
                   </Torus>
                 </group>
 
-                <motion.group
-                  animate={{ rotateX: Math.PI / 3 }}
-                  transition={{ duration: 0 }}
-                >
+                <group rotation={[Math.PI / 3, 0, 0]}>
                   <Torus args={[1.2, 0.03, 16, 100]}>
                     <meshStandardMaterial color="#8b5cf6" transparent opacity={0.3} />
                   </Torus>
-                </motion.group>
+                </group>
 
                 <motion.group
                   animate={{ rotateY: Math.PI / 4 }}
