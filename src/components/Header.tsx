@@ -1,4 +1,4 @@
-import { Atom, Menu, LogOut, User, LayoutDashboard, MessageSquare } from "lucide-react";
+import { Atom, Menu, LogOut, User, LayoutDashboard, MessageSquare, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
