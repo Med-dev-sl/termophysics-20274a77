@@ -2,7 +2,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { TeacherDashboard } from "@/components/dashboard/TeacherDashboard";
 import { StudentDashboard } from "@/components/dashboard/StudentDashboard";
-import { Header } from "@/components/Header";
+import { AppLayout } from "@/components/AppLayout";
 import { Navigate } from "react-router-dom";
 
 const Dashboard = () => {
@@ -22,12 +22,11 @@ const Dashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-20 pb-8 container mx-auto px-4">
+    <AppLayout>
+      <div className="container mx-auto px-4 py-8">
         {isTeacher ? <TeacherDashboard /> : <StudentDashboard />}
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 
