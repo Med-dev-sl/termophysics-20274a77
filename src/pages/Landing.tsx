@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Atom, ArrowRight, Mail, Phone, MapPin, Zap, Brain, BookOpen } from "lucide-react";
+import { Atom, ArrowRight, Mail, Phone, MapPin, Zap, Brain, BookOpen, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
