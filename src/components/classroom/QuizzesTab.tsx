@@ -262,8 +262,8 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           </DialogHeader>
           <div className="py-4">
             {loadingSubmissions ? (
-              <div className="flex justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <LoadingSpinner size="md" text="Loading submissions..." className="py-8" />
+            ) : submissions.length === 0 ? (
               </div>
             ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No students have submitted this quiz yet.</p>
