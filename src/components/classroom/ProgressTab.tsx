@@ -210,8 +210,34 @@ export function ProgressTab({ classroomId, isTeacher, classroomName }: ProgressT
     return "[&>div]:bg-red-500";
   };
 
+  const handleExportCSV = () => {
+    const exportData = grades.map((g) => ({
+      title: g.title,
+      type: g.type,
+      maxScore: g.max_score,
+      submissions: g.submissions.map((s) => ({
+        studentName: s.student_name,
+        score: s.score,
+        graded: s.graded,
+        isLate: s.is_late,
+      })),
+    }));
+    exportGradesToCSV(exportData, students, classroomName || "classroom");
+    toast({ title: "Grades exported", description: "CSV file downloaded successfully." });
+  };
+
   return (
     <div className="space-y-6">
+      {/* Export button for teachers */}
+      {isTeacher && (
+        <div className="flex justify-end">
+          <Button variant="outline" size="sm" onClick={handleExportCSV} className="gap-2">
+            <Download className="h-4 w-4" />
+            Export Grades (CSV)
+          </Button>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <Card>
