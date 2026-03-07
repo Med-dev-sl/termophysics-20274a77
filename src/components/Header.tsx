@@ -76,10 +76,29 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
             </h1>
           </div>
         </div>
-        <nav className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
-          <span className="hidden lg:block text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
-            AI-Powered Physics Learning
-          </span>
+        <nav className="flex items-center gap-1 sm:gap-3 flex-shrink-0">
+          {user && (
+            <>
+              <Button
+                variant={location.pathname === "/dashboard" ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => navigate("/dashboard")}
+                className="gap-1.5 text-xs sm:text-sm"
+              >
+                <LayoutDashboard className="h-4 w-4" />
+                <span className="hidden sm:inline">Dashboard</span>
+              </Button>
+              <Button
+                variant={location.pathname === "/chat" ? "secondary" : "ghost"}
+                size="sm"
+                onClick={() => navigate("/chat")}
+                className="gap-1.5 text-xs sm:text-sm"
+              >
+                <MessageSquare className="h-4 w-4" />
+                <span className="hidden sm:inline">AI Chat</span>
+              </Button>
+            </>
+          )}
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
