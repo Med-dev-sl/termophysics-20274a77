@@ -87,7 +87,7 @@ export function StudentDashboard() {
     }
   };
 
-  if (loading) return <LoadingSpinner size="lg" text="Loading classrooms..." className="py-12" />;
+  if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
