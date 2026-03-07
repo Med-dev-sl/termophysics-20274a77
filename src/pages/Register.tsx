@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, Atom } from "lucide-react";
+import { Atom } from "lucide-react";
 import { motion } from "framer-motion";
+import { ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 const Register = () => {
   const [email, setEmail] = useState("");
