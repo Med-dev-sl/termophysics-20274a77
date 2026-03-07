@@ -232,6 +232,7 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
           </div>
         </div>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }
