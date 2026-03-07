@@ -261,8 +261,9 @@ const Index = () => {
             </div>
           </div>
         )}
-      </main>
-    </div>
+      </div>
+      </div>
+    </AppLayout>
   );
 };
 
