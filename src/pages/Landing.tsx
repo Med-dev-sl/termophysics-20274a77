@@ -103,10 +103,7 @@ export default function Landing() {
                       </Sphere>
                     </group>
 
-                    <motion.group
-                      animate={{ rotateY: [0, -Math.PI * 2] }}
-                      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                    >
+                    <group>
                       <Torus args={[2.5, 0.4, 32, 128]} position={[0, 0, 0]}>
                         <meshStandardMaterial
                           color="#f59e0b"
@@ -116,7 +113,7 @@ export default function Landing() {
                           roughness={0.2}
                         />
                       </Torus>
-                    </motion.group>
+                    </group>
 
                     <OrbitControls autoRotate autoRotateSpeed={3} enableZoom={false} enablePan={false} />
                   </Canvas>
