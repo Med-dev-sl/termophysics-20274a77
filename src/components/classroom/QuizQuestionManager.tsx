@@ -91,9 +91,9 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
 
     const { error } = await supabase.from("quiz_questions").insert(insert);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Question added!" });
+      showSuccess("Question Added!", "Your question has been saved.");
       resetForm();
       fetchQuestions();
     }
