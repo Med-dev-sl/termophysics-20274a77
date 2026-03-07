@@ -3,6 +3,7 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { TeacherDashboard } from "@/components/dashboard/TeacherDashboard";
 import { StudentDashboard } from "@/components/dashboard/StudentDashboard";
 import { AppLayout } from "@/components/AppLayout";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { OnboardingTour } from "@/components/OnboardingTour";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { Navigate } from "react-router-dom";
@@ -15,7 +16,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
   }

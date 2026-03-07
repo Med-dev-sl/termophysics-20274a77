@@ -3,7 +3,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
-import { LogOut, User } from "lucide-react";
+import { LogOut, User, RotateCcw } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
@@ -63,6 +63,17 @@ export function AppLayout({ children }: AppLayoutProps) {
                   <DropdownMenuItem onClick={() => navigate("/dashboard")}>
                     <User className="h-4 w-4 mr-2" />
                     Dashboard
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      localStorage.removeItem("termo_onboarding_completed_teacher");
+                      localStorage.removeItem("termo_onboarding_completed_learner");
+                      navigate("/dashboard");
+                      window.location.reload();
+                    }}
+                  >
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Restart Tour
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} disabled={signingOut} className="text-destructive">
