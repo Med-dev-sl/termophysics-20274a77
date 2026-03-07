@@ -170,12 +170,8 @@ const Index = () => {
   const hasMessages = messages.length > 0;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header
-        onMenuClick={() => setSidebarOpen(true)}
-        onAuthClick={() => navigate("/login")}
-      />
-
+    <AppLayout>
+      <div className="min-h-screen flex flex-col">
       {user && (
         <ConversationsSidebar
           open={sidebarOpen}
@@ -186,7 +182,7 @@ const Index = () => {
         />
       )}
 
-      <main className="pt-16 min-h-screen flex flex-col safe-area-inset-bottom">
+      <div className="flex-1 flex flex-col safe-area-inset-bottom">
         {!hasMessages ? (
           // Hero Section
           <div className="flex-1 flex flex-col items-center justify-center px-3 sm:px-4 py-8 sm:py-12 gap-4">
