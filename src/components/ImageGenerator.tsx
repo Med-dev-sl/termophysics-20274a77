@@ -103,7 +103,7 @@ export function ImageGenerator({ disabled = false, onImageGenerated }: ImageGene
   const [selectedColor, setSelectedColor] = useState("#3b82f6");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showVisualization, setShowVisualization] = useState(false);
-  const [rotation, setRotation] = useState({ x: true, y: true, z: false });
+  const [rotation, setRotation] = useState({ x: 1, y: 1, z: 0 });
   const { toast } = useToast();
 
   const handleGenerate = async () => {
