@@ -139,7 +139,7 @@ export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
 
   const studentSummaries = useMemo<StudentSummary[]>(() => {
     const filteredStudents =
-      selectedStudent === "all" ? students : students.filter((s) => s.student_id === selectedStudent);
+      selectedStudent === "all" ? students : students.filter((s) => s.id === selectedStudent);
 
     return filteredStudents.map((student) => {
       let totalEarned = 0;
@@ -148,13 +148,12 @@ export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
       let submittedCount = 0;
 
       grades.forEach((g) => {
-        const sub = g.submissions.find((s) => s.student_id === student.id);
-        const sub = g.submissions.find((s) => s.student_id === student.id);
-        if (sub) {
+        const submission = g.submissions.find((s) => s.student_id === student.id);
+        if (submission) {
           submittedCount++;
-          if (sub.graded && sub.score !== null) {
+          if (submission.graded && submission.score !== null) {
             gradedCount++;
-            totalEarned += sub.score;
+            totalEarned += submission.score;
             totalPossible += g.max_score;
           }
         }
