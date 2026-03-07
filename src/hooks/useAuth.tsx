@@ -40,6 +40,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error fetching user role:', error);
       setUserRole(null);
+    } finally {
+      setLoading(false);
     }
   };
 
