@@ -3,12 +3,13 @@ import { useParams, Navigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
-import { Header } from "@/components/Header";
+import { AppLayout } from "@/components/AppLayout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NotesTab } from "@/components/classroom/NotesTab";
 import { AssignmentsTab } from "@/components/classroom/AssignmentsTab";
 import { QuizzesTab } from "@/components/classroom/QuizzesTab";
 import { StudentsTab } from "@/components/classroom/StudentsTab";
+import { ProgressTab } from "@/components/classroom/ProgressTab";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
@@ -55,9 +56,8 @@ const ClassroomDetail = () => {
   const isOwner = classroom.teacher_id === user.id;
 
   return (
-    <div className="min-h-screen bg-background">
-      <Header />
-      <main className="pt-20 pb-8 container mx-auto px-4">
+    <AppLayout>
+      <div className="container mx-auto px-4 py-6">
         <div className="flex items-center gap-3 mb-6">
           <Button variant="ghost" size="icon" onClick={() => navigate("/dashboard")}>
             <ArrowLeft className="h-5 w-5" />
@@ -75,6 +75,7 @@ const ClassroomDetail = () => {
             <TabsTrigger value="notes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Notes</TabsTrigger>
             <TabsTrigger value="assignments" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Assignments</TabsTrigger>
             <TabsTrigger value="quizzes" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Quizzes</TabsTrigger>
+            <TabsTrigger value="progress" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Progress</TabsTrigger>
             {isOwner && <TabsTrigger value="students" className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent px-1 pb-2">Students</TabsTrigger>}
           </TabsList>
 
@@ -87,14 +88,17 @@ const ClassroomDetail = () => {
           <TabsContent value="quizzes" className="mt-6">
             <QuizzesTab classroomId={classroom.id} isTeacher={isOwner} />
           </TabsContent>
+          <TabsContent value="progress" className="mt-6">
+            <ProgressTab classroomId={classroom.id} isTeacher={isOwner} />
+          </TabsContent>
           {isOwner && (
             <TabsContent value="students" className="mt-6">
               <StudentsTab classroomId={classroom.id} isTeacher={isOwner} />
             </TabsContent>
           )}
         </Tabs>
-      </main>
-    </div>
+      </div>
+    </AppLayout>
   );
 };
 
