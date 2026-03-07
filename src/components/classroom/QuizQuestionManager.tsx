@@ -28,6 +28,7 @@ interface QuizQuestionManagerProps {
 
 export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: QuizQuestionManagerProps) {
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
 
