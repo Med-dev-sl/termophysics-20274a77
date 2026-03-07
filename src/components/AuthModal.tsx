@@ -31,18 +31,12 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
     setLoading(false);
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      showError("Error", error.message);
     } else {
-      toast({
-        title: isRegister ? "Account created!" : "Welcome back!",
-        description: isRegister
-          ? "You can now save your chat history."
-          : "Your conversations are ready.",
-      });
+      showSuccess(
+        isRegister ? "Account Created!" : "Welcome Back!",
+        isRegister ? "You can now save your chat history." : "Your conversations are ready."
+      );
       onOpenChange(false);
       setEmail("");
       setPassword("");
