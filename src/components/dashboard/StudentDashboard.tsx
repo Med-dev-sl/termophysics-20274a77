@@ -88,7 +88,7 @@ export function StudentDashboard() {
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading classrooms...</p>;
+  if (loading) return <LoadingSpinner size="lg" text="Loading classrooms..." className="py-12" />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
