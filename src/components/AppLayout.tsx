@@ -64,6 +64,17 @@ export function AppLayout({ children }: AppLayoutProps) {
                     <User className="h-4 w-4 mr-2" />
                     Dashboard
                   </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => {
+                      localStorage.removeItem("termo_onboarding_completed_teacher");
+                      localStorage.removeItem("termo_onboarding_completed_learner");
+                      navigate("/dashboard");
+                      window.location.reload();
+                    }}
+                  >
+                    <RotateCcw className="h-4 w-4 mr-2" />
+                    Restart Tour
+                  </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut} disabled={signingOut} className="text-destructive">
                     <LogOut className="h-4 w-4 mr-2" />
