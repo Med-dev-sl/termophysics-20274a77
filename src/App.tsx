@@ -12,6 +12,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
 import ClassroomDetail from "./pages/ClassroomDetail";
+import PhysicsArcade from "./pages/PhysicsArcade";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
