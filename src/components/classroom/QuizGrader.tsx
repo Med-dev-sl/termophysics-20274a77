@@ -120,11 +120,11 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
                 })
                 .eq("id", submissionId);
 
-            toast({ title: "Grading complete!", description: `Total score: ${totalScore}` });
+            showSuccess("Grading Complete!", `Total score: ${totalScore}`);
             onGraded();
             onOpenChange(false);
         } catch (err: any) {
-            toast({ variant: "destructive", title: "Error", description: err.message });
+            showError("Error", err.message);
         } finally {
             setSubmitting(false);
         }
