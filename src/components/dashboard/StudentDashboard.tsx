@@ -61,13 +61,13 @@ export function StudentDashboard() {
 
     if (findError) {
       console.error("Error finding classroom:", findError);
-      toast({ variant: "destructive", title: "Search failed", description: findError.message });
+      showError("Search Failed", findError.message);
       setJoining(false);
       return;
     }
 
     if (!classroom) {
-      toast({ variant: "destructive", title: "Invalid code", description: "No classroom found with that code. Please check the code and try again." });
+      showError("Invalid Code", "No classroom found with that code. Please check and try again.");
       setJoining(false);
       return;
     }
