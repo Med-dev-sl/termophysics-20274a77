@@ -226,7 +226,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
 
                             <div className="sticky bottom-0 pt-4 bg-background border-t">
                                 <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">
-                                    {submitting ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</> : `Save All Grades (${totalAwarded}/${totalPossible})`}
+                                    {submitting ? <><ButtonSpinner /> Saving...</> : `Save All Grades (${totalAwarded}/${totalPossible})`}
                                 </Button>
                             </div>
                         </>
