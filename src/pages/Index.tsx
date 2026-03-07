@@ -244,7 +244,6 @@ const Index = () => {
                           imageUrl={message.imageUrl}
                           prompt={message.imagePrompt || ""}
                           model="Physics AI"
-                          onDownload={() => handleDownloadImage(message.imageUrl!)}
                           onCopyPrompt={() => handleCopyImagePrompt(message.imagePrompt || "")}
                         />
                       </div>

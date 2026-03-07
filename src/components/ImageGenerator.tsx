@@ -77,14 +77,7 @@ function PhysicsVisualization({
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -10, 10]} intensity={0.5} color="#8b5cf6" />
       
-      <motion.group
-        animate={{
-          rotateX: rotation.x ? [0, Math.PI * 2] : 0,
-          rotateY: rotation.y ? [0, Math.PI * 2] : 0,
-          rotateZ: rotation.z ? [0, Math.PI * 2] : 0,
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      >
+      <group>
         <ShapeComponent args={shapeArgs as any}>
           <meshStandardMaterial
             color={color}
@@ -95,7 +88,7 @@ function PhysicsVisualization({
             wireframe={false}
           />
         </ShapeComponent>
-      </motion.group>
+      </group>
 
       <OrbitControls autoRotate autoRotateSpeed={2} enableZoom={true} />
     </Canvas>
@@ -110,7 +103,7 @@ export function ImageGenerator({ disabled = false, onImageGenerated }: ImageGene
   const [selectedColor, setSelectedColor] = useState("#3b82f6");
   const [isGenerating, setIsGenerating] = useState(false);
   const [showVisualization, setShowVisualization] = useState(false);
-  const [rotation, setRotation] = useState({ x: true, y: true, z: false });
+  const [rotation, setRotation] = useState({ x: 1, y: 1, z: 0 });
   const { toast } = useToast();
 
   const handleGenerate = async () => {
@@ -245,11 +238,11 @@ export function ImageGenerator({ disabled = false, onImageGenerated }: ImageGene
                 >
                   <input
                     type="checkbox"
-                    checked={rotation[axis as keyof typeof rotation]}
+                    checked={!!rotation[axis as keyof typeof rotation]}
                     onChange={(e) =>
                       setRotation((prev) => ({
                         ...prev,
-                        [axis]: e.target.checked,
+                        [axis]: e.target.checked ? 1 : 0,
                       }))
                     }
                     className="w-4 h-4 rounded"

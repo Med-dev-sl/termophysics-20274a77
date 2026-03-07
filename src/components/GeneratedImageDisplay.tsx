@@ -59,13 +59,7 @@ export function GeneratedImageDisplay({
           <Canvas camera={{ position: [0, 0, 4], fov: 75 }}>
             <ambientLight intensity={0.7} />
             <pointLight position={[10, 10, 10]} intensity={1} />
-            <motion.group
-              animate={{
-                rotateX: [0, Math.PI * 2],
-                rotateY: [0, Math.PI * 2],
-              }}
-              transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-            >
+            <group>
               <ShapeComponent args={shapeArgs as any}>
                 <meshStandardMaterial
                   color={color}
@@ -75,7 +69,7 @@ export function GeneratedImageDisplay({
                   roughness={0.2}
                 />
               </ShapeComponent>
-            </motion.group>
+            </group>
             <OrbitControls autoRotate autoRotateSpeed={3} />
           </Canvas>
         </motion.div>

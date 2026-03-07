@@ -91,13 +91,7 @@ export default function Landing() {
                     <pointLight position={[10, 10, 10]} intensity={1} />
                     <pointLight position={[-10, -10, 5]} intensity={0.5} color="#8b5cf6" />
                     
-                    <motion.group
-                      animate={{
-                        rotateX: [0, Math.PI * 2],
-                        rotateY: [0, Math.PI * 2],
-                      }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    >
+                    <group>
                       <Sphere args={[1.5, 64, 64]}>
                         <meshStandardMaterial
                           color="#3b82f6"
@@ -107,12 +101,9 @@ export default function Landing() {
                           roughness={0.1}
                         />
                       </Sphere>
-                    </motion.group>
+                    </group>
 
-                    <motion.group
-                      animate={{ rotateY: [0, -Math.PI * 2] }}
-                      transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-                    >
+                    <group>
                       <Torus args={[2.5, 0.4, 32, 128]} position={[0, 0, 0]}>
                         <meshStandardMaterial
                           color="#f59e0b"
@@ -122,7 +113,7 @@ export default function Landing() {
                           roughness={0.2}
                         />
                       </Torus>
-                    </motion.group>
+                    </group>
 
                     <OrbitControls autoRotate autoRotateSpeed={3} enableZoom={false} enablePan={false} />
                   </Canvas>
@@ -434,10 +425,7 @@ export default function Landing() {
                 </mesh>
 
                 {/* Electron Orbit 1 (XY Plane) */}
-                <motion.group
-                  animate={{ rotateZ: [0, Math.PI * 2] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                >
+                <group>
                   <mesh position={[1.2, 0, 0]}>
                     <sphereGeometry args={[0.12, 16, 16]} />
                     <meshStandardMaterial
@@ -448,13 +436,10 @@ export default function Landing() {
                       roughness={0.1}
                     />
                   </mesh>
-                </motion.group>
+                </group>
 
                 {/* Electron Orbit 2 (YZ Plane) */}
-                <motion.group
-                  animate={{ rotateX: [0, Math.PI * 2] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                >
+                <group>
                   <mesh position={[0, 1.2, 0]}>
                     <sphereGeometry args={[0.12, 16, 16]} />
                     <meshStandardMaterial
@@ -465,13 +450,10 @@ export default function Landing() {
                       roughness={0.1}
                     />
                   </mesh>
-                </motion.group>
+                </group>
 
                 {/* Electron Orbit 3 (XZ Plane) */}
-                <motion.group
-                  animate={{ rotateY: [0, Math.PI * 2] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "linear", delay: 0.5 }}
-                >
+                <group>
                   <mesh position={[0, 0, 1.2]}>
                     <sphereGeometry args={[0.12, 16, 16]} />
                     <meshStandardMaterial
@@ -482,7 +464,7 @@ export default function Landing() {
                       roughness={0.1}
                     />
                   </mesh>
-                </motion.group>
+                </group>
 
                 {/* Orbit Rings (Guide) */}
                 <group>
@@ -491,23 +473,17 @@ export default function Landing() {
                   </Torus>
                 </group>
 
-                <motion.group
-                  animate={{ rotateX: Math.PI / 3 }}
-                  transition={{ duration: 0 }}
-                >
+                <group rotation={[Math.PI / 3, 0, 0]}>
                   <Torus args={[1.2, 0.03, 16, 100]}>
                     <meshStandardMaterial color="#8b5cf6" transparent opacity={0.3} />
                   </Torus>
-                </motion.group>
+                </group>
 
-                <motion.group
-                  animate={{ rotateY: Math.PI / 4 }}
-                  transition={{ duration: 0 }}
-                >
+                <group rotation={[0, Math.PI / 4, 0]}>
                   <Torus args={[1.2, 0.03, 16, 100]}>
                     <meshStandardMaterial color="#ec4899" transparent opacity={0.3} />
                   </Torus>
-                </motion.group>
+                </group>
               </Canvas>
             </motion.div>
           </div>
