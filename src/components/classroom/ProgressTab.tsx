@@ -149,6 +149,7 @@ export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
 
       grades.forEach((g) => {
         const sub = g.submissions.find((s) => s.student_id === student.id);
+        const sub = g.submissions.find((s) => s.student_id === student.id);
         if (sub) {
           submittedCount++;
           if (sub.graded && sub.score !== null) {
