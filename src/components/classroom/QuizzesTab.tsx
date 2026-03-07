@@ -178,7 +178,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                 </div>
               </div>
               <Button onClick={handleCreateQuiz} disabled={creating || !title.trim()} className="w-full" variant="hero">
-                {creating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : "Create Quiz"}
+                {creating ? <><ButtonSpinner /> Creating...</> : "Create Quiz"}
               </Button>
             </div>
           </DialogContent>
