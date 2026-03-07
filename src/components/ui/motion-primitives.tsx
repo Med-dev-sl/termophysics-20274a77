@@ -32,6 +32,7 @@ export function TiltCard({ children, className = "", glowColor = "rgba(245, 158,
   return (
     <motion.div
       ref={ref}
+      onClick={onClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX, rotateY, transformStyle: "preserve-3d", perspective: 1000 }}
