@@ -16,18 +16,14 @@ const Register = () => {
   const [role, setRole] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!role) {
-      toast({
-        variant: "destructive",
-        title: "Role Required",
-        description: "Please select whether you are a learner or teacher.",
-      });
+      showError("Role Required", "Please select whether you are a learner or teacher.");
       return;
     }
 
@@ -38,17 +34,10 @@ const Register = () => {
     setLoading(false);
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      showError("Registration Failed", error.message);
     } else {
-      toast({
-        title: "Account created!",
-        description: "You can now save your chat history.",
-      });
-      navigate("/dashboard");
+      showSuccess("Account Created!", "You can now save your chat history.");
+      setTimeout(() => navigate("/dashboard"), 1500);
     }
   };
 
