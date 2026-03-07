@@ -15,6 +15,7 @@ import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { TiltCard } from "@/components/ui/motion-primitives";
+import { DashboardSkeleton } from "@/components/ui/skeleton-loaders";
 
 interface Classroom {
   id: string;

@@ -8,6 +8,7 @@ import { OnboardingTour } from "@/components/OnboardingTour";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { Navigate } from "react-router-dom";
 import { AnimatedPage } from "@/components/ui/motion-primitives";
+import { PhysicsBackground } from "@/components/ui/physics-background";
 
 const Dashboard = () => {
   const { user, loading, userRole } = useAuth();
@@ -28,7 +29,8 @@ const Dashboard = () => {
 
   return (
     <AppLayout>
-      <AnimatedPage className="container mx-auto px-4 py-8">
+      <PhysicsBackground />
+      <AnimatedPage className="container mx-auto px-4 py-8 relative z-10">
         {isTeacher ? <TeacherDashboard /> : <StudentDashboard />}
       </AnimatedPage>
       {currentStepData && (
