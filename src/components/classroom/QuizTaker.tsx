@@ -141,18 +141,18 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
         .update(updateData)
         .eq("id", submission.id);
 
-      toast({
-        title: "Quiz submitted!",
-        description: allAutoGraded
+      showSuccess(
+        "Quiz Submitted!",
+        allAutoGraded
           ? `Your score: ${totalAutoScore} points`
           : "Submitted successfully. Some questions require teacher review."
-      });
+      );
 
       onOpenChange(false);
       onSubmitted();
     } catch (err: any) {
       console.error("Submission error:", err);
-      toast({ variant: "destructive", title: "Error", description: err.message });
+      showError("Submission Failed", err.message);
     } finally {
       setSubmitting(false);
     }
