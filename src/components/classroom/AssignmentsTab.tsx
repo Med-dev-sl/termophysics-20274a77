@@ -379,6 +379,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           </div>
         </DialogContent>
       </Dialog>
+      <FeedbackModalComponent />
     </div>
   );
 }
