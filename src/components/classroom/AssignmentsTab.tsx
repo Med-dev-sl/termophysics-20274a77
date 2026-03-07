@@ -8,7 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, ClipboardList, Calendar, Download, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Plus, ClipboardList, Calendar, Download, CheckCircle2, AlertCircle } from "lucide-react";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
