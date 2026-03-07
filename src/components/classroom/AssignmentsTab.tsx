@@ -279,8 +279,8 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           </DialogHeader>
           <div className="space-y-4 py-4">
             {loadingSubmissions ? (
-              <div className="flex justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              <LoadingSpinner size="md" text="Loading submissions..." className="py-8" />
+            ) : submissions.length === 0 ? (
               </div>
             ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
