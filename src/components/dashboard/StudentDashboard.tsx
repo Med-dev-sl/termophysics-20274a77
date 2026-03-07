@@ -79,9 +79,9 @@ export function StudentDashboard() {
 
     setJoining(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message.includes("duplicate") ? "Already enrolled!" : error.message });
+      showError("Error", error.message.includes("duplicate") ? "Already enrolled!" : error.message);
     } else {
-      toast({ title: "Joined classroom!" });
+      showSuccess("Joined Classroom!", "You're now enrolled in this class.");
       setDialogOpen(false);
       setClassCode("");
       fetchEnrolledClassrooms();
