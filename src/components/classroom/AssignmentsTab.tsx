@@ -197,7 +197,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading assignments...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading assignments..." className="py-8" />;
 
   return (
     <div className="space-y-4">
