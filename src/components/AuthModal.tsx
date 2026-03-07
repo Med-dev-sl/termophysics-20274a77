@@ -76,7 +76,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
             />
           </div>
           <Button type="submit" className="w-full" variant="hero" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <ButtonSpinner />}
             {isRegister ? "Register" : "Login"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
