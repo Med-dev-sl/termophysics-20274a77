@@ -223,7 +223,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
               <Button onClick={handleSubmit} disabled={submitting} className="w-full h-12 text-lg" variant="hero">
                 {submitting ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                    <ButtonSpinner />
                     Submitting Answers...
                   </>
                 ) : "Complete & Submit"}
