@@ -3,6 +3,7 @@ import { useUserRole } from "@/hooks/useUserRole";
 import { TeacherDashboard } from "@/components/dashboard/TeacherDashboard";
 import { StudentDashboard } from "@/components/dashboard/StudentDashboard";
 import { AppLayout } from "@/components/AppLayout";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { OnboardingTour } from "@/components/OnboardingTour";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { Navigate } from "react-router-dom";

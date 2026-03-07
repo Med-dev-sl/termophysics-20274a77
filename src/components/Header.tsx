@@ -115,6 +115,18 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
                   <User className="h-4 w-4 mr-2" />
                   Dashboard
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    localStorage.removeItem("termo_onboarding_completed_teacher");
+                    localStorage.removeItem("termo_onboarding_completed_learner");
+                    navigate("/dashboard");
+                    window.location.reload();
+                  }}
+                  className="text-sm"
+                >
+                  <RotateCcw className="h-4 w-4 mr-2" />
+                  Restart Tour
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} disabled={signingOut} className="text-destructive text-sm">
                   <LogOut className="h-4 w-4 mr-2" />
