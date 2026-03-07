@@ -12,6 +12,9 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
 import { useFeedbackModal } from "@/components/ui/feedback-modal";
+import { motion } from "framer-motion";
+import { staggerContainer, staggerItem } from "@/lib/animations";
+import { TiltCard } from "@/components/ui/motion-primitives";
 
 interface Classroom {
   id: string;
@@ -39,9 +42,7 @@ export function TeacherDashboard() {
   const [showShareModal, setShowShareModal] = useState(false);
 
   useEffect(() => {
-    if (user) {
-      fetchClassrooms();
-    }
+    if (user) fetchClassrooms();
   }, [user]);
 
   const fetchClassrooms = async () => {
@@ -53,11 +54,8 @@ export function TeacherDashboard() {
       .eq("teacher_id", user.id)
       .order("created_at", { ascending: false });
 
-    if (error) {
-      console.error("Error fetching classrooms:", error);
-    } else {
-      setClassrooms(data || []);
-    }
+    if (error) console.error("Error fetching classrooms:", error);
+    else setClassrooms(data || []);
     setLoading(false);
   };
 
@@ -91,10 +89,7 @@ export function TeacherDashboard() {
 
   const copyCode = (code: string) => {
     navigator.clipboard.writeText(code);
-    toast({
-      title: "Class code copied!",
-      description: "Share this code with your students so they can join."
-    });
+    toast({ title: "Class code copied!", description: "Share this code with your students so they can join." });
   };
 
   if (loading && classrooms.length === 0) return (
@@ -105,22 +100,34 @@ export function TeacherDashboard() {
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
-      <div className="flex items-center justify-between">
+      <motion.div
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+        className="flex items-center justify-between"
+      >
         <div>
           <h2 className="text-3xl font-display font-bold">My Classrooms</h2>
           <p className="text-muted-foreground">Manage your classes and share codes with students</p>
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="hero" data-tour="new-classroom">
-              <Plus className="h-4 w-4 mr-2" /> New Classroom
-            </Button>
+            <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+              <Button variant="hero" data-tour="new-classroom">
+                <Plus className="h-4 w-4 mr-2" /> New Classroom
+              </Button>
+            </motion.div>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>Create Classroom</DialogTitle>
             </DialogHeader>
-            <div className="space-y-4">
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="space-y-4"
+            >
               <div className="space-y-2">
                 <Label>Name</Label>
                 <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Physics 101" />
@@ -136,10 +143,10 @@ export function TeacherDashboard() {
               <Button onClick={handleCreate} disabled={creating || !name.trim()} className="w-full" variant="hero">
                 {creating ? <><ButtonSpinner /> Creating...</> : "Create Classroom"}
               </Button>
-            </div>
+            </motion.div>
           </DialogContent>
         </Dialog>
-      </div>
+      </motion.div>
 
       {/* Success/Share Modal */}
       <Dialog open={showShareModal} onOpenChange={setShowShareModal}>
@@ -147,89 +154,106 @@ export function TeacherDashboard() {
           <DialogHeader>
             <DialogTitle className="text-center">Classroom Ready!</DialogTitle>
           </DialogHeader>
-          <div className="flex flex-col items-center justify-center space-y-4 py-4">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 200, damping: 15 }}
+            className="flex flex-col items-center justify-center space-y-4 py-4"
+          >
             <p className="text-center text-muted-foreground">
               Share this code with your students to let them join your classroom:
             </p>
-            <div className="flex items-center gap-3 bg-muted p-4 rounded-xl border-2 border-dashed border-termo-light-orange/30 w-full justify-center">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
+              className="flex items-center gap-3 bg-muted p-4 rounded-xl border-2 border-dashed border-termo-light-orange/30 w-full justify-center"
+            >
               <span className="text-3xl font-mono font-bold tracking-widest text-termo-light-orange">
                 {newClassCode}
               </span>
               <Button variant="ghost" size="icon" onClick={() => copyCode(newClassCode || "")}>
                 <Copy className="h-5 w-5" />
               </Button>
-            </div>
+            </motion.div>
             <Button onClick={() => setShowShareModal(false)} className="w-full">
               Got it
             </Button>
-          </div>
+          </motion.div>
         </DialogContent>
       </Dialog>
 
       {classrooms.length === 0 ? (
-        <Card className="termo-card">
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
-            <p className="text-muted-foreground text-center">No classrooms yet. Create your first one to start teaching!</p>
-          </CardContent>
-        </Card>
+        <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.4 }}>
+          <Card className="termo-card">
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}>
+                <BookOpen className="h-12 w-12 text-muted-foreground mb-4" />
+              </motion.div>
+              <p className="text-muted-foreground text-center">No classrooms yet. Create your first one to start teaching!</p>
+            </CardContent>
+          </Card>
+        </motion.div>
       ) : (
-        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-          {classrooms.map((c) => (
-            <Card
-              key={c.id}
-              className="glass-card overflow-hidden hover:shadow-lg transition-all group active-scale border-none"
-            >
-              <div className="h-2 bg-gradient-to-r from-termo-deep-blue to-termo-light-orange" />
-              <CardHeader className="cursor-pointer pb-2" onClick={() => navigate(`/classroom/${c.id}`)}>
-                <CardTitle className="font-display group-hover:text-termo-light-orange transition-colors text-xl">{c.name}</CardTitle>
-                {c.subject && <CardDescription className="font-medium text-termo-light-orange/80">{c.subject}</CardDescription>}
-              </CardHeader>
+        <motion.div
+          variants={staggerContainer}
+          initial="initial"
+          animate="animate"
+          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        >
+          {classrooms.map((c, i) => (
+            <motion.div key={c.id} variants={staggerItem}>
+              <TiltCard className="rounded-xl overflow-hidden">
+                <Card className="glass-card overflow-hidden hover:shadow-lg transition-all group border-none h-full">
+                  <div className="h-2 bg-gradient-to-r from-termo-deep-blue to-termo-light-orange" />
+                  <CardHeader className="cursor-pointer pb-2" onClick={() => navigate(`/classroom/${c.id}`)}>
+                    <CardTitle className="font-display group-hover:text-termo-light-orange transition-colors text-xl">{c.name}</CardTitle>
+                    {c.subject && <CardDescription className="font-medium text-termo-light-orange/80">{c.subject}</CardDescription>}
+                  </CardHeader>
 
-              <CardContent>
-                {c.description && (
-                  <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{c.description}</p>
-                )}
-                <div className="pt-4 border-t border-border mt-auto">
-                  <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 block">
-                    Student Join Code
-                  </Label>
-                  <div className="flex items-center justify-between bg-muted/50 p-2 rounded-lg border border-border">
-                    <span className="font-mono font-bold text-termo-deep-blue dark:text-termo-light-orange">
-                      {c.class_code}
-                    </span>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      className="h-8 gap-1 text-xs"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        copyCode(c.class_code);
-                      }}
-                    >
-                      <Copy className="h-3 w-3" />
-                      Copy
-                    </Button>
-                  </div>
-                  <div className="mt-4 flex justify-between items-center">
-                    <div className="flex items-center text-xs text-muted-foreground gap-1">
-                      <Users className="h-3 w-3" />
-                      <span>Classroom Dashboard</span>
+                  <CardContent>
+                    {c.description && (
+                      <p className="text-sm text-muted-foreground mb-4 line-clamp-2">{c.description}</p>
+                    )}
+                    <div className="pt-4 border-t border-border mt-auto">
+                      <Label className="text-[10px] uppercase tracking-wider text-muted-foreground mb-2 block">
+                        Student Join Code
+                      </Label>
+                      <div className="flex items-center justify-between bg-muted/50 p-2 rounded-lg border border-border">
+                        <span className="font-mono font-bold text-termo-deep-blue dark:text-termo-light-orange">
+                          {c.class_code}
+                        </span>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="h-8 gap-1 text-xs"
+                          onClick={(e) => { e.stopPropagation(); copyCode(c.class_code); }}
+                        >
+                          <Copy className="h-3 w-3" />
+                          Copy
+                        </Button>
+                      </div>
+                      <div className="mt-4 flex justify-between items-center">
+                        <div className="flex items-center text-xs text-muted-foreground gap-1">
+                          <Users className="h-3 w-3" />
+                          <span>Classroom Dashboard</span>
+                        </div>
+                        <Button
+                          variant="link"
+                          className="text-xs h-auto p-0"
+                          onClick={() => navigate(`/classroom/${c.id}`)}
+                        >
+                          Go to Classroom →
+                        </Button>
+                      </div>
                     </div>
-                    <Button
-                      variant="link"
-                      className="text-xs h-auto p-0"
-                      onClick={() => navigate(`/classroom/${c.id}`)}
-                    >
-                      Go to Classroom →
-                    </Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                  </CardContent>
+                </Card>
+              </TiltCard>
+            </motion.div>
           ))}
-      </div>
-    )}
+        </motion.div>
+      )}
       <FeedbackModalComponent />
     </div>
   );
