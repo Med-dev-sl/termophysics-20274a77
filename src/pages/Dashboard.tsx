@@ -7,6 +7,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { OnboardingTour } from "@/components/OnboardingTour";
 import { useOnboarding } from "@/hooks/useOnboarding";
 import { Navigate } from "react-router-dom";
+import { AnimatedPage } from "@/components/ui/motion-primitives";
 
 const Dashboard = () => {
   const { user, loading, userRole } = useAuth();
@@ -27,9 +28,9 @@ const Dashboard = () => {
 
   return (
     <AppLayout>
-      <div className="container mx-auto px-4 py-8">
+      <AnimatedPage className="container mx-auto px-4 py-8">
         {isTeacher ? <TeacherDashboard /> : <StudentDashboard />}
-      </div>
+      </AnimatedPage>
       {currentStepData && (
         <OnboardingTour
           show={showTour}
