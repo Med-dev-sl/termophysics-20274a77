@@ -14,8 +14,8 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,17 +26,10 @@ const Login = () => {
     setLoading(false);
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      showError("Login Failed", error.message);
     } else {
-      toast({
-        title: "Welcome back!",
-        description: "Your conversations are ready.",
-      });
-      navigate("/dashboard");
+      showSuccess("Welcome Back!", "Your conversations are ready.");
+      setTimeout(() => navigate("/dashboard"), 1500);
     }
   };
 
