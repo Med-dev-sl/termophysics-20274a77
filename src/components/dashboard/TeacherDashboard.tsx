@@ -15,6 +15,7 @@ import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { TiltCard } from "@/components/ui/motion-primitives";
+import { DashboardSkeleton } from "@/components/ui/skeleton-loaders";
 
 interface Classroom {
   id: string;
@@ -92,11 +93,7 @@ export function TeacherDashboard() {
     toast({ title: "Class code copied!", description: "Share this code with your students so they can join." });
   };
 
-  if (loading && classrooms.length === 0) return (
-    <div className="flex items-center justify-center py-12">
-      <LoadingSpinner size="lg" text="Loading classrooms..." />
-    </div>
-  );
+  if (loading && classrooms.length === 0) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">

@@ -14,6 +14,7 @@ import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { motion } from "framer-motion";
 import { staggerContainer, staggerItem } from "@/lib/animations";
 import { TiltCard } from "@/components/ui/motion-primitives";
+import { DashboardSkeleton } from "@/components/ui/skeleton-loaders";
 
 interface EnrolledClassroom {
   id: string;
@@ -87,7 +88,7 @@ export function StudentDashboard() {
     }
   };
 
-  if (loading) return <LoadingSpinner size="lg" text="Loading classrooms..." className="py-12" />;
+  if (loading) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
