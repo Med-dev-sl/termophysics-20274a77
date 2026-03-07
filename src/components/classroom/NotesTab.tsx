@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, FileText, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Note {
   id: string;
