@@ -31,6 +31,7 @@ interface AssignmentsTabProps {
 export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
