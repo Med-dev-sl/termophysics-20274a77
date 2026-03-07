@@ -6,7 +6,9 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BarChart3, CheckCircle2, Clock, TrendingUp, Users } from "lucide-react";
+import { BarChart3, CheckCircle2, Clock, Download, TrendingUp, Users } from "lucide-react";
+import { exportGradesToCSV } from "@/lib/export-grades";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProgressTabProps {
   classroomId: string;
