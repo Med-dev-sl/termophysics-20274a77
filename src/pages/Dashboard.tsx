@@ -15,7 +15,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <LoadingSpinner size="lg" text="Loading dashboard..." />
       </div>
     );
   }
