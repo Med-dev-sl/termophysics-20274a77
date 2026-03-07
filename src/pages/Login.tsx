@@ -35,7 +35,7 @@ const Login = () => {
         title: "Welcome back!",
         description: "Your conversations are ready.",
       });
-      navigate("/chat");
+      navigate("/dashboard");
     }
   };
 

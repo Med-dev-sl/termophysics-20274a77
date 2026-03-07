@@ -47,7 +47,7 @@ const Register = () => {
         title: "Account created!",
         description: "You can now save your chat history.",
       });
-      navigate("/chat");
+      navigate("/dashboard");
     }
   };
 
