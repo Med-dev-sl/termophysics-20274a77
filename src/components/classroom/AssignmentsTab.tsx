@@ -281,8 +281,6 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
             {loadingSubmissions ? (
               <LoadingSpinner size="md" text="Loading submissions..." className="py-8" />
             ) : submissions.length === 0 ? (
-              </div>
-            ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
             ) : (
               <div className="space-y-6">
