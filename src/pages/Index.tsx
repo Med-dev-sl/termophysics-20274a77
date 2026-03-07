@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
-import { Header } from "@/components/Header";
+import { AppLayout } from "@/components/AppLayout";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
 import { SuggestedQuestions } from "@/components/SuggestedQuestions";
