@@ -41,8 +41,9 @@ interface StudentSummary {
   percentage: number;
 }
 
-export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
+export function ProgressTab({ classroomId, isTeacher, classroomName }: ProgressTabProps & { classroomName?: string }) {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [grades, setGrades] = useState<AssignmentGrade[]>([]);
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
