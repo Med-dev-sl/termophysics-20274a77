@@ -1,15 +1,16 @@
-import { Atom, Menu, LogOut, User, LayoutDashboard } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { Atom, Menu, LogOut, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { useState } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { useNavigate } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 
 interface HeaderProps {
@@ -20,8 +21,8 @@ interface HeaderProps {
 export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
-  const [signingOut, setSigningOut] = useState(false);
   const navigate = useNavigate();
+  const [signingOut, setSigningOut] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -75,19 +76,26 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
           </div>
         </div>
         <nav className="flex items-center gap-2 sm:gap-4 flex-shrink-0">
+          <span className="hidden lg:block text-xs sm:text-sm text-muted-foreground whitespace-nowrap">
+            AI-Powered Physics Learning
+          </span>
           <ThemeToggle />
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" size="icon" className="rounded-full">
-                  <User className="h-5 w-5" />
+                <Button variant="outline" size="sm" className="gap-2 text-xs sm:text-sm">
+                  <User className="h-3 w-3 sm:h-4 sm:w-4" />
+                  <span className="hidden sm:inline max-w-[100px] truncate text-xs sm:text-sm">
+                    {user.email}
+                  </span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => navigate("/dashboard")}>
-                  <LayoutDashboard className="h-4 w-4 mr-2" />
+                <DropdownMenuItem onClick={() => navigate("/dashboard")} className="text-sm">
+                  <User className="h-4 w-4 mr-2" />
                   Dashboard
                 </DropdownMenuItem>
+                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} disabled={signingOut} className="text-destructive text-sm">
                   <LogOut className="h-4 w-4 mr-2" />
                   {signingOut ? "Signing out..." : "Sign Out"}
@@ -96,11 +104,10 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
             </DropdownMenu>
           ) : (
             <Button variant="hero" size="sm" onClick={onAuthClick} className="text-xs sm:text-sm">
-              Sign In
+              Login
             </Button>
           )}
         </nav>
-
       </div>
     </header>
   );

@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { ChatMessage } from "@/components/ChatMessage";
 import { ChatInput } from "@/components/ChatInput";
@@ -8,7 +9,6 @@ import { PhysicsIcon } from "@/components/PhysicsIcon";
 import { ImageGenerator } from "@/components/ImageGenerator";
 import { GeneratedImageDisplay } from "@/components/GeneratedImageDisplay";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { AuthModal } from "@/components/AuthModal";
 import { ConversationsSidebar } from "@/components/ConversationsSidebar";
 import { streamPhysicsChat } from "@/lib/physics-chat";
 import { useToast } from "@/hooks/use-toast";
@@ -25,9 +25,9 @@ interface Message {
 
 const Index = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [authModalOpen, setAuthModalOpen] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [generatedImages, setGeneratedImages] = useState<Record<string, { url: string; prompt: string }>>({});
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -173,7 +173,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Header
         onMenuClick={() => setSidebarOpen(true)}
-        onAuthClick={() => setAuthModalOpen(true)}
+        onAuthClick={() => navigate("/login")}
       />
 
       {user && (
@@ -185,8 +185,6 @@ const Index = () => {
           onNewConversation={handleNewConversation}
         />
       )}
-
-      <AuthModal open={authModalOpen} onOpenChange={setAuthModalOpen} />
 
       <main className="pt-16 min-h-screen flex flex-col safe-area-inset-bottom">
         {!hasMessages ? (
@@ -208,7 +206,7 @@ const Index = () => {
             {!user && (
               <p className="text-xs sm:text-sm text-muted-foreground text-center mb-6">
                 <button
-                  onClick={() => setAuthModalOpen(true)}
+                  onClick={() => navigate("/login")}
                   className="text-termo-light-orange hover:underline font-medium"
                 >
                   {t("header.signIn")}

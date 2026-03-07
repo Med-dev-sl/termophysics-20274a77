@@ -3,7 +3,6 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2 } from "lucide-react";
@@ -14,10 +13,9 @@ interface AuthModalProps {
 }
 
 export function AuthModal({ open, onOpenChange }: AuthModalProps) {
-  const [isSignUp, setIsSignUp] = useState(false);
+  const [isRegister, setIsRegister] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"user" | "teacher">("user");
   const [loading, setLoading] = useState(false);
   const { signUp, signIn } = useAuth();
   const { toast } = useToast();
@@ -26,8 +24,8 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
     e.preventDefault();
     setLoading(true);
 
-    const { error } = isSignUp
-      ? await signUp(email, password, role)
+    const { error } = isRegister
+      ? await signUp(email, password)
       : await signIn(email, password);
 
     setLoading(false);
@@ -40,15 +38,14 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       });
     } else {
       toast({
-        title: isSignUp ? "Account created!" : "Welcome back!",
-        description: isSignUp
+        title: isRegister ? "Account created!" : "Welcome back!",
+        description: isRegister
           ? "You can now save your chat history."
           : "Your conversations are ready.",
       });
       onOpenChange(false);
       setEmail("");
       setPassword("");
-      setRole("user");
     }
   };
 
@@ -57,7 +54,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-center text-2xl font-display">
-            {isSignUp ? "Create Account" : "Welcome Back"}
+            {isRegister ? "Create Account" : "Welcome Back"}
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -84,32 +81,18 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
               minLength={6}
             />
           </div>
-          {isSignUp && (
-            <div className="space-y-2">
-              <Label htmlFor="role">I am a</Label>
-              <Select value={role} onValueChange={(v) => setRole(v as "user" | "teacher")}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="user">Learner</SelectItem>
-                  <SelectItem value="teacher">Teacher</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
           <Button type="submit" className="w-full" variant="hero" disabled={loading}>
             {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isSignUp ? "Sign Up" : "Sign In"}
+            {isRegister ? "Register" : "Login"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
-            {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
+            {isRegister ? "Already have an account?" : "Don't have an account?"}{" "}
             <button
               type="button"
-              onClick={() => setIsSignUp(!isSignUp)}
+              onClick={() => setIsRegister(!isRegister)}
               className="text-termo-light-orange hover:underline font-medium"
             >
-              {isSignUp ? "Sign In" : "Sign Up"}
+              {isRegister ? "Login" : "Register"}
             </button>
           </p>
         </form>

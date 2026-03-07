@@ -89,7 +89,7 @@ const ClassroomDetail = () => {
           </TabsContent>
           {isOwner && (
             <TabsContent value="students" className="mt-6">
-              <StudentsTab classroomId={classroom.id} />
+              <StudentsTab classroomId={classroom.id} isTeacher={isOwner} />
             </TabsContent>
           )}
         </Tabs>

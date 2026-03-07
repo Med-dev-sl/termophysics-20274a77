@@ -7,11 +7,10 @@ import { AuthProvider } from "@/hooks/useAuth";
 import { ThemeProvider } from "@/hooks/useTheme";
 import Landing from "./pages/Landing";
 import Index from "./pages/Index";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import Dashboard from "./pages/Dashboard";
-import ClassroomDetail from "./pages/ClassroomDetail";
 import NotFound from "./pages/NotFound";
-
-import { BottomNavbar } from "@/components/BottomNavbar";
 
 const queryClient = new QueryClient();
 
@@ -22,26 +21,26 @@ const App = () => (
         <TooltipProvider>
           <Toaster />
           <Sonner />
-          <BrowserRouter>
-            <div className="flex flex-col min-h-screen">
-              <div className="flex-1 pb-16 sm:pb-0">
-                <Routes>
-                  <Route path="/" element={<Landing />} />
-                  <Route path="/chat" element={<Index />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-                  <Route path="/classroom/:id" element={<ClassroomDetail />} />
-                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </div>
-              <BottomNavbar />
-            </div>
+          <BrowserRouter
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true,
+            }}
+          >
+            <Routes>
+              <Route path="/" element={<Landing />} />
+              <Route path="/chat" element={<Index />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </BrowserRouter>
         </TooltipProvider>
       </AuthProvider>
     </QueryClientProvider>
   </ThemeProvider>
 );
-
 
 export default App;

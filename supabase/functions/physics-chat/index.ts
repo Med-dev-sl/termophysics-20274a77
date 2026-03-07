@@ -64,7 +64,7 @@ async function generateImagePrompt(concept: string, apiKey: string): Promise<str
 async function generateImage(prompt: string, apiKey: string): Promise<string | null> {
   try {
     console.log("Generating image for:", prompt.substring(0, 100));
-    
+
     const response = await fetch("https://ai.gateway.lovable.dev/v1/images/generations", {
       method: "POST",
       headers: {
@@ -96,9 +96,9 @@ Style requirements:
 
     const data = await response.json();
     console.log("Image response received");
-    
+
     const imageUrl = data.data?.[0]?.url;
-    
+
     if (imageUrl) {
       console.log("Image generated successfully");
       return imageUrl;
@@ -119,10 +119,10 @@ serve(async (req) => {
 
   try {
     const { messages } = await req.json();
-    const LOVABLE_API_KEY = Deno.env.get("LOVABLE_API_KEY");
-    
-    if (!LOVABLE_API_KEY) {
-      console.error("LOVABLE_API_KEY is not configured");
+    const TERMPHYSICS_API_KEY = Deno.env.get("TERMPHYSICS_API_KEY") || Deno.env.get("LOVABLE_API_KEY");
+
+    if (!TERMPHYSICS_API_KEY) {
+      console.error("AI service API key is not configured");
       return new Response(
         JSON.stringify({ error: "AI service not configured" }),
         { status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
@@ -130,13 +130,13 @@ serve(async (req) => {
     }
 
     const lastUserMessage = messages.filter((m: { role: string }) => m.role === "user").pop()?.content || "";
-    
+
     // Always generate image for physics explanations
     console.log("Starting image generation for:", lastUserMessage.substring(0, 50));
     const imagePromise = (async () => {
       try {
-        const imagePrompt = await generateImagePrompt(lastUserMessage, LOVABLE_API_KEY);
-        return await generateImage(imagePrompt, LOVABLE_API_KEY);
+        const imagePrompt = await generateImagePrompt(lastUserMessage, TERMPHYSICS_API_KEY);
+        return await generateImage(imagePrompt, TERMPHYSICS_API_KEY);
       } catch (error) {
         console.error("Image pipeline error:", error);
         return null;
@@ -147,7 +147,7 @@ serve(async (req) => {
     const response = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
       method: "POST",
       headers: {
-        Authorization: `Bearer ${LOVABLE_API_KEY}`,
+        Authorization: `Bearer ${TERMPHYSICS_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
@@ -202,12 +202,12 @@ serve(async (req) => {
           const imageUrl = await imagePromise;
           if (imageUrl) {
             // Send image as a special SSE event
-            const imageEvent = `data: ${JSON.stringify({ 
-              choices: [{ 
-                delta: { 
-                  content: `\n\n![Physics Illustration](${imageUrl})` 
-                } 
-              }] 
+            const imageEvent = `data: ${JSON.stringify({
+              choices: [{
+                delta: {
+                  content: `\n\n![Physics Illustration](${imageUrl})`
+                }
+              }]
             })}\n\n`;
             controller.enqueue(encoder.encode(imageEvent));
           }

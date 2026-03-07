@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Loader2, CheckCircle } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function InquiryForm() {
   const [formData, setFormData] = useState({
@@ -75,79 +76,137 @@ export function InquiryForm() {
 
   if (submitted) {
     return (
-      <div className="bg-background rounded-xl p-8 border border-border flex flex-col items-center justify-center text-center">
-        <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
-        <h4 className="text-2xl font-bold mb-2">Thank You!</h4>
-        <p className="text-muted-foreground">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 0.9 }}
+        className="bg-background rounded-xl p-8 border border-border flex flex-col items-center justify-center text-center"
+      >
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={{ scale: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <CheckCircle className="w-16 h-16 text-green-500 mb-4" />
+        </motion.div>
+        <motion.h4
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.3 }}
+          className="text-2xl font-bold mb-2"
+        >
+          Thank You!
+        </motion.h4>
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="text-muted-foreground"
+        >
           We've received your inquiry and will get back to you shortly.
-        </p>
-      </div>
+        </motion.p>
+      </motion.div>
     );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="bg-background rounded-xl p-8 border border-border space-y-4">
-      <div>
+    <motion.form
+      onSubmit={handleSubmit}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      className="bg-background rounded-xl p-8 border border-border space-y-4"
+    >
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.1 }}
+      >
         <label className="block text-sm font-medium mb-2">Name</label>
-        <Input
-          type="text"
-          name="name"
-          value={formData.name}
-          onChange={handleChange}
-          placeholder="Your Name"
-          disabled={loading}
-          className="w-full"
-        />
-      </div>
+        <motion.div whileHover={{ scale: 1.02 }} whileFocus={{ scale: 1.02 }}>
+          <Input
+            type="text"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Your Name"
+            disabled={loading}
+            className="w-full"
+          />
+        </motion.div>
+      </motion.div>
 
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.2 }}
+      >
         <label className="block text-sm font-medium mb-2">Email</label>
-        <Input
-          type="email"
-          name="email"
-          value={formData.email}
-          onChange={handleChange}
-          placeholder="your@email.com"
-          disabled={loading}
-          className="w-full"
-        />
-      </div>
+        <motion.div whileHover={{ scale: 1.02 }}>
+          <Input
+            type="email"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="your@email.com"
+            disabled={loading}
+            className="w-full"
+          />
+        </motion.div>
+      </motion.div>
 
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3 }}
+      >
         <label className="block text-sm font-medium mb-2">Subject</label>
-        <Input
-          type="text"
-          name="subject"
-          value={formData.subject}
-          onChange={handleChange}
-          placeholder="Inquiry Subject"
-          disabled={loading}
-          className="w-full"
-        />
-      </div>
+        <motion.div whileHover={{ scale: 1.02 }}>
+          <Input
+            type="text"
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            placeholder="Inquiry Subject"
+            disabled={loading}
+            className="w-full"
+          />
+        </motion.div>
+      </motion.div>
 
-      <div>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+      >
         <label className="block text-sm font-medium mb-2">Message</label>
-        <Textarea
-          name="message"
-          value={formData.message}
-          onChange={handleChange}
-          placeholder="Your message..."
-          disabled={loading}
-          className="w-full min-h-32"
-        />
-      </div>
+        <motion.div whileHover={{ scale: 1.02 }}>
+          <Textarea
+            name="message"
+            value={formData.message}
+            onChange={handleChange}
+            placeholder="Your message..."
+            disabled={loading}
+            className="w-full min-h-32"
+          />
+        </motion.div>
+      </motion.div>
 
-      <Button type="submit" disabled={loading} className="w-full">
-        {loading ? (
-          <>
-            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-            Sending...
-          </>
-        ) : (
-          "Send Inquiry"
-        )}
-      </Button>
-    </form>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        <Button type="submit" disabled={loading} className="w-full" size="lg">
+          {loading ? (
+            <>
+              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            "Send Inquiry"
+          )}
+        </Button>
+      </motion.div>
+    </motion.form>
   );
 }

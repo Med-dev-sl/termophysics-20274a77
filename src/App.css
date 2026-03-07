@@ -5,6 +5,82 @@
   text-align: center;
 }
 
+/* Custom Button Design */
+button {
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 600;
+  padding-left: 25px;
+  padding-right: 25px;
+  color: #fff;
+  height: 40px;
+  font-size: 0.7rem;
+  line-height: 14px;
+  letter-spacing: 1.2px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(90deg, #d97706, #f59e0b);
+  border: none;
+  overflow: visible;
+  position: relative;
+}
+
+button:hover {
+  cursor: pointer;
+  transition: all 0.3s ease-in;
+  padding-right: 35px;
+  padding-left: 30px;
+  background-image: linear-gradient(90deg, #f59e0b, #fbbf24);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Alternative custom button class for more control */
+.button-3d {
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 600;
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+  color: #fff !important;
+  height: 40px;
+  font-size: 0.7rem;
+  line-height: 14px;
+  letter-spacing: 1.2px;
+  transition: all 0.3s ease;
+  background-image: linear-gradient(90deg, #d97706, #f59e0b) !important;
+  border: none !important;
+  overflow: visible;
+  position: relative;
+}
+
+.button-3d:hover {
+  padding-right: 35px !important;
+  padding-left: 30px !important;
+  background-image: linear-gradient(90deg, #f59e0b, #fbbf24) !important;
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.5) !important;
+  transform: translateY(-2px);
+}
+
+.button-3d:active {
+  transform: translateY(0);
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.3) !important;
+}
+
+.button-3d:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;

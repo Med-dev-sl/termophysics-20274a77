@@ -2,7 +2,7 @@
 
 **Version:** 1.0  
 **Last Updated:** February 2026  
-**Platform URL:** https://termophysics.lovable.app
+**Platform URL:** https://termophysics.app
 
 ---
 
@@ -58,7 +58,7 @@ To democratize physics education by providing an accessible, intelligent tutorin
 | **Styling** | Tailwind CSS + shadcn/ui | Design system and UI components |
 | **Routing** | React Router v6 | Client-side navigation |
 | **State Management** | React Query + React hooks | Server state and local state |
-| **Backend** | Lovable Cloud (Supabase) | Database, auth, edge functions |
+| **Backend** | Supabase Cloud | Database, auth, edge functions |
 | **AI Text Generation** | Google Gemini 3 Flash Preview | Physics explanations |
 | **AI Image Generation** | DALL-E 3 | Scientific illustrations |
 | **Markdown Rendering** | react-markdown | Rich text display |
@@ -78,7 +78,7 @@ To democratize physics education by providing an accessible, intelligent tutorin
         │            │                 │
         ▼            ▼                 ▼
 ┌─────────────────────────────────────────────────────┐
-│                 Lovable Cloud Backend                 │
+│                TermoPhysics Backend                   │
 │  ┌──────────┐  ┌───────────┐  ┌──────────────────┐  │
 │  │ Database │  │ Auth      │  │ Edge Function:   │  │
 │  │ (Postgres)│ │ Service   │  │ physics-chat     │  │
@@ -87,7 +87,7 @@ To democratize physics education by providing an accessible, intelligent tutorin
 └───────────────────────────────────────┼──────────────┘
                                         │
                           ┌─────────────┼──────────────┐
-                          │    AI Gateway (Lovable AI)   │
+                          │    AI Gateway (TermoPhysics AI)   │
                           │  ┌─────────┐ ┌───────────┐  │
                           │  │ Gemini  │ │ DALL-E 3  │  │
                           │  │ 3 Flash │ │ (Images)  │  │
@@ -618,7 +618,7 @@ AuthModal opens
 | Property | Value |
 |----------|-------|
 | Model | google/gemini-3-flash-preview |
-| Endpoint | https://ai.gateway.lovable.dev/v1/chat/completions |
+| Endpoint | https://ai.gateway.termophysics.app/v1/chat/completions |
 | Mode | Streaming (SSE) |
 | System prompt | Physics tutor persona with markdown guidelines |
 
@@ -641,7 +641,7 @@ AuthModal opens
 | Property | Value |
 |----------|-------|
 | Model | dall-e-3 |
-| Endpoint | https://ai.gateway.lovable.dev/v1/images/generations |
+| Endpoint | https://ai.gateway.termophysics.app/v1/images/generations |
 | Resolution | 1024×1024 |
 | Quality | HD |
 | Style | Clean scientific illustration, blue/orange on white |
@@ -725,7 +725,7 @@ Client renders markdown + image
 
 ### 12.1 Getting Started
 
-1. **Visit** the platform at https://termophysics.lovable.app
+1. **Visit** the platform at https://termophysics.app
 2. **Ask a question** by typing in the chat input or clicking a suggested question
 3. **View the response** — text streams in real-time followed by an illustration
 4. **Sign up** (optional) to save your conversation history
@@ -783,7 +783,7 @@ The app will be available at `http://localhost:5173`
 |----------|--------|-------------|
 | VITE_SUPABASE_URL | Auto-generated (.env) | Backend API base URL |
 | VITE_SUPABASE_PUBLISHABLE_KEY | Auto-generated (.env) | Public API key |
-| LOVABLE_API_KEY | Server secret | AI gateway authentication |
+| TermoPhysics_API_KEY | Server secret | AI gateway authentication |
 
 ### 13.3 Project Scripts
 
@@ -831,23 +831,23 @@ The edge function will auto-deploy after changes are pushed.
 
 ### 14.1 Frontend Deployment
 
-1. Open the Lovable editor
+1. Open the TermoPhysics editor
 2. Click **Publish** (top right)
 3. Click **Update** to deploy frontend changes
-4. Access at: https://termophysics.lovable.app
+4. Access at: https://termophysics.TermoPhysics.app
 
 ### 14.2 Backend Deployment
 
 - **Edge functions:** Auto-deploy on code push
 - **Database migrations:** Applied via migration tool with user approval
-- **Secrets:** Managed via Lovable Cloud settings
+- **Secrets:** Managed via TermoPhysics Cloud settings
 
 ### 14.3 Custom Domain
 
 1. Navigate to Project > Settings > Domains
 2. Click "Connect Domain"
 3. Follow DNS configuration instructions
-4. Requires a paid Lovable plan
+4. Requires a paid TermoPhysics plan
 
 ---
 
@@ -857,7 +857,7 @@ The edge function will auto-deploy after changes are pushed.
 
 | Issue | Cause | Solution |
 |-------|-------|----------|
-| "AI service not configured" | Missing LOVABLE_API_KEY | Verify secret is set in Cloud settings |
+| "AI service not configured" | Missing TermoPhysics_API_KEY | Verify secret is set in Cloud settings |
 | Image not showing | DALL-E 3 generation failure | Check edge function logs; image falls back gracefully |
 | Raw JSON in chat | Image endpoint misconfigured | Ensure `/v1/images/generations` endpoint is used |
 | "Rate limit exceeded" | Too many requests | Wait a moment and retry |
@@ -869,7 +869,7 @@ The edge function will auto-deploy after changes are pushed.
 ### 15.2 Checking Logs
 
 - **Frontend console:** Browser DevTools → Console tab
-- **Edge function logs:** Available via Lovable Cloud monitoring
+- **Edge function logs:** Available via TermoPhysics Cloud monitoring
 - **Database queries:** Use the Cloud SQL runner
 
 ---

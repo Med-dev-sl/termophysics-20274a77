@@ -21,57 +21,89 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [userRole, setUserRole] = useState<string | null>(null);
 
   const fetchUserRole = async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .single();
-    setUserRole(data?.role ?? null);
+    try {
+      console.log('Fetching user role for:', userId);
+      const { data, error } = await supabase
+        .from('user_roles')
+        .select('role')
+        .eq('user_id', userId)
+        .single();
+
+      console.log('User role fetch result:', { data, error });
+
+      if (error) {
+        console.error('Error fetching user role:', error);
+        setUserRole(null);
+      } else {
+        setUserRole(data?.role || null);
+      }
+    } catch (error) {
+      console.error('Error fetching user role:', error);
+      setUserRole(null);
+    }
   };
 
   useEffect(() => {
+    // Set up auth state listener BEFORE checking session
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      (_event, session) => {
+      async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        setLoading(false);
+        
         if (session?.user) {
-          setTimeout(() => fetchUserRole(session.user.id), 0);
+          await fetchUserRole(session.user.id);
         } else {
           setUserRole(null);
         }
+        
+        setLoading(false);
       }
     );
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    // Check for existing session
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      setLoading(false);
+      
       if (session?.user) {
-        fetchUserRole(session.user.id);
+        await fetchUserRole(session.user.id);
+      } else {
+        setUserRole(null);
       }
+      
+      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, []);
 
   const signUp = async (email: string, password: string, role?: string) => {
+    console.log('SignUp called with:', { email, role });
+
+    // Validate role
+    if (role && !['learner', 'teacher'].includes(role)) {
+      return { error: { message: 'Invalid role. Must be learner or teacher.' } as any };
+    }
+
     const { error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: window.location.origin,
-        data: { role: role || "user" },
+        emailRedirectTo: window.location.origin + '/chat',
+        data: role ? { role } : undefined,
       },
     });
+    console.log('SignUp result:', { error });
     return { error };
   };
 
   const signIn = async (email: string, password: string) => {
+    console.log('SignIn called with:', { email });
     const { error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
+    console.log('SignIn result:', { error });
     return { error };
   };
 
@@ -80,11 +112,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // First, clear local state
       setUser(null);
       setSession(null);
-      setUserRole(null);
 
       // Then attempt to sign out from Supabase
       const { error } = await supabase.auth.signOut();
-
+      
       // Ignore "AuthSessionMissingError" as the user is already logged out
       if (error && error.message !== "Auth session missing!") {
         console.error("Sign out error:", error);
