@@ -22,6 +22,7 @@ export function Header({ onMenuClick, onAuthClick }: HeaderProps) {
   const { user, signOut } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
   const [signingOut, setSigningOut] = useState(false);
 
   const handleSignOut = async () => {
