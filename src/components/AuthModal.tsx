@@ -91,6 +91,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </p>
         </form>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }
