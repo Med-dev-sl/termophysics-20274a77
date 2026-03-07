@@ -119,9 +119,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     });
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Assignment created!" });
+      showSuccess("Assignment Created!", "Students can now submit their work.");
       setDialogOpen(false);
       setTitle(""); setDescription(""); setDueDate(""); setMaxScore("100");
       fetchAssignments();
