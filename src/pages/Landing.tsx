@@ -91,13 +91,7 @@ export default function Landing() {
                     <pointLight position={[10, 10, 10]} intensity={1} />
                     <pointLight position={[-10, -10, 5]} intensity={0.5} color="#8b5cf6" />
                     
-                    <motion.group
-                      animate={{
-                        rotateX: [0, Math.PI * 2],
-                        rotateY: [0, Math.PI * 2],
-                      }}
-                      transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-                    >
+                    <group>
                       <Sphere args={[1.5, 64, 64]}>
                         <meshStandardMaterial
                           color="#3b82f6"
@@ -107,7 +101,7 @@ export default function Landing() {
                           roughness={0.1}
                         />
                       </Sphere>
-                    </motion.group>
+                    </group>
 
                     <motion.group
                       animate={{ rotateY: [0, -Math.PI * 2] }}
