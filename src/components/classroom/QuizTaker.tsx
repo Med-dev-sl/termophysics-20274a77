@@ -28,6 +28,7 @@ interface QuizTakerProps {
 export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }: QuizTakerProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
