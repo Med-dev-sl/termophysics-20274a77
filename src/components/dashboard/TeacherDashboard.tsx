@@ -99,7 +99,7 @@ export function TeacherDashboard() {
 
   if (loading && classrooms.length === 0) return (
     <div className="flex items-center justify-center py-12">
-      <p className="text-muted-foreground">Loading classrooms...</p>
+      <LoadingSpinner size="lg" text="Loading classrooms..." />
     </div>
   );
 
