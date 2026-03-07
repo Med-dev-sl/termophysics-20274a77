@@ -84,9 +84,9 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
 
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Note added!" });
+      showSuccess("Note Added!", "Your note has been saved successfully.");
       setDialogOpen(false);
       setTitle("");
       setContent("");
