@@ -185,10 +185,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
 
     setSavingGrade(null);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Grade saved!" });
-      // Update local state
+      showSuccess("Grade Saved!", "The student's grade has been updated.");
       setSubmissions(prev =>
         prev.map(s => s.id === submissionId
           ? { ...s, score: isNaN(scoreVal) ? null : scoreVal, feedback: feedbackVal, graded_at: new Date().toISOString() }
