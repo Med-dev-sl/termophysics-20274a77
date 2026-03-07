@@ -5,8 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { BarChart3, CheckCircle2, Clock, TrendingUp, Users } from "lucide-react";
+import { BarChart3, CheckCircle2, Clock, Download, TrendingUp, Users } from "lucide-react";
+import { exportGradesToCSV } from "@/lib/export-grades";
+import { useToast } from "@/hooks/use-toast";
 
 interface ProgressTabProps {
   classroomId: string;
@@ -39,8 +42,9 @@ interface StudentSummary {
   percentage: number;
 }
 
-export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
+export function ProgressTab({ classroomId, isTeacher, classroomName }: ProgressTabProps & { classroomName?: string }) {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [grades, setGrades] = useState<AssignmentGrade[]>([]);
   const [students, setStudents] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -207,8 +211,34 @@ export function ProgressTab({ classroomId, isTeacher }: ProgressTabProps) {
     return "[&>div]:bg-red-500";
   };
 
+  const handleExportCSV = () => {
+    const exportData = grades.map((g) => ({
+      title: g.title,
+      type: g.type,
+      maxScore: g.max_score,
+      submissions: g.submissions.map((s) => ({
+        studentName: s.student_name,
+        score: s.score,
+        graded: s.graded,
+        isLate: s.is_late,
+      })),
+    }));
+    exportGradesToCSV(exportData, students, classroomName || "classroom");
+    toast({ title: "Grades exported", description: "CSV file downloaded successfully." });
+  };
+
   return (
     <div className="space-y-6">
+      {/* Export button for teachers */}
+      {isTeacher && (
+        <div className="flex justify-end">
+          <Button variant="outline" size="sm" onClick={handleExportCSV} className="gap-2">
+            <Download className="h-4 w-4" />
+            Export Grades (CSV)
+          </Button>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <Card>

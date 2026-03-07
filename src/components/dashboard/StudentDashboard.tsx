@@ -88,7 +88,7 @@ export function StudentDashboard() {
   if (loading) return <p className="text-muted-foreground">Loading classrooms...</p>;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6" data-tour="dashboard-content">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-display font-bold">My Classes</h2>
@@ -96,7 +96,7 @@ export function StudentDashboard() {
         </div>
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
           <DialogTrigger asChild>
-            <Button variant="hero">
+            <Button variant="hero" data-tour="join-class">
               <Plus className="h-4 w-4 mr-2" /> Join Class
             </Button>
           </DialogTrigger>

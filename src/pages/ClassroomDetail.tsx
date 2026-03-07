@@ -89,7 +89,7 @@ const ClassroomDetail = () => {
             <QuizzesTab classroomId={classroom.id} isTeacher={isOwner} />
           </TabsContent>
           <TabsContent value="progress" className="mt-6">
-            <ProgressTab classroomId={classroom.id} isTeacher={isOwner} />
+            <ProgressTab classroomId={classroom.id} isTeacher={isOwner} classroomName={classroom.name} />
           </TabsContent>
           {isOwner && (
             <TabsContent value="students" className="mt-6">

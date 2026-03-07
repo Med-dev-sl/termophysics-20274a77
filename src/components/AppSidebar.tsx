@@ -15,7 +15,7 @@ import {
 
 const navItems = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
-  { title: "AI Chat", url: "/chat", icon: MessageSquare },
+  { title: "AI Chat", url: "/chat", icon: MessageSquare, tourId: "ai-chat-link" },
 ];
 
 export function AppSidebar() {
@@ -51,6 +51,7 @@ export function AppSidebar() {
                       isActive={isActive}
                       tooltip={item.title}
                       onClick={() => navigate(item.url)}
+                      data-tour={item.tourId}
                     >
                       <item.icon className="h-4 w-4" />
                       {!collapsed && <span>{item.title}</span>}
