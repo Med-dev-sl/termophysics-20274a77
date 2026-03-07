@@ -25,6 +25,7 @@ interface Classroom {
 export function TeacherDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [loading, setLoading] = useState(true);
