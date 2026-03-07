@@ -77,14 +77,7 @@ function PhysicsVisualization({
       <pointLight position={[10, 10, 10]} intensity={1} />
       <pointLight position={[-10, -10, 10]} intensity={0.5} color="#8b5cf6" />
       
-      <motion.group
-        animate={{
-          rotateX: rotation.x ? [0, Math.PI * 2] : 0,
-          rotateY: rotation.y ? [0, Math.PI * 2] : 0,
-          rotateZ: rotation.z ? [0, Math.PI * 2] : 0,
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-      >
+      <group>
         <ShapeComponent args={shapeArgs as any}>
           <meshStandardMaterial
             color={color}
@@ -95,7 +88,7 @@ function PhysicsVisualization({
             wireframe={false}
           />
         </ShapeComponent>
-      </motion.group>
+      </group>
 
       <OrbitControls autoRotate autoRotateSpeed={2} enableZoom={true} />
     </Canvas>
