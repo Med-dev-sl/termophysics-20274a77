@@ -3,15 +3,18 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, CheckCircle2, XCircle, AlertCircle } from "lucide-react";
+import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
 
 interface Answer {
     id: string;
     answer_text: string | null;
     score: number | null;
     is_correct: boolean | null;
+    feedback: string | null;
     question_id: string;
     quiz_questions: {
         question_text: string;
@@ -34,6 +37,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [scores, setScores] = useState<Record<string, string>>({});
+    const [feedbacks, setFeedbacks] = useState<Record<string, string>>({});
     const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
@@ -51,6 +55,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
         answer_text,
         score,
         is_correct,
+        feedback,
         question_id,
         quiz_questions (
           question_text,
@@ -68,37 +73,35 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
             setAnswers(answersData);
 
             const initialScores: Record<string, string> = {};
+            const initialFeedbacks: Record<string, string> = {};
             answersData.forEach(a => {
                 initialScores[a.id] = a.score !== null ? a.score.toString() : "";
+                initialFeedbacks[a.id] = a.feedback || "";
             });
             setScores(initialScores);
+            setFeedbacks(initialFeedbacks);
         }
         setLoading(false);
-    };
-
-    const handleScoreChange = (answerId: string, val: string) => {
-        setScores(prev => ({ ...prev, [answerId]: val }));
     };
 
     const handleSubmit = async () => {
         setSubmitting(true);
         try {
-            // 1. Update individual answer scores
             for (const answer of answers) {
                 const scoreVal = parseInt(scores[answer.id]);
-                if (!isNaN(scoreVal)) {
-                    const isCorrect = scoreVal >= (answer.quiz_questions.points / 2); // Simple heuristic
+                const feedbackVal = feedbacks[answer.id]?.trim() || null;
+                if (!isNaN(scoreVal) || feedbackVal) {
                     await supabase
                         .from("quiz_answers")
                         .update({
-                            score: scoreVal,
-                            is_correct: isCorrect
+                            score: isNaN(scoreVal) ? null : scoreVal,
+                            is_correct: !isNaN(scoreVal) ? scoreVal >= (answer.quiz_questions.points / 2) : null,
+                            feedback: feedbackVal,
                         })
                         .eq("id", answer.id);
                 }
             }
 
-            // 2. Recalculate total score for submission
             const { data: updatedAnswers } = await supabase
                 .from("quiz_answers")
                 .select("score")
@@ -106,7 +109,6 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
 
             const totalScore = (updatedAnswers || []).reduce((sum, a) => sum + (a.score || 0), 0);
 
-            // 3. Update submission record
             await supabase
                 .from("quiz_submissions")
                 .update({
@@ -115,7 +117,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
                 })
                 .eq("id", submissionId);
 
-            toast({ title: "Grading complete!", description: `Updated score: ${totalScore}` });
+            toast({ title: "Grading complete!", description: `Total score: ${totalScore}` });
             onGraded();
             onOpenChange(false);
         } catch (err: any) {
@@ -125,83 +127,103 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
         }
     };
 
+    const totalAwarded = answers.reduce((sum, a) => {
+        const s = parseInt(scores[a.id]);
+        return sum + (isNaN(s) ? 0 : s);
+    }, 0);
+    const totalPossible = answers.reduce((sum, a) => sum + a.quiz_questions.points, 0);
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto border-termo-sky-blue/30">
+            <DialogContent className="max-w-3xl max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle className="text-termo-deep-blue">
+                    <DialogTitle className="flex items-center gap-3">
                         Grading: {studentName}
+                        {!loading && (
+                            <Badge variant="outline" className="text-sm font-mono">
+                                {totalAwarded} / {totalPossible}
+                            </Badge>
+                        )}
                     </DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-6 py-4">
                     {loading ? (
                         <div className="flex justify-center p-12">
-                            <Loader2 className="h-8 w-8 animate-spin text-termo-sky-blue" />
+                            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
                         </div>
                     ) : (
                         <>
                             {answers.map((a, idx) => (
-                                <div key={a.id} className="p-4 border rounded-lg bg-background shadow-sm space-y-3">
+                                <div key={a.id} className="p-4 border rounded-lg bg-card shadow-sm space-y-3">
                                     <div className="flex justify-between items-start">
                                         <div className="space-y-1">
-                                            <p className="font-bold text-termo-deep-blue">Question {idx + 1}</p>
+                                            <p className="font-bold text-foreground">Question {idx + 1}</p>
                                             <p className="text-sm">{a.quiz_questions.question_text}</p>
-                                            <p className="text-[10px] uppercase font-bold text-muted-foreground bg-muted px-1.5 py-0.5 rounded inline-block">
+                                            <Badge variant="secondary" className="text-[10px]">
                                                 {a.quiz_questions.question_type}
-                                            </p>
+                                            </Badge>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-xs font-semibold text-muted-foreground mr-1">Points: {a.quiz_questions.points}</p>
-                                        </div>
+                                        <p className="text-xs font-semibold text-muted-foreground">
+                                            {a.quiz_questions.points} pts
+                                        </p>
                                     </div>
 
-                                    <div className="bg-muted/30 p-3 rounded-md text-sm">
-                                        <p className="text-xs font-bold text-muted-foreground mb-1 uppercase tracking-wider">Student's Answer:</p>
+                                    <div className="bg-muted/50 p-3 rounded-md text-sm">
+                                        <p className="text-[10px] font-bold text-muted-foreground mb-1 uppercase tracking-wider">Student's Answer</p>
                                         <p className="whitespace-pre-wrap">{a.answer_text || <span className="italic text-muted-foreground">No answer provided</span>}</p>
                                     </div>
 
                                     {a.quiz_questions.correct_answer && (
-                                        <div className="bg-green-50 border border-green-100 p-3 rounded-md text-sm">
-                                            <p className="text-xs font-bold text-green-700 mb-1 uppercase tracking-wider">Reference Answer:</p>
-                                            <p className="text-green-800">{a.quiz_questions.correct_answer}</p>
+                                        <div className="bg-green-50 dark:bg-green-950/30 border border-green-200 dark:border-green-900 p-3 rounded-md text-sm">
+                                            <p className="text-[10px] font-bold text-green-700 dark:text-green-400 mb-1 uppercase tracking-wider">Correct Answer</p>
+                                            <p className="text-green-800 dark:text-green-300">{a.quiz_questions.correct_answer}</p>
                                         </div>
                                     )}
 
-                                    <div className="flex items-center gap-4 pt-2">
-                                        <div className="flex-1 max-w-[150px]">
-                                            <Label className="text-xs">Award Score</Label>
-                                            <div className="flex items-center gap-2">
+                                    <div className="grid grid-cols-[1fr_auto] gap-4 items-end pt-2 border-t">
+                                        <div className="space-y-2">
+                                            <Label className="text-xs font-bold uppercase tracking-wider">Feedback</Label>
+                                            <Textarea
+                                                value={feedbacks[a.id] || ""}
+                                                onChange={(e) => setFeedbacks(prev => ({ ...prev, [a.id]: e.target.value }))}
+                                                placeholder="Optional feedback for this answer..."
+                                                rows={2}
+                                                className="text-sm"
+                                            />
+                                        </div>
+                                        <div className="space-y-2">
+                                            <Label className="text-xs font-bold uppercase tracking-wider">Score</Label>
+                                            <div className="flex items-center gap-1.5">
                                                 <Input
                                                     type="number"
                                                     max={a.quiz_questions.points}
                                                     min={0}
                                                     value={scores[a.id]}
-                                                    onChange={(e) => handleScoreChange(a.id, e.target.value)}
-                                                    className="h-9"
+                                                    onChange={(e) => setScores(prev => ({ ...prev, [a.id]: e.target.value }))}
+                                                    className="h-9 w-20"
                                                 />
                                                 <span className="text-sm text-muted-foreground">/ {a.quiz_questions.points}</span>
                                             </div>
                                         </div>
-                                        <div className="flex items-center gap-2 pt-5">
-                                            {a.score !== null && (
-                                                <span className="flex items-center gap-1 text-[10px] text-green-600 font-bold uppercase">
-                                                    <CheckCircle2 className="h-3 w-3" /> Auto-Graded
-                                                </span>
-                                            )}
-                                            {a.score === null && (
-                                                <span className="flex items-center gap-1 text-[10px] text-orange-600 font-bold uppercase">
-                                                    <AlertCircle className="h-3 w-3" /> Needs Review
-                                                </span>
-                                            )}
-                                        </div>
+                                    </div>
+                                    <div className="flex justify-end">
+                                        {a.score !== null ? (
+                                            <span className="flex items-center gap-1 text-[10px] text-green-600 font-bold uppercase">
+                                                <CheckCircle2 className="h-3 w-3" /> Auto-Graded
+                                            </span>
+                                        ) : (
+                                            <span className="flex items-center gap-1 text-[10px] text-orange-600 font-bold uppercase">
+                                                <AlertCircle className="h-3 w-3" /> Needs Review
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
                             ))}
 
                             <div className="sticky bottom-0 pt-4 bg-background border-t">
                                 <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">
-                                    {submitting ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : "Save All Grades"}
+                                    {submitting ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</> : `Save All Grades (${totalAwarded}/${totalPossible})`}
                                 </Button>
                             </div>
                         </>
