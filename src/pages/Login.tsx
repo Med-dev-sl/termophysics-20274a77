@@ -210,6 +210,7 @@ const Login = () => {
           className="absolute bottom-40 right-20 w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm"
         ></motion.div>
       </motion.div>
+      <FeedbackModalComponent />
     </div>
   );
 };
