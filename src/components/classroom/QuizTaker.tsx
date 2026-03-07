@@ -169,9 +169,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
 
         <div className="space-y-6 py-4">
           {loading ? (
-            <div className="flex justify-center p-12">
-              <Loader2 className="h-8 w-8 animate-spin text-termo-sky-blue" />
-            </div>
+            <LoadingSpinner size="md" text="Loading questions..." className="py-12" />
           ) : questions.length === 0 ? (
             <p className="text-center py-8 text-muted-foreground">This quiz has no questions yet.</p>
           ) : (
