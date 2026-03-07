@@ -117,7 +117,7 @@ export function StudentDashboard() {
                 />
               </div>
               <Button onClick={handleJoin} disabled={joining || !classCode.trim()} className="w-full" variant="hero">
-                {joining ? "Joining..." : "Join Classroom"}
+                {joining ? <><ButtonSpinner /> Joining...</> : "Join Classroom"}
               </Button>
             </div>
           </DialogContent>
