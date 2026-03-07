@@ -110,9 +110,9 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     });
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Quiz created! Now add your questions." });
+      showSuccess("Quiz Created!", "Now add your questions.");
       setCreateDialogOpen(false);
       setTitle(""); setDescription(""); setDueDate(""); setTimeLimit("");
       fetchQuizzes();
