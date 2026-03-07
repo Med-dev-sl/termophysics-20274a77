@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Plus, ClipboardList, Calendar, Download } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Plus, ClipboardList, Calendar, Download, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -49,6 +50,12 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
   const [viewSubmissionsOpen, setViewSubmissionsOpen] = useState(false);
   const [loadingSubmissions, setLoadingSubmissions] = useState(false);
 
+  // Grading state
+  const [gradingId, setGradingId] = useState<string | null>(null);
+  const [gradeScores, setGradeScores] = useState<Record<string, string>>({});
+  const [gradeFeedback, setGradeFeedback] = useState<Record<string, string>>({});
+  const [savingGrade, setSavingGrade] = useState<string | null>(null);
+
   useEffect(() => {
     fetchAssignments();
   }, [classroomId]);
@@ -82,7 +89,16 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     if (error) {
       toast({ variant: "destructive", title: "Error", description: error.message });
     } else {
-      setSubmissions(data || []);
+      const subs = data || [];
+      setSubmissions(subs);
+      const scores: Record<string, string> = {};
+      const feedback: Record<string, string> = {};
+      subs.forEach((s: any) => {
+        scores[s.id] = s.score !== null ? s.score.toString() : "";
+        feedback[s.id] = s.feedback || "";
+      });
+      setGradeScores(scores);
+      setGradeFeedback(feedback);
     }
     setLoadingSubmissions(false);
   };
@@ -150,6 +166,35 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     }
   };
 
+  const handleSaveGrade = async (submissionId: string) => {
+    setSavingGrade(submissionId);
+    const scoreVal = parseInt(gradeScores[submissionId]);
+    const feedbackVal = gradeFeedback[submissionId]?.trim() || null;
+
+    const { error } = await supabase
+      .from("assignment_submissions")
+      .update({
+        score: isNaN(scoreVal) ? null : scoreVal,
+        feedback: feedbackVal,
+        graded_at: new Date().toISOString(),
+      })
+      .eq("id", submissionId);
+
+    setSavingGrade(null);
+    if (error) {
+      toast({ variant: "destructive", title: "Error", description: error.message });
+    } else {
+      toast({ title: "Grade saved!" });
+      // Update local state
+      setSubmissions(prev =>
+        prev.map(s => s.id === submissionId
+          ? { ...s, score: isNaN(scoreVal) ? null : scoreVal, feedback: feedbackVal, graded_at: new Date().toISOString() }
+          : s
+        )
+      );
+    }
+  };
+
   if (loading) return <p className="text-muted-foreground">Loading assignments...</p>;
 
   return (
@@ -195,10 +240,11 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
                   <CardTitle className="text-lg flex items-center gap-2">
                     <ClipboardList className="h-4 w-4 text-muted-foreground" />
                     {a.title}
+                    <Badge variant="secondary" className="text-[10px]">Max: {a.max_score}</Badge>
                   </CardTitle>
                   {isTeacher ? (
                     <Button variant="outline" size="sm" onClick={() => fetchSubmissions(a)}>
-                      View Submissions
+                      View & Grade
                     </Button>
                   ) : (
                     <Button variant="outline" size="sm" onClick={() => { setSelectedAssignment(a); setSubmitDialogOpen(true); }}>Submit</Button>
@@ -219,40 +265,60 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
         </div>
       )}
 
-      {/* Teacher view submissions dialog */}
+      {/* Teacher grading dialog */}
       <Dialog open={viewSubmissionsOpen} onOpenChange={setViewSubmissionsOpen}>
-        <DialogContent className="max-w-3xl max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-4xl max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Submissions: {selectedAssignment?.title}</DialogTitle>
+            <DialogTitle className="flex items-center gap-2">
+              <ClipboardList className="h-5 w-5 text-primary" />
+              Grade Submissions: {selectedAssignment?.title}
+              <Badge variant="outline" className="ml-2">Max: {selectedAssignment?.max_score}</Badge>
+            </DialogTitle>
           </DialogHeader>
           <div className="space-y-4 py-4">
             {loadingSubmissions ? (
-              <p className="text-center text-muted-foreground">Loading submissions...</p>
+              <div className="flex justify-center p-8">
+                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+              </div>
             ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
             ) : (
-              <div className="grid gap-4">
+              <div className="space-y-6">
                 {submissions.map((s) => (
-                  <Card key={s.id}>
+                  <Card key={s.id} className={s.graded_at ? "border-green-200 bg-green-50/30 dark:border-green-900 dark:bg-green-950/20" : ""}>
                     <CardContent className="pt-6 space-y-4">
+                      {/* Student info header */}
                       <div className="flex justify-between items-start">
                         <div>
-                          <p className="font-bold text-termo-deep-blue">
+                          <p className="font-bold text-foreground">
                             {s.profiles?.display_name || "Unknown Student"}
                           </p>
                           <p className="text-xs text-muted-foreground">{s.profiles?.email}</p>
                         </div>
-                        <div className="text-right">
-                          <p className="text-xs text-muted-foreground">
-                            Submitted: {format(new Date(s.submitted_at), "MMM d, h:mm a")}
+                        <div className="text-right flex flex-col items-end gap-1">
+                          <div className="flex items-center gap-2">
+                            {s.graded_at ? (
+                              <Badge variant="default" className="bg-green-600 text-[10px] gap-1">
+                                <CheckCircle2 className="h-3 w-3" /> Graded
+                              </Badge>
+                            ) : (
+                              <Badge variant="secondary" className="text-[10px] gap-1">
+                                <AlertCircle className="h-3 w-3" /> Pending
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-[10px] text-muted-foreground">
+                            {format(new Date(s.submitted_at), "MMM d, h:mm a")}
                           </p>
-                          {s.is_late && <span className="text-[10px] text-destructive font-bold uppercase">Late</span>}
+                          {s.is_late && <Badge variant="destructive" className="text-[10px]">Late</Badge>}
                         </div>
                       </div>
 
+                      {/* Student's answer */}
                       {s.content && (
-                        <div className="bg-muted p-3 rounded-lg text-sm whitespace-pre-wrap">
-                          {s.content}
+                        <div className="bg-muted/50 p-3 rounded-lg text-sm">
+                          <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wider mb-1">Student's Answer</p>
+                          <p className="whitespace-pre-wrap">{s.content}</p>
                         </div>
                       )}
 
@@ -260,10 +326,51 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
                         <Button variant="secondary" size="sm" asChild className="w-full flex items-center gap-2">
                           <a href={s.file_url} target="_blank" rel="noopener noreferrer">
                             <Download className="h-4 w-4" />
-                            Download {s.file_name || "File"}
+                            Download: {s.file_name || "File"}
                           </a>
                         </Button>
                       )}
+
+                      {/* Grading controls */}
+                      <div className="border-t pt-4 space-y-3">
+                        <div className="grid grid-cols-[1fr_auto] gap-4 items-end">
+                          <div className="space-y-2">
+                            <Label className="text-xs font-bold uppercase tracking-wider">Feedback</Label>
+                            <Textarea
+                              value={gradeFeedback[s.id] || ""}
+                              onChange={(e) => setGradeFeedback(prev => ({ ...prev, [s.id]: e.target.value }))}
+                              placeholder="Write feedback for the student..."
+                              rows={2}
+                              className="text-sm"
+                            />
+                          </div>
+                          <div className="space-y-2">
+                            <Label className="text-xs font-bold uppercase tracking-wider">Score</Label>
+                            <div className="flex items-center gap-1.5">
+                              <Input
+                                type="number"
+                                min={0}
+                                max={selectedAssignment?.max_score || 100}
+                                value={gradeScores[s.id] || ""}
+                                onChange={(e) => setGradeScores(prev => ({ ...prev, [s.id]: e.target.value }))}
+                                className="h-9 w-20"
+                              />
+                              <span className="text-sm text-muted-foreground whitespace-nowrap">/ {selectedAssignment?.max_score}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <Button
+                          onClick={() => handleSaveGrade(s.id)}
+                          disabled={savingGrade === s.id}
+                          variant="hero"
+                          size="sm"
+                          className="w-full"
+                        >
+                          {savingGrade === s.id ? (
+                            <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</>
+                          ) : s.graded_at ? "Update Grade" : "Save Grade"}
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
