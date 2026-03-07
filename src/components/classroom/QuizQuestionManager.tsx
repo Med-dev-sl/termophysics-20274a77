@@ -197,7 +197,7 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
           <div className="space-y-3">
             <h4 className="font-bold">Current Questions ({questions.length})</h4>
             {loading ? (
-              <p className="text-sm text-muted-foreground">Loading...</p>
+              <LoadingSpinner size="sm" text="Loading..." />
             ) : questions.length === 0 ? (
               <p className="text-sm text-muted-foreground">No questions added yet.</p>
             ) : (
