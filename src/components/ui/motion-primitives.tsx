@@ -9,7 +9,7 @@ interface TiltCardProps {
   onClick?: () => void;
 }
 
-export function TiltCard({ children, className = "", glowColor = "rgba(245, 158, 11, 0.15)", intensity = 15 }: TiltCardProps) {
+export function TiltCard({ children, className = "", glowColor = "rgba(245, 158, 11, 0.15)", intensity = 15, onClick }: TiltCardProps) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
