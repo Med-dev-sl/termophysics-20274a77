@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Atom, ArrowRight, Mail, Phone, MapPin, Zap, Brain, BookOpen } from "lucide-react";
+import { Atom, ArrowRight, Mail, Phone, MapPin, Zap, Brain, BookOpen, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
@@ -214,18 +214,18 @@ export default function Landing() {
               >
                 <Button
                   size="lg"
+                  variant="hero"
+                  onClick={() => navigate("/arcade")}
+                  className="gap-2 text-sm sm:text-base font-bold px-8"
+                >
+                  <Gamepad2 className="w-5 h-5" /> Play Physics Arcade
+                </Button>
+                <Button
+                  size="lg"
                   onClick={() => navigate("/chat")}
                   className="gap-2 text-sm sm:text-base font-bold px-8"
                 >
                   {t("landing.hero.getStarted")} <ArrowRight className="w-5 h-5" />
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  onClick={() => setShowInquiry(true)}
-                  className="text-sm sm:text-base font-bold px-8"
-                >
-                  Learn More
                 </Button>
               </motion.div>
 
