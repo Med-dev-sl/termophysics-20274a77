@@ -92,11 +92,7 @@ export function TeacherDashboard() {
     toast({ title: "Class code copied!", description: "Share this code with your students so they can join." });
   };
 
-  if (loading && classrooms.length === 0) return (
-    <div className="flex items-center justify-center py-12">
-      <LoadingSpinner size="lg" text="Loading classrooms..." />
-    </div>
-  );
+  if (loading && classrooms.length === 0) return <DashboardSkeleton />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
