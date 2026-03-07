@@ -74,9 +74,9 @@ export function TeacherDashboard() {
 
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Classroom created successfully!" });
+      showSuccess("Classroom Created!", "Share the code with your students.");
       setDialogOpen(false);
       setName("");
       setDescription("");
