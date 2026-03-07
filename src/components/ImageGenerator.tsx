@@ -238,11 +238,11 @@ export function ImageGenerator({ disabled = false, onImageGenerated }: ImageGene
                 >
                   <input
                     type="checkbox"
-                    checked={rotation[axis as keyof typeof rotation]}
+                    checked={!!rotation[axis as keyof typeof rotation]}
                     onChange={(e) =>
                       setRotation((prev) => ({
                         ...prev,
-                        [axis]: e.target.checked,
+                        [axis]: e.target.checked ? 1 : 0,
                       }))
                     }
                     className="w-4 h-4 rounded"
