@@ -40,23 +40,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (error) {
       console.error('Error fetching user role:', error);
       setUserRole(null);
+    } finally {
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     // Set up auth state listener BEFORE checking session
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
+      (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         
         if (session?.user) {
-          await fetchUserRole(session.user.id);
+          // Use setTimeout to avoid blocking the auth state change callback
+          // which can cause a deadlock with signUp/signIn promises
+          setTimeout(() => {
+            fetchUserRole(session.user.id);
+          }, 0);
         } else {
           setUserRole(null);
+          setLoading(false);
         }
-        
-        setLoading(false);
       }
     );
 
