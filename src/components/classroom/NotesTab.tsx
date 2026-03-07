@@ -124,7 +124,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
                 <Input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
               </div>
               <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">
-                {creating ? "Adding..." : "Add Note"}
+                {creating ? <><ButtonSpinner /> Adding...</> : "Add Note"}
               </Button>
             </div>
           </DialogContent>
