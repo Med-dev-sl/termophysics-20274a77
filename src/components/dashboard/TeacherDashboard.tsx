@@ -134,7 +134,7 @@ export function TeacherDashboard() {
                 <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A brief description for your students..." />
               </div>
               <Button onClick={handleCreate} disabled={creating || !name.trim()} className="w-full" variant="hero">
-                {creating ? "Creating..." : "Create Classroom"}
+                {creating ? <><ButtonSpinner /> Creating...</> : "Create Classroom"}
               </Button>
             </div>
           </DialogContent>
