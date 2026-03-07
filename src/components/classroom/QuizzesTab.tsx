@@ -143,7 +143,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     setLoadingSubmissions(false);
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading quizzes...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading quizzes..." className="py-8" />;
 
   return (
     <div className="space-y-4">
