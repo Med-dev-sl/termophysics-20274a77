@@ -33,6 +33,7 @@ interface QuizzesTabProps {
 export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
 
