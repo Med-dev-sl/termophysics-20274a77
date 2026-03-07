@@ -161,9 +161,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
 
     setSubmitting(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: isLate ? "Submitted (late)" : "Submitted!" });
+      showSuccess(isLate ? "Submitted (Late)" : "Submitted!", "Your work has been received.");
       setSubmitDialogOpen(false);
       setSubmitContent(""); setSubmitFile(null); setSelectedAssignment(null);
     }
