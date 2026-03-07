@@ -479,14 +479,11 @@ export default function Landing() {
                   </Torus>
                 </group>
 
-                <motion.group
-                  animate={{ rotateY: Math.PI / 4 }}
-                  transition={{ duration: 0 }}
-                >
+                <group rotation={[0, Math.PI / 4, 0]}>
                   <Torus args={[1.2, 0.03, 16, 100]}>
                     <meshStandardMaterial color="#ec4899" transparent opacity={0.3} />
                   </Torus>
-                </motion.group>
+                </group>
               </Canvas>
             </motion.div>
           </div>
