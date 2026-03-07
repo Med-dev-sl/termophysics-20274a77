@@ -18,7 +18,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp, signIn } = useAuth();
-  const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
