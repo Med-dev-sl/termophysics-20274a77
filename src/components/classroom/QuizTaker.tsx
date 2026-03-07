@@ -232,6 +232,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
           )}
         </div>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }

@@ -155,6 +155,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
           ))}
         </div>
       )}
+      <FeedbackModalComponent />
     </div>
   );
 }

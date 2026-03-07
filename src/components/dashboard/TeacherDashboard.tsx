@@ -228,8 +228,9 @@ export function TeacherDashboard() {
               </CardContent>
             </Card>
           ))}
-        </div>
-      )}
+      </div>
+    )}
+      <FeedbackModalComponent />
     </div>
   );
 }

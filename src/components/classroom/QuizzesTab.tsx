@@ -342,6 +342,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
         onOpenChange={(open) => { if (!open) setTakeQuizId(null); }}
         onSubmitted={fetchUserSubmissions}
       />
+      <FeedbackModalComponent />
     </div>
   );
 }

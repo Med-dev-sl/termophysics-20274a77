@@ -233,6 +233,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
                     )}
                 </div>
             </DialogContent>
+            <FeedbackModalComponent />
         </Dialog>
     );
 }

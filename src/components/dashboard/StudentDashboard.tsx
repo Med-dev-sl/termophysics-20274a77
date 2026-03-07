@@ -153,6 +153,7 @@ export function StudentDashboard() {
           ))}
         </div>
       )}
+      <FeedbackModalComponent />
     </div>
   );
 }
