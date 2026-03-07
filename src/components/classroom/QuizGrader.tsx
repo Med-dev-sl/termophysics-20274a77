@@ -36,6 +36,7 @@ interface QuizGraderProps {
 
 export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGraded }: QuizGraderProps) {
     const { toast } = useToast();
+    const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [scores, setScores] = useState<Record<string, string>>({});
