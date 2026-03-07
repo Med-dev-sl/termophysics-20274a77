@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Trash2, Plus } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Question {
   id: string;
@@ -26,6 +28,7 @@ interface QuizQuestionManagerProps {
 
 export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: QuizQuestionManagerProps) {
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -88,9 +91,9 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
 
     const { error } = await supabase.from("quiz_questions").insert(insert);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Question added!" });
+      showSuccess("Question Added!", "Your question has been saved.");
       resetForm();
       fetchQuestions();
     }
@@ -194,7 +197,7 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
           <div className="space-y-3">
             <h4 className="font-bold">Current Questions ({questions.length})</h4>
             {loading ? (
-              <p className="text-sm text-muted-foreground">Loading...</p>
+              <LoadingSpinner size="sm" text="Loading..." />
             ) : questions.length === 0 ? (
               <p className="text-sm text-muted-foreground">No questions added yet.</p>
             ) : (
@@ -229,6 +232,7 @@ export function QuizQuestionManager({ quizId, quizTitle, open, onOpenChange }: Q
           </div>
         </div>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }

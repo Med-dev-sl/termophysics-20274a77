@@ -7,7 +7,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { CheckCircle2, AlertCircle } from "lucide-react";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Answer {
     id: string;
@@ -34,6 +36,7 @@ interface QuizGraderProps {
 
 export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGraded }: QuizGraderProps) {
     const { toast } = useToast();
+    const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
     const [loading, setLoading] = useState(true);
     const [answers, setAnswers] = useState<Answer[]>([]);
     const [scores, setScores] = useState<Record<string, string>>({});
@@ -117,11 +120,11 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
                 })
                 .eq("id", submissionId);
 
-            toast({ title: "Grading complete!", description: `Total score: ${totalScore}` });
+            showSuccess("Grading Complete!", `Total score: ${totalScore}`);
             onGraded();
             onOpenChange(false);
         } catch (err: any) {
-            toast({ variant: "destructive", title: "Error", description: err.message });
+            showError("Error", err.message);
         } finally {
             setSubmitting(false);
         }
@@ -149,9 +152,7 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
 
                 <div className="space-y-6 py-4">
                     {loading ? (
-                        <div className="flex justify-center p-12">
-                            <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-                        </div>
+                        <LoadingSpinner size="md" text="Loading answers..." className="py-12" />
                     ) : (
                         <>
                             {answers.map((a, idx) => (
@@ -223,13 +224,14 @@ export function QuizGrader({ submissionId, studentName, open, onOpenChange, onGr
 
                             <div className="sticky bottom-0 pt-4 bg-background border-t">
                                 <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">
-                                    {submitting ? <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</> : `Save All Grades (${totalAwarded}/${totalPossible})`}
+                                    {submitting ? <><ButtonSpinner /> Saving...</> : `Save All Grades (${totalAwarded}/${totalPossible})`}
                                 </Button>
                             </div>
                         </>
                     )}
                 </div>
             </DialogContent>
+            <FeedbackModalComponent />
         </Dialog>
     );
 }

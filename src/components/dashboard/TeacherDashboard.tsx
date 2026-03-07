@@ -10,6 +10,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, BookOpen, Users, Copy } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Classroom {
   id: string;
@@ -23,6 +25,7 @@ interface Classroom {
 export function TeacherDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState<Classroom[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,9 +74,9 @@ export function TeacherDashboard() {
 
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Classroom created successfully!" });
+      showSuccess("Classroom Created!", "Share the code with your students.");
       setDialogOpen(false);
       setName("");
       setDescription("");
@@ -96,7 +99,7 @@ export function TeacherDashboard() {
 
   if (loading && classrooms.length === 0) return (
     <div className="flex items-center justify-center py-12">
-      <p className="text-muted-foreground">Loading classrooms...</p>
+      <LoadingSpinner size="lg" text="Loading classrooms..." />
     </div>
   );
 
@@ -131,7 +134,7 @@ export function TeacherDashboard() {
                 <Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="A brief description for your students..." />
               </div>
               <Button onClick={handleCreate} disabled={creating || !name.trim()} className="w-full" variant="hero">
-                {creating ? "Creating..." : "Create Classroom"}
+                {creating ? <><ButtonSpinner /> Creating...</> : "Create Classroom"}
               </Button>
             </div>
           </DialogContent>
@@ -225,8 +228,9 @@ export function TeacherDashboard() {
               </CardContent>
             </Card>
           ))}
-        </div>
-      )}
+      </div>
+    )}
+      <FeedbackModalComponent />
     </div>
   );
 }

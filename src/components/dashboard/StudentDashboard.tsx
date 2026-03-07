@@ -9,6 +9,8 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Plus, BookOpen } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface EnrolledClassroom {
   id: string;
@@ -20,6 +22,7 @@ interface EnrolledClassroom {
 export function StudentDashboard() {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const navigate = useNavigate();
   const [classrooms, setClassrooms] = useState<EnrolledClassroom[]>([]);
   const [loading, setLoading] = useState(true);
@@ -58,13 +61,13 @@ export function StudentDashboard() {
 
     if (findError) {
       console.error("Error finding classroom:", findError);
-      toast({ variant: "destructive", title: "Search failed", description: findError.message });
+      showError("Search Failed", findError.message);
       setJoining(false);
       return;
     }
 
     if (!classroom) {
-      toast({ variant: "destructive", title: "Invalid code", description: "No classroom found with that code. Please check the code and try again." });
+      showError("Invalid Code", "No classroom found with that code. Please check and try again.");
       setJoining(false);
       return;
     }
@@ -76,16 +79,16 @@ export function StudentDashboard() {
 
     setJoining(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message.includes("duplicate") ? "Already enrolled!" : error.message });
+      showError("Error", error.message.includes("duplicate") ? "Already enrolled!" : error.message);
     } else {
-      toast({ title: "Joined classroom!" });
+      showSuccess("Joined Classroom!", "You're now enrolled in this class.");
       setDialogOpen(false);
       setClassCode("");
       fetchEnrolledClassrooms();
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading classrooms...</p>;
+  if (loading) return <LoadingSpinner size="lg" text="Loading classrooms..." className="py-12" />;
 
   return (
     <div className="space-y-6" data-tour="dashboard-content">
@@ -114,7 +117,7 @@ export function StudentDashboard() {
                 />
               </div>
               <Button onClick={handleJoin} disabled={joining || !classCode.trim()} className="w-full" variant="hero">
-                {joining ? "Joining..." : "Join Classroom"}
+                {joining ? <><ButtonSpinner /> Joining...</> : "Join Classroom"}
               </Button>
             </div>
           </DialogContent>
@@ -150,6 +153,7 @@ export function StudentDashboard() {
           ))}
         </div>
       )}
+      <FeedbackModalComponent />
     </div>
   );
 }

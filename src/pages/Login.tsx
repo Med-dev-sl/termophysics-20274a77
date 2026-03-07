@@ -4,17 +4,18 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2, Atom } from "lucide-react";
+import { Atom } from "lucide-react";
 import { motion } from "framer-motion";
+import { ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signIn } = useAuth();
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -25,17 +26,10 @@ const Login = () => {
     setLoading(false);
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      showError("Login Failed", error.message);
     } else {
-      toast({
-        title: "Welcome back!",
-        description: "Your conversations are ready.",
-      });
-      navigate("/dashboard");
+      showSuccess("Welcome Back!", "Your conversations are ready.");
+      setTimeout(() => navigate("/dashboard"), 1500);
     }
   };
 
@@ -115,7 +109,7 @@ const Login = () => {
               variant="hero"
               disabled={loading}
             >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              {loading && <ButtonSpinner />}
               Login
             </Button>
           </motion.form>
@@ -216,6 +210,7 @@ const Login = () => {
           className="absolute bottom-40 right-20 w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm"
         ></motion.div>
       </motion.div>
+      <FeedbackModalComponent />
     </div>
   );
 };

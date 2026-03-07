@@ -8,7 +8,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
-import { Plus, ClipboardList, Calendar, Download, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
+import { Plus, ClipboardList, Calendar, Download, CheckCircle2, AlertCircle } from "lucide-react";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { useToast } from "@/hooks/use-toast";
 import { format } from "date-fns";
 
@@ -29,6 +31,7 @@ interface AssignmentsTabProps {
 export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [assignments, setAssignments] = useState<Assignment[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -116,9 +119,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     });
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Assignment created!" });
+      showSuccess("Assignment Created!", "Students can now submit their work.");
       setDialogOpen(false);
       setTitle(""); setDescription(""); setDueDate(""); setMaxScore("100");
       fetchAssignments();
@@ -158,9 +161,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
 
     setSubmitting(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: isLate ? "Submitted (late)" : "Submitted!" });
+      showSuccess(isLate ? "Submitted (Late)" : "Submitted!", "Your work has been received.");
       setSubmitDialogOpen(false);
       setSubmitContent(""); setSubmitFile(null); setSelectedAssignment(null);
     }
@@ -182,10 +185,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
 
     setSavingGrade(null);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Grade saved!" });
-      // Update local state
+      showSuccess("Grade Saved!", "The student's grade has been updated.");
       setSubmissions(prev =>
         prev.map(s => s.id === submissionId
           ? { ...s, score: isNaN(scoreVal) ? null : scoreVal, feedback: feedbackVal, graded_at: new Date().toISOString() }
@@ -195,7 +197,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading assignments...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading assignments..." className="py-8" />;
 
   return (
     <div className="space-y-4">
@@ -211,7 +213,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
               <div className="space-y-2"><Label>Description</Label><Textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Instructions..." rows={3} /></div>
               <div className="space-y-2"><Label>Due Date</Label><Input type="datetime-local" value={dueDate} onChange={(e) => setDueDate(e.target.value)} /></div>
               <div className="space-y-2"><Label>Max Score</Label><Input type="number" value={maxScore} onChange={(e) => setMaxScore(e.target.value)} /></div>
-              <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">{creating ? "Creating..." : "Create"}</Button>
+              <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">{creating ? <><ButtonSpinner /> Creating...</> : "Create"}</Button>
             </div>
           </DialogContent>
         </Dialog>
@@ -224,7 +226,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           <div className="space-y-4">
             <div className="space-y-2"><Label>Your Answer</Label><Textarea value={submitContent} onChange={(e) => setSubmitContent(e.target.value)} placeholder="Write your answer..." rows={4} /></div>
             <div className="space-y-2"><Label>Upload File (optional)</Label><Input type="file" onChange={(e) => setSubmitFile(e.target.files?.[0] || null)} /></div>
-            <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">{submitting ? "Submitting..." : "Submit"}</Button>
+            <Button onClick={handleSubmit} disabled={submitting} className="w-full" variant="hero">{submitting ? <><ButtonSpinner /> Submitting...</> : "Submit"}</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -277,9 +279,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           </DialogHeader>
           <div className="space-y-4 py-4">
             {loadingSubmissions ? (
-              <div className="flex justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              </div>
+              <LoadingSpinner size="md" text="Loading submissions..." className="py-8" />
             ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No submissions yet.</p>
             ) : (
@@ -366,9 +366,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
                           size="sm"
                           className="w-full"
                         >
-                          {savingGrade === s.id ? (
-                            <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</>
-                          ) : s.graded_at ? "Update Grade" : "Save Grade"}
+                                {savingGrade === s.id ? (
+                                  <><ButtonSpinner /> Saving...</>
+                                ) : s.graded_at ? "Update Grade" : "Save Grade"}
                         </Button>
                       </div>
                     </CardContent>
@@ -379,6 +379,7 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
           </div>
         </DialogContent>
       </Dialog>
+      <FeedbackModalComponent />
     </div>
   );
 }

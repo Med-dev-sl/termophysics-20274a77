@@ -9,6 +9,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Plus, FileText, Download } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Note {
   id: string;
@@ -27,6 +29,7 @@ interface NotesTabProps {
 export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -82,9 +85,9 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
 
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Note added!" });
+      showSuccess("Note Added!", "Your note has been saved successfully.");
       setDialogOpen(false);
       setTitle("");
       setContent("");
@@ -93,7 +96,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
     }
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading notes...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading notes..." className="py-8" />;
 
   return (
     <div className="space-y-4">
@@ -122,7 +125,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
                 <Input type="file" onChange={(e) => setFile(e.target.files?.[0] || null)} />
               </div>
               <Button onClick={handleCreate} disabled={creating || !title.trim()} className="w-full" variant="hero">
-                {creating ? "Adding..." : "Add Note"}
+                {creating ? <><ButtonSpinner /> Adding...</> : "Add Note"}
               </Button>
             </div>
           </DialogContent>
@@ -153,6 +156,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
           ))}
         </div>
       )}
+      <FeedbackModalComponent />
     </div>
   );
 }

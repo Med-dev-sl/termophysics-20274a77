@@ -7,8 +7,10 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from "@/components/ui/card";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Brain, Plus, Loader2, Eye, ClipboardList } from "lucide-react";
+import { Brain, Plus, Eye, ClipboardList } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 import { format } from "date-fns";
 import { QuizQuestionManager } from "./QuizQuestionManager";
 import { QuizTaker } from "./QuizTaker";
@@ -31,6 +33,7 @@ interface QuizzesTabProps {
 export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -107,9 +110,9 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     });
     setCreating(false);
     if (error) {
-      toast({ variant: "destructive", title: "Error", description: error.message });
+      showError("Error", error.message);
     } else {
-      toast({ title: "Quiz created! Now add your questions." });
+      showSuccess("Quiz Created!", "Now add your questions.");
       setCreateDialogOpen(false);
       setTitle(""); setDescription(""); setDueDate(""); setTimeLimit("");
       fetchQuizzes();
@@ -140,7 +143,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
     setLoadingSubmissions(false);
   };
 
-  if (loading) return <p className="text-muted-foreground">Loading quizzes...</p>;
+  if (loading) return <LoadingSpinner size="md" text="Loading quizzes..." className="py-8" />;
 
   return (
     <div className="space-y-4">
@@ -175,7 +178,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
                 </div>
               </div>
               <Button onClick={handleCreateQuiz} disabled={creating || !title.trim()} className="w-full" variant="hero">
-                {creating ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : "Create Quiz"}
+                {creating ? <><ButtonSpinner /> Creating...</> : "Create Quiz"}
               </Button>
             </div>
           </DialogContent>
@@ -259,9 +262,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
           </DialogHeader>
           <div className="py-4">
             {loadingSubmissions ? (
-              <div className="flex justify-center p-8">
-                <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              </div>
+              <LoadingSpinner size="md" text="Loading submissions..." className="py-8" />
             ) : submissions.length === 0 ? (
               <p className="text-center text-muted-foreground py-8">No students have submitted this quiz yet.</p>
             ) : (
@@ -339,6 +340,7 @@ export function QuizzesTab({ classroomId, isTeacher }: QuizzesTabProps) {
         onOpenChange={(open) => { if (!open) setTakeQuizId(null); }}
         onSubmitted={fetchUserSubmissions}
       />
+      <FeedbackModalComponent />
     </div>
   );
 }

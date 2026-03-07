@@ -4,8 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/hooks/useAuth";
-import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface AuthModalProps {
   open: boolean;
@@ -18,7 +18,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const { signUp, signIn } = useAuth();
-  const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -31,18 +31,12 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
     setLoading(false);
 
     if (error) {
-      toast({
-        variant: "destructive",
-        title: "Error",
-        description: error.message,
-      });
+      showError("Error", error.message);
     } else {
-      toast({
-        title: isRegister ? "Account created!" : "Welcome back!",
-        description: isRegister
-          ? "You can now save your chat history."
-          : "Your conversations are ready.",
-      });
+      showSuccess(
+        isRegister ? "Account Created!" : "Welcome Back!",
+        isRegister ? "You can now save your chat history." : "Your conversations are ready."
+      );
       onOpenChange(false);
       setEmail("");
       setPassword("");
@@ -82,7 +76,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
             />
           </div>
           <Button type="submit" className="w-full" variant="hero" disabled={loading}>
-            {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+            {loading && <ButtonSpinner />}
             {isRegister ? "Register" : "Login"}
           </Button>
           <p className="text-center text-sm text-muted-foreground">
@@ -97,6 +91,7 @@ export function AuthModal({ open, onOpenChange }: AuthModalProps) {
           </p>
         </form>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }

@@ -4,6 +4,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserRole } from "@/hooks/useUserRole";
 import { AppLayout } from "@/components/AppLayout";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { NotesTab } from "@/components/classroom/NotesTab";
 import { AssignmentsTab } from "@/components/classroom/AssignmentsTab";
@@ -45,7 +46,7 @@ const ClassroomDetail = () => {
   if (authLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <p className="text-muted-foreground">Loading...</p>
+        <LoadingSpinner size="lg" text="Loading classroom..." />
       </div>
     );
   }

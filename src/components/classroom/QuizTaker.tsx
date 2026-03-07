@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2 } from "lucide-react";
+import { LoadingSpinner, ButtonSpinner } from "@/components/ui/loading-spinner";
+import { useFeedbackModal } from "@/components/ui/feedback-modal";
 
 interface Question {
   id: string;
@@ -27,6 +28,7 @@ interface QuizTakerProps {
 export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }: QuizTakerProps) {
   const { user } = useAuth();
   const { toast } = useToast();
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [questions, setQuestions] = useState<Question[]>([]);
   const [answers, setAnswers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
@@ -139,18 +141,18 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
         .update(updateData)
         .eq("id", submission.id);
 
-      toast({
-        title: "Quiz submitted!",
-        description: allAutoGraded
+      showSuccess(
+        "Quiz Submitted!",
+        allAutoGraded
           ? `Your score: ${totalAutoScore} points`
           : "Submitted successfully. Some questions require teacher review."
-      });
+      );
 
       onOpenChange(false);
       onSubmitted();
     } catch (err: any) {
       console.error("Submission error:", err);
-      toast({ variant: "destructive", title: "Error", description: err.message });
+      showError("Submission Failed", err.message);
     } finally {
       setSubmitting(false);
     }
@@ -167,9 +169,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
 
         <div className="space-y-6 py-4">
           {loading ? (
-            <div className="flex justify-center p-12">
-              <Loader2 className="h-8 w-8 animate-spin text-termo-sky-blue" />
-            </div>
+            <LoadingSpinner size="md" text="Loading questions..." className="py-12" />
           ) : questions.length === 0 ? (
             <p className="text-center py-8 text-muted-foreground">This quiz has no questions yet.</p>
           ) : (
@@ -223,7 +223,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
               <Button onClick={handleSubmit} disabled={submitting} className="w-full h-12 text-lg" variant="hero">
                 {submitting ? (
                   <>
-                    <Loader2 className="h-5 w-5 animate-spin mr-2" />
+                    <ButtonSpinner />
                     Submitting Answers...
                   </>
                 ) : "Complete & Submit"}
@@ -232,6 +232,7 @@ export function QuizTaker({ quizId, quizTitle, open, onOpenChange, onSubmitted }
           )}
         </div>
       </DialogContent>
+      <FeedbackModalComponent />
     </Dialog>
   );
 }
