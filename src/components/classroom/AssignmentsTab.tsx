@@ -368,9 +368,9 @@ export function AssignmentsTab({ classroomId, isTeacher }: AssignmentsTabProps) 
                           size="sm"
                           className="w-full"
                         >
-                          {savingGrade === s.id ? (
-                            <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Saving...</>
-                          ) : s.graded_at ? "Update Grade" : "Save Grade"}
+                                {savingGrade === s.id ? (
+                                  <><ButtonSpinner /> Saving...</>
+                                ) : s.graded_at ? "Update Grade" : "Save Grade"}
                         </Button>
                       </div>
                     </CardContent>
