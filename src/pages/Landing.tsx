@@ -425,10 +425,7 @@ export default function Landing() {
                 </mesh>
 
                 {/* Electron Orbit 1 (XY Plane) */}
-                <motion.group
-                  animate={{ rotateZ: [0, Math.PI * 2] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                >
+                <group>
                   <mesh position={[1.2, 0, 0]}>
                     <sphereGeometry args={[0.12, 16, 16]} />
                     <meshStandardMaterial
@@ -439,7 +436,7 @@ export default function Landing() {
                       roughness={0.1}
                     />
                   </mesh>
-                </motion.group>
+                </group>
 
                 {/* Electron Orbit 2 (YZ Plane) */}
                 <motion.group
