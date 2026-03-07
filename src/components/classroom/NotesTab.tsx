@@ -29,7 +29,7 @@ interface NotesTabProps {
 export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
-  const [notes, setNotes] = useState<Note[]>([]);
+  const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [title, setTitle] = useState("");
