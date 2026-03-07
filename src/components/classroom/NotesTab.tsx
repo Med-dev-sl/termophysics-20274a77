@@ -30,6 +30,7 @@ export function NotesTab({ classroomId, isTeacher }: NotesTabProps) {
   const { user } = useAuth();
   const { toast } = useToast();
   const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
+  const [notes, setNotes] = useState<Note[]>([]);
   const [loading, setLoading] = useState(true);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [title, setTitle] = useState("");
