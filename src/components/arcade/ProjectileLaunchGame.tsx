@@ -94,8 +94,8 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
     setPhase("flying");
     const speed = power * 0.15;
     const rad = angle * Math.PI / 180;
-    projState.current = { x: 40, y: groundY, vx: speed * Math.cos(rad), vy: -speed * Math.sin(rad), trail: [] };
-
+    projState.current = { x: 40, y: groundY - 1, vx: speed * Math.cos(rad), vy: -speed * Math.sin(rad), trail: [] };
+    let started = false;
     const animate = () => {
       const p = projState.current;
       p.vy += 0.15; // gravity
