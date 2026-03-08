@@ -135,6 +135,12 @@ export default function GravityDropGame({ onComplete }: Props) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
       <h3 className="text-xl font-bold text-foreground">🎯 Gravity Drop</h3>
+      <div className="bg-card/60 border border-border rounded-lg p-3 max-w-sm text-center space-y-1">
+        <p className="text-xs font-semibold text-primary">📖 Concept: Gravitational Acceleration & Air Resistance</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Objects fall due to gravity (9.8 m/s²) but wind and air resistance alter their path. Learn how forces combine to affect trajectory — the foundation of <span className="font-medium text-foreground">Newton's Second Law (F=ma)</span>.
+        </p>
+      </div>
       <p className="text-sm text-muted-foreground text-center max-w-xs">
         Position the ball and drop it! Wind will push it — try to land on the target.
       </p>
