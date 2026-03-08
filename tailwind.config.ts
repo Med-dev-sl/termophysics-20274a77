@@ -66,8 +66,9 @@ export default {
         },
       },
       fontFamily: {
-        sans: ["Inter", "sans-serif"],
-        display: ["Space Grotesk", "sans-serif"],
+        sans: ["Candara", "Trebuchet MS", "Century Gothic", "sans-serif"],
+        display: ["Century Gothic", "Trebuchet MS", "Candara", "sans-serif"],
+        body: ["Trebuchet MS", "Candara", "Century Gothic", "sans-serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
