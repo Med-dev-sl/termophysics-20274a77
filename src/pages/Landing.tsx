@@ -82,7 +82,7 @@ export default function Landing() {
               <div className="relative">
                 {/* 3D Canvas Container */}
                 <motion.div
-                  className="rounded-2xl overflow-hidden border-2 border-termo-light-orange/30 shadow-2xl h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-transparent relative"
+                  className="rounded-2xl overflow-hidden border-2 border-termo-light-orange/30 shadow-2xl h-52 sm:h-80 lg:h-96 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-transparent relative"
                   whileHover={{ borderColor: "rgba(245, 158, 11, 0.8)" }}
                   transition={{ duration: 0.3 }}
                 >
