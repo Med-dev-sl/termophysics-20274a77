@@ -10,11 +10,11 @@ import BounceGame from "@/components/arcade/BounceGame";
 import CollisionGame from "@/components/arcade/CollisionGame";
 
 const GAMES = [
-  { id: "gravity", label: "Gravity Drop", emoji: "🎯", component: GravityDropGame },
-  { id: "projectile", label: "Projectile Launch", emoji: "🚀", component: ProjectileLaunchGame },
-  { id: "pendulum", label: "Pendulum Release", emoji: "🎪", component: PendulumGame },
-  { id: "bounce", label: "Bounce Predictor", emoji: "🏀", component: BounceGame },
-  { id: "collision", label: "Elastic Collision", emoji: "💥", component: CollisionGame },
+  { id: "gravity", label: "Gravity Drop", emoji: "🎯", concept: "Gravitational Acceleration", component: GravityDropGame },
+  { id: "projectile", label: "Projectile Launch", emoji: "🚀", concept: "2D Kinematics", component: ProjectileLaunchGame },
+  { id: "pendulum", label: "Pendulum Release", emoji: "🎪", concept: "Energy Conservation", component: PendulumGame },
+  { id: "bounce", label: "Bounce Predictor", emoji: "🏀", concept: "Coefficient of Restitution", component: BounceGame },
+  { id: "collision", label: "Elastic Collision", emoji: "💥", concept: "Conservation of Momentum", component: CollisionGame },
 ];
 
 const MIN_GAMES = 2;
