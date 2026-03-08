@@ -216,7 +216,7 @@ export default function Landing() {
                   size="lg"
                   variant="hero"
                   onClick={() => navigate("/arcade")}
-                  className="gap-2 text-sm sm:text-base font-bold px-8"
+                  className="gap-2 text-base sm:text-lg font-bold px-6 sm:px-8 h-12 sm:h-auto"
                 >
                   <Gamepad2 className="w-5 h-5" /> Play Physics Arcade
                 </Button>
