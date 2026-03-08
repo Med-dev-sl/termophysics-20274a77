@@ -14,6 +14,8 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
   const animRef = useRef<number>();
   const projState = useRef({ x: 40, y: 0, vx: 0, vy: 0, trail: [] as { x: number; y: number }[] });
   const targetXRef = useRef(280 + Math.random() * 80);
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
 
   const W = 400, H = 300;
   const groundY = H - 40;
@@ -25,20 +27,17 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
     const ctx = canvas.getContext("2d")!;
     ctx.clearRect(0, 0, W, H);
 
-    // Sky
     const sky = ctx.createLinearGradient(0, 0, 0, H);
     sky.addColorStop(0, "#0f172a");
     sky.addColorStop(1, "#1e293b");
     ctx.fillStyle = sky;
     ctx.fillRect(0, 0, W, H);
 
-    // Stars
     ctx.fillStyle = "rgba(255,255,255,0.3)";
     for (let i = 0; i < 20; i++) {
       ctx.fillRect((i * 53) % W, (i * 37) % (groundY - 20), 1.5, 1.5);
     }
 
-    // Ground
     ctx.fillStyle = "#365314";
     ctx.fillRect(0, groundY, W, H - groundY);
 
@@ -54,9 +53,10 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
     ctx.fillText("🎯", targetX, groundY - 10);
 
     // Cannon
+    const currentAngle = angle;
     ctx.save();
     ctx.translate(40, groundY);
-    ctx.rotate(-angle * Math.PI / 180);
+    ctx.rotate(-currentAngle * Math.PI / 180);
     ctx.fillStyle = "#94a3b8";
     ctx.fillRect(0, -4, 25, 8);
     ctx.restore();
@@ -70,16 +70,14 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
     if (p.trail.length > 1) {
       ctx.beginPath();
       ctx.moveTo(p.trail[0].x, p.trail[0].y);
-      p.trail.forEach((pt, i) => {
-        if (i > 0) ctx.lineTo(pt.x, pt.y);
-      });
+      p.trail.forEach((pt, i) => { if (i > 0) ctx.lineTo(pt.x, pt.y); });
       ctx.strokeStyle = "rgba(251, 191, 36, 0.4)";
       ctx.lineWidth = 2;
       ctx.stroke();
     }
 
     // Projectile
-    if (phase !== "aim" || p.trail.length > 0) {
+    if (phaseRef.current !== "aim" || p.trail.length > 0) {
       ctx.beginPath();
       ctx.arc(p.x, p.y, 6, 0, Math.PI * 2);
       ctx.fillStyle = "#fbbf24";
@@ -87,25 +85,28 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
       ctx.strokeStyle = "#d97706";
       ctx.stroke();
     }
-  }, [angle, phase, targetX]);
+  }, [angle, targetX]);
 
   const launch = () => {
     if (phase !== "aim") return;
     setPhase("flying");
     const speed = power * 0.15;
     const rad = angle * Math.PI / 180;
-    projState.current = { x: 40, y: groundY - 1, vx: speed * Math.cos(rad), vy: -speed * Math.sin(rad), trail: [] };
-    let started = false;
+    projState.current = { x: 40, y: groundY - 2, vx: speed * Math.cos(rad), vy: -speed * Math.sin(rad), trail: [] };
+    let hasRisen = false;
+
     const animate = () => {
       const p = projState.current;
-      p.vy += 0.15; // gravity
+      p.vy += 0.15;
       p.x += p.vx;
       p.y += p.vy;
       p.trail.push({ x: p.x, y: p.y });
 
+      if (p.y < groundY - 10) hasRisen = true;
+
       draw();
 
-      if (started && p.y >= groundY) {
+      if (hasRisen && p.y >= groundY) {
         p.y = groundY;
         const dist = Math.abs(p.x - targetX);
         const pts = dist < 15 ? 100 : dist < 30 ? 75 : dist < 60 ? 50 : dist < 100 ? 25 : 5;
@@ -119,7 +120,6 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
         setPhase("result");
         return;
       }
-      if (p.y < groundY - 5) started = true;
       animRef.current = requestAnimationFrame(animate);
     };
     animRef.current = requestAnimationFrame(animate);
@@ -127,8 +127,11 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
 
   useEffect(() => {
     draw();
-    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
   }, [draw]);
+
+  useEffect(() => {
+    return () => { if (animRef.current) cancelAnimationFrame(animRef.current); };
+  }, []);
 
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
