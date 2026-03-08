@@ -50,7 +50,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section - Modern Design */}
-      <section className="pt-20 sm:pt-24 pb-12 sm:pb-20 px-3 sm:px-4 relative overflow-hidden">
+      <section className="pt-20 sm:pt-24 pb-12 sm:pb-20 px-4 sm:px-6 relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
