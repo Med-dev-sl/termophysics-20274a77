@@ -115,6 +115,12 @@ export default function BounceGame({ onComplete }: Props) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
       <h3 className="text-xl font-bold text-foreground">🏀 Bounce Predictor</h3>
+      <div className="bg-card/60 border border-border rounded-lg p-3 max-w-sm text-center space-y-1">
+        <p className="text-xs font-semibold text-primary">📖 Concept: Coefficient of Restitution & Energy Loss</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          Each bounce loses energy due to inelastic deformation. The ratio of speeds before and after impact is the <span className="font-medium text-foreground">coefficient of restitution (e = v₂/v₁)</span>. Predict how energy dissipates!
+        </p>
+      </div>
       <p className="text-sm text-muted-foreground text-center max-w-xs">
         How many times will the ball bounce? Guess before it drops!
       </p>

@@ -156,6 +156,12 @@ export default function CollisionGame({ onComplete }: Props) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
       <h3 className="text-xl font-bold text-foreground">💥 Elastic Collision</h3>
+      <div className="bg-card/60 border border-border rounded-lg p-3 max-w-sm text-center space-y-1">
+        <p className="text-xs font-semibold text-primary">📖 Concept: Conservation of Momentum & Elastic Collisions</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          In elastic collisions, both momentum and kinetic energy are conserved. Heavier objects transfer more momentum — explore <span className="font-medium text-foreground">p = mv and m₁v₁ + m₂v₂ = m₁v₁' + m₂v₂'</span>.
+        </p>
+      </div>
       <p className="text-sm text-muted-foreground text-center max-w-xs">
         Red (2kg) moves right, Blue (1kg) moves left. After collision, what happens?
       </p>
