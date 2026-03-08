@@ -157,7 +157,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+                className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight"
               >
                 {t("landing.hero.title").split(" ").map((word, i) => (
                   <span
