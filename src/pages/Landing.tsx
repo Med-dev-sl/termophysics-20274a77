@@ -702,6 +702,7 @@ export default function Landing() {
               </div>
             </motion.div>
           </div>
+        </div>
       </section>
 
       {/* Contact Section */}
