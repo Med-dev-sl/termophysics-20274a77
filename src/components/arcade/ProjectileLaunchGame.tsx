@@ -115,10 +115,11 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
         return;
       }
       if (p.x > W + 20 || p.x < -20) {
-        setScore(0);
+        setScore(5);
         setPhase("result");
         return;
       }
+      if (p.y < groundY - 5) started = true;
       animRef.current = requestAnimationFrame(animate);
     };
     animRef.current = requestAnimationFrame(animate);
