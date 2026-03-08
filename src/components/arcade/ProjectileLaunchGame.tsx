@@ -105,7 +105,7 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
 
       draw();
 
-      if (p.y >= groundY) {
+      if (started && p.y >= groundY) {
         p.y = groundY;
         const dist = Math.abs(p.x - targetX);
         const pts = dist < 15 ? 100 : dist < 30 ? 75 : dist < 60 ? 50 : dist < 100 ? 25 : 5;
