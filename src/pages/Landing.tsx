@@ -190,7 +190,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.45 }}
-                className="text-lg sm:text-xl text-termo-light-orange font-semibold"
+                className="text-xl sm:text-2xl text-termo-light-orange font-semibold"
               >
                 {t("landing.hero.description")}
               </motion.p>
