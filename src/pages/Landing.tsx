@@ -176,7 +176,7 @@ export default function Landing() {
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="space-y-3 bg-gradient-to-r from-termo-deep-blue/10 to-termo-light-orange/10 rounded-lg p-4 border border-termo-light-orange/20"
               >
-                <p className="text-sm sm:text-base font-semibold text-termo-light-orange flex items-center gap-2">
+                <p className="text-base sm:text-lg font-semibold text-termo-light-orange flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-termo-light-orange" />
                   Why 3D & Motion?
                 </p>
