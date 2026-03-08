@@ -9,6 +9,9 @@ import { Atom } from "lucide-react";
 import { motion } from "framer-motion";
 import { ButtonSpinner } from "@/components/ui/loading-spinner";
 import { useFeedbackModal } from "@/components/ui/feedback-modal";
+import { EmailFeedback } from "@/components/EmailFeedback";
+import { PasswordRequirements } from "@/components/PasswordRequirements";
+import { useEmailValidation, usePasswordValidation } from "@/hooks/useFormValidation";
 
 const Register = () => {
   const [email, setEmail] = useState("");
@@ -18,12 +21,29 @@ const Register = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
   const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
+  const { validateEmail, emailTouched, setEmailTouched } = useEmailValidation();
+  const { validatePassword, passwordTouched, setPasswordTouched } = usePasswordValidation();
+
+  const emailValidation = validateEmail(email);
+  const pwValidation = validatePassword(password);
+
+  const canSubmit = emailValidation.isValid && pwValidation.isValid && !!role;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!role) {
       showError("Role Required", "Please select whether you are a learner or teacher.");
+      return;
+    }
+
+    if (!emailValidation.isValid) {
+      showError("Invalid Email", "Please use a valid email from a real email provider (Gmail, Yahoo, Outlook, etc.).");
+      return;
+    }
+
+    if (!pwValidation.isValid) {
+      showError("Weak Password", "Password must be at least 8 characters with both letters and numbers.");
       return;
     }
 
@@ -36,8 +56,8 @@ const Register = () => {
     if (error) {
       showError("Registration Failed", error.message);
     } else {
-      showSuccess("Account Created!", "You can now save your chat history.");
-      setTimeout(() => navigate("/dashboard"), 1500);
+      showSuccess("Account Created!", "Please check your email to verify your account, then log in.");
+      setTimeout(() => navigate("/login"), 2000);
     }
   };
 
@@ -57,7 +77,6 @@ const Register = () => {
 
         <div className="w-full max-w-md relative z-10">
           <div className="text-center mb-8">
-            {/* Mobile brand icon */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -80,7 +99,7 @@ const Register = () => {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-base sm:text-lg text-muted-foreground"
             >
-              Join us to save your conversations
+              Join TermoPhysics to start learning
             </motion.p>
           </div>
 
@@ -96,12 +115,20 @@ const Register = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="you@gmail.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setEmailTouched(true); }}
+                onBlur={() => setEmailTouched(true)}
                 required
-                className="h-13 text-base border-border focus:border-primary focus:ring-primary/20"
+                className={`h-13 text-base border-border focus:border-primary focus:ring-primary/20 ${
+                  emailTouched && emailValidation.status === "valid" ? "border-green-500" :
+                  emailTouched && emailValidation.status === "invalid" ? "border-destructive" : ""
+                }`}
               />
+              <EmailFeedback validation={emailValidation} />
+              {!emailTouched && (
+                <p className="text-xs text-muted-foreground">Use your school or personal email (Gmail, Yahoo, Outlook, etc.)</p>
+              )}
             </div>
 
             <div className="space-y-2">
@@ -111,11 +138,15 @@ const Register = () => {
                 type="password"
                 placeholder="••••••••"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => { setPassword(e.target.value); setPasswordTouched(true); }}
+                onFocus={() => setPasswordTouched(true)}
                 required
-                minLength={6}
-                className="h-13 text-base border-border focus:border-primary focus:ring-primary/20"
+                className={`h-13 text-base border-border focus:border-primary focus:ring-primary/20 ${
+                  passwordTouched && pwValidation.isValid ? "border-green-500" :
+                  passwordTouched && !pwValidation.isValid && password.length > 0 ? "border-destructive" : ""
+                }`}
               />
+              <PasswordRequirements validation={pwValidation} visible={passwordTouched} />
             </div>
 
             <div className="space-y-2">
@@ -135,7 +166,7 @@ const Register = () => {
               type="submit"
               className="w-full h-14 text-lg font-semibold"
               variant="hero"
-              disabled={loading}
+              disabled={loading || !canSubmit}
             >
               {loading && <ButtonSpinner />}
               Register
