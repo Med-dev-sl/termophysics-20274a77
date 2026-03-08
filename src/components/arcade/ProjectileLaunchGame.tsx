@@ -9,10 +9,11 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [phase, setPhase] = useState<"aim" | "flying" | "result">("aim");
   const [angle, setAngle] = useState(45);
-  const [power, setPower] = useState(50);
+  const [power, setPower] = useState(70);
   const [score, setScore] = useState(0);
   const animRef = useRef<number>();
   const projState = useRef({ x: 40, y: 0, vx: 0, vy: 0, trail: [] as { x: number; y: number }[] });
+  const targetXRef = useRef(280 + Math.random() * 80);
 
   const W = 400, H = 300;
   const groundY = H - 40;
