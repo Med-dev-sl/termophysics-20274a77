@@ -200,7 +200,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg"
+                className="text-base sm:text-lg text-muted-foreground leading-relaxed"
               >
                 Explore the fundamental principles of physics through interactive 3D visualizations and AI-powered learning. Master complex concepts with ease.
               </motion.p>
