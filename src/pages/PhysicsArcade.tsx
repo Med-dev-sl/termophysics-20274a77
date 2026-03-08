@@ -94,17 +94,18 @@ export default function PhysicsArcade() {
             </p>
           </div>
 
-          <div className="grid grid-cols-5 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
             {GAMES.map((g, i) => (
               <motion.div
                 key={g.id}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.5 + i * 0.1 }}
-                className="flex flex-col items-center gap-1 p-2 rounded-xl bg-card border border-border"
+                className="flex flex-col items-center gap-1 p-3 rounded-xl bg-card border border-border"
               >
                 <span className="text-2xl">{g.emoji}</span>
-                <span className="text-[10px] text-muted-foreground leading-tight text-center">{g.label}</span>
+                <span className="text-[10px] font-semibold text-foreground leading-tight text-center">{g.label}</span>
+                <span className="text-[9px] text-primary leading-tight text-center">{g.concept}</span>
               </motion.div>
             ))}
           </div>
