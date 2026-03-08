@@ -42,7 +42,7 @@ export default function Landing() {
             </a>
             <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="hero" size="sm" onClick={() => navigate("/chat")} className="text-xs sm:text-sm px-2 sm:px-4">
+            <Button variant="hero" size="sm" onClick={() => navigate("/chat")} className="text-sm sm:text-base px-3 sm:px-4">
               {t("landing.nav.launchApp")}
             </Button>
           </div>
