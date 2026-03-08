@@ -26,7 +26,7 @@ export default function Landing() {
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center flex-shrink-0">
               <Atom className="w-5 h-5 sm:w-6 sm:h-6 text-termo-light-orange" />
             </div>
-            <h1 className="font-display font-bold text-base sm:text-lg md:text-xl text-foreground truncate">
+            <h1 className="font-display font-bold text-lg sm:text-xl md:text-2xl text-foreground truncate">
               Termo<span className="termo-gradient-text">Physics</span>
             </h1>
           </div>
