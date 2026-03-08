@@ -8,14 +8,22 @@ import { Atom } from "lucide-react";
 import { motion } from "framer-motion";
 import { ButtonSpinner } from "@/components/ui/loading-spinner";
 import { useFeedbackModal } from "@/components/ui/feedback-modal";
+import { supabase } from "@/integrations/supabase/client";
+import { EmailFeedback } from "@/components/EmailFeedback";
+import { useEmailValidation } from "@/hooks/useFormValidation";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
   const { signIn } = useAuth();
   const navigate = useNavigate();
   const { showSuccess, showError, FeedbackModalComponent } = useFeedbackModal();
+  const { validateEmail, emailTouched, setEmailTouched } = useEmailValidation();
+
+  const emailValidation = validateEmail(email);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,6 +41,29 @@ const Login = () => {
     }
   };
 
+  const handleForgotPassword = async () => {
+    if (!email) {
+      showError("Email Required", "Please enter your email address first.");
+      return;
+    }
+    if (!emailValidation.isValid) {
+      showError("Invalid Email", "Please enter a valid email address.");
+      return;
+    }
+    setForgotLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setForgotLoading(false);
+
+    if (error) {
+      showError("Reset Failed", error.message);
+    } else {
+      showSuccess("Email Sent!", "Check your inbox for a password reset link.");
+      setShowForgot(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-termo-light-orange/10 via-orange-50 to-amber-50 flex flex-col md:flex-row">
       {/* Form Side */}
@@ -42,7 +73,6 @@ const Login = () => {
         transition={{ duration: 0.8 }}
         className="flex-1 flex items-center justify-center px-5 py-10 sm:p-8 relative overflow-hidden min-h-screen md:min-h-0"
       >
-        {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
           <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-termo-light-orange/20 animate-pulse" />
           <div className="absolute bottom-32 right-16 w-24 h-24 rounded-full bg-termo-light-orange/30 animate-pulse delay-1000" />
@@ -50,7 +80,6 @@ const Login = () => {
 
         <div className="w-full max-w-md relative z-10">
           <div className="text-center mb-8">
-            {/* Mobile brand icon */}
             <motion.div
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
@@ -89,16 +118,30 @@ const Login = () => {
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder="you@gmail.com"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => { setEmail(e.target.value); setEmailTouched(true); }}
+                onBlur={() => setEmailTouched(true)}
                 required
-                className="h-13 text-base border-border focus:border-primary focus:ring-primary/20"
+                className={`h-13 text-base border-border focus:border-primary focus:ring-primary/20 ${
+                  emailTouched && emailValidation.status === "valid" ? "border-green-500" :
+                  emailTouched && emailValidation.status === "invalid" ? "border-destructive" : ""
+                }`}
               />
+              <EmailFeedback validation={emailValidation} />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
+              <div className="flex items-center justify-between">
+                <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
+                <button
+                  type="button"
+                  onClick={() => setShowForgot(true)}
+                  className="text-sm text-primary hover:underline font-medium"
+                >
+                  Forgot password?
+                </button>
+              </div>
               <Input
                 id="password"
                 type="password"
@@ -121,6 +164,36 @@ const Login = () => {
               Login
             </Button>
           </motion.form>
+
+          {/* Forgot password inline */}
+          {showForgot && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              className="mt-4 p-4 rounded-lg bg-muted/50 border border-border space-y-3"
+            >
+              <p className="text-sm text-muted-foreground">
+                Enter your email above and click below. We'll send you a link to reset your password.
+              </p>
+              <Button
+                type="button"
+                onClick={handleForgotPassword}
+                variant="outline"
+                className="w-full"
+                disabled={forgotLoading}
+              >
+                {forgotLoading && <ButtonSpinner />}
+                Send Reset Link
+              </Button>
+              <button
+                type="button"
+                onClick={() => setShowForgot(false)}
+                className="w-full text-sm text-muted-foreground hover:underline"
+              >
+                Cancel
+              </button>
+            </motion.div>
+          )}
 
           <motion.div
             initial={{ opacity: 0 }}

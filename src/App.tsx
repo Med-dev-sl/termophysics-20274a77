@@ -10,6 +10,7 @@ import Landing from "./pages/Landing";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import ClassroomDetail from "./pages/ClassroomDetail";
 import PhysicsArcade from "./pages/PhysicsArcade";
