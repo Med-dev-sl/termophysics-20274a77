@@ -141,6 +141,12 @@ export default function PendulumGame({ onComplete }: Props) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
       <h3 className="text-xl font-bold text-foreground">🎪 Pendulum Release</h3>
+      <div className="bg-card/60 border border-border rounded-lg p-3 max-w-sm text-center space-y-1">
+        <p className="text-xs font-semibold text-primary">📖 Concept: Simple Harmonic Motion & Energy Conservation</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          A pendulum converts between potential and kinetic energy as it swings. Releasing at the right moment demonstrates <span className="font-medium text-foreground">conservation of energy (KE + PE = constant)</span> and tangential velocity.
+        </p>
+      </div>
       <p className="text-sm text-muted-foreground text-center max-w-xs">
         Click to release the pendulum at the right moment to land the ball in the basket!
       </p>
