@@ -525,43 +525,52 @@ export default function Landing() {
               className="group relative"
             >
               <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
-                {/* Decorative corner accents */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
-                {/* Avatar */}
                 <motion.div
                   className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span className="text-5xl sm:text-6xl">👨‍🔬</span>
-                  {/* Status indicator */}
+                  <span className="text-5xl sm:text-6xl">🧑🏾</span>
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
                 </motion.div>
 
-                {/* Role badge */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-termo-light-orange/10 border border-termo-light-orange/20 mb-4">
                   <div className="w-1.5 h-1.5 rounded-full bg-termo-light-orange" />
                   <span className="text-xs font-semibold text-termo-light-orange uppercase tracking-wider">Project Lead</span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Michael Braima</h4>
-                <p className="text-sm font-semibold text-termo-light-orange mb-4">Lead Physics AI Research</p>
+                <motion.h4
+                  className="text-xl sm:text-2xl font-bold text-foreground mb-1"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  Michael Braima
+                </motion.h4>
+                <motion.p
+                  className="text-sm font-semibold text-termo-light-orange mb-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                  viewport={{ once: true }}
+                >
+                  Lead Physics AI Research
+                </motion.p>
 
-                {/* Qualifications */}
                 <div className="space-y-2 mb-5">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Pursuing Ph.D. in Pedagogical Science at Peoples' Friendship University of Russia (RUDN University)
                   </p>
                 </div>
 
-                {/* Divider */}
                 <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-termo-light-orange/40 to-transparent mx-auto mb-4" />
 
-                {/* Contact */}
                 <a href="tel:+23276338549" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-termo-light-orange transition group/link">
                   <Phone className="w-3.5 h-3.5" />
                   <span className="group-hover/link:underline">+232 76 338 549</span>
@@ -578,47 +587,52 @@ export default function Landing() {
               className="group relative md:-translate-y-4"
             >
               <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
-                {/* Featured highlight */}
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-termo-light-orange to-amber-500 text-xs font-bold text-white shadow-lg">
-                  ✦ Creative Lead
-                </div>
-
-                {/* Decorative corner accents */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
-                {/* Avatar */}
                 <motion.div
-                  className="mx-auto mb-6 mt-2 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span className="text-5xl sm:text-6xl">👩‍🎨</span>
+                  <span className="text-5xl sm:text-6xl">👩🏾</span>
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
                 </motion.div>
 
-                {/* Role badge */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
                   <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
                   <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">UI/UX Designer</span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Magbie Princess</h4>
-                <p className="text-sm font-semibold text-termo-light-orange mb-4">UI/UX Designer</p>
+                <motion.h4
+                  className="text-xl sm:text-2xl font-bold text-foreground mb-1"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  Magbie Princess
+                </motion.h4>
+                <motion.p
+                  className="text-sm font-semibold text-termo-light-orange mb-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                  viewport={{ once: true }}
+                >
+                  UI/UX Designer
+                </motion.p>
 
-                {/* Qualifications */}
                 <div className="space-y-2 mb-5">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Higher Diploma in ICT <span className="text-termo-light-orange font-medium">(Distinction)</span> · Pursuing B.Tech in Information System Management at Eastern Technical University of Sierra Leone
                   </p>
                 </div>
 
-                {/* Divider */}
                 <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto mb-4" />
 
-                {/* Contact */}
                 <a href="tel:+23278192988" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-purple-400 transition group/link">
                   <Phone className="w-3.5 h-3.5" />
                   <span className="group-hover/link:underline">+232 78 192 988</span>
@@ -635,42 +649,52 @@ export default function Landing() {
               className="group relative"
             >
               <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
-                {/* Decorative corner accents */}
                 <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
-                {/* Avatar */}
                 <motion.div
                   className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span className="text-5xl sm:text-6xl">👨‍💻</span>
+                  <span className="text-5xl sm:text-6xl">🧑🏾</span>
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
                 </motion.div>
 
-                {/* Role badge */}
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
                   <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
                   <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Lead Developer</span>
                 </div>
 
-                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Mohamed Sallu</h4>
-                <p className="text-sm font-semibold text-termo-light-orange mb-4">Lead Developer</p>
+                <motion.h4
+                  className="text-xl sm:text-2xl font-bold text-foreground mb-1"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.3 }}
+                  viewport={{ once: true }}
+                >
+                  Mohamed Sallu
+                </motion.h4>
+                <motion.p
+                  className="text-sm font-semibold text-termo-light-orange mb-4"
+                  initial={{ opacity: 0, x: 20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, delay: 0.45 }}
+                  viewport={{ once: true }}
+                >
+                  Lead Developer
+                </motion.p>
 
-                {/* Qualifications */}
                 <div className="space-y-2 mb-5">
                   <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                     Higher Diploma in ICT <span className="text-termo-light-orange font-medium">(Distinction)</span> at Eastern Technical University of Sierra Leone
                   </p>
                 </div>
 
-                {/* Divider */}
                 <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent mx-auto mb-4" />
 
-                {/* Contact */}
                 <a href="tel:+23272150563" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-cyan-400 transition group/link">
                   <Phone className="w-3.5 h-3.5" />
                   <span className="group-hover/link:underline">+232 72 150 563</span>
