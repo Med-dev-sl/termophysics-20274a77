@@ -21,12 +21,12 @@ export default function Landing() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/95">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border safe-area-inset-top">
-        <div className="container mx-auto px-3 sm:px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center flex-shrink-0">
               <Atom className="w-5 h-5 sm:w-6 sm:h-6 text-termo-light-orange" />
             </div>
-            <h1 className="font-display font-bold text-base sm:text-lg md:text-xl text-foreground truncate">
+            <h1 className="font-display font-bold text-lg sm:text-xl md:text-2xl text-foreground truncate">
               Termo<span className="termo-gradient-text">Physics</span>
             </h1>
           </div>
@@ -42,7 +42,7 @@ export default function Landing() {
             </a>
             <LanguageSwitcher />
             <ThemeToggle />
-            <Button variant="hero" size="sm" onClick={() => navigate("/chat")} className="text-xs sm:text-sm px-2 sm:px-4">
+            <Button variant="hero" size="sm" onClick={() => navigate("/chat")} className="text-sm sm:text-base px-3 sm:px-4">
               {t("landing.nav.launchApp")}
             </Button>
           </div>
@@ -50,7 +50,7 @@ export default function Landing() {
       </nav>
 
       {/* Hero Section - Modern Design */}
-      <section className="pt-20 sm:pt-24 pb-12 sm:pb-20 px-3 sm:px-4 relative overflow-hidden">
+      <section className="pt-20 sm:pt-24 pb-12 sm:pb-20 px-4 sm:px-6 relative overflow-hidden">
         {/* Decorative Background Elements */}
         <div className="absolute inset-0 pointer-events-none">
           <motion.div
@@ -82,7 +82,7 @@ export default function Landing() {
               <div className="relative">
                 {/* 3D Canvas Container */}
                 <motion.div
-                  className="rounded-2xl overflow-hidden border-2 border-termo-light-orange/30 shadow-2xl h-64 sm:h-80 lg:h-96 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-transparent relative"
+                  className="rounded-2xl overflow-hidden border-2 border-termo-light-orange/30 shadow-2xl h-52 sm:h-80 lg:h-96 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-transparent relative"
                   whileHover={{ borderColor: "rgba(245, 158, 11, 0.8)" }}
                   transition={{ duration: 0.3 }}
                 >
@@ -157,7 +157,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
-                className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+                className="font-display text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight"
               >
                 {t("landing.hero.title").split(" ").map((word, i) => (
                   <span
@@ -176,11 +176,11 @@ export default function Landing() {
                 transition={{ duration: 0.6, delay: 0.35 }}
                 className="space-y-3 bg-gradient-to-r from-termo-deep-blue/10 to-termo-light-orange/10 rounded-lg p-4 border border-termo-light-orange/20"
               >
-                <p className="text-sm sm:text-base font-semibold text-termo-light-orange flex items-center gap-2">
+                <p className="text-base sm:text-lg font-semibold text-termo-light-orange flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-termo-light-orange" />
                   Why 3D & Motion?
                 </p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Interactive 3D visualizations bring abstract physics concepts to life, making complex theories intuitive and engaging. Smooth animations guide your attention and create immersive learning experiences that enhance understanding and retention.
                 </p>
               </motion.div>
@@ -190,7 +190,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.45 }}
-                className="text-lg sm:text-xl text-termo-light-orange font-semibold"
+                className="text-xl sm:text-2xl text-termo-light-orange font-semibold"
               >
                 {t("landing.hero.description")}
               </motion.p>
@@ -200,7 +200,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.5 }}
-                className="text-base sm:text-lg text-muted-foreground leading-relaxed max-w-lg"
+                className="text-base sm:text-lg text-muted-foreground leading-relaxed"
               >
                 Explore the fundamental principles of physics through interactive 3D visualizations and AI-powered learning. Master complex concepts with ease.
               </motion.p>
@@ -216,14 +216,14 @@ export default function Landing() {
                   size="lg"
                   variant="hero"
                   onClick={() => navigate("/arcade")}
-                  className="gap-2 text-sm sm:text-base font-bold px-8"
+                  className="gap-2 text-base sm:text-lg font-bold px-6 sm:px-8 h-12 sm:h-auto"
                 >
                   <Gamepad2 className="w-5 h-5" /> Play Physics Arcade
                 </Button>
                 <Button
                   size="lg"
                   onClick={() => navigate("/chat")}
-                  className="gap-2 text-sm sm:text-base font-bold px-8"
+                  className="gap-2 text-base sm:text-lg font-bold px-6 sm:px-8 h-12 sm:h-auto"
                 >
                   {t("landing.hero.getStarted")} <ArrowRight className="w-5 h-5" />
                 </Button>

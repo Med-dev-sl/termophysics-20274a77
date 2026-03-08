@@ -34,28 +34,36 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-termo-light-orange/10 via-orange-50 to-amber-50 flex">
-      {/* Left Side - Form */}
+    <div className="min-h-screen bg-gradient-to-br from-termo-light-orange/10 via-orange-50 to-amber-50 flex flex-col md:flex-row">
+      {/* Form Side */}
       <motion.div
-        initial={{ opacity: 0, x: -50 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="flex-1 flex items-center justify-center p-8 relative overflow-hidden"
+        className="flex-1 flex items-center justify-center px-5 py-10 sm:p-8 relative overflow-hidden min-h-screen md:min-h-0"
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-5">
-          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-termo-light-orange/20 animate-pulse"></div>
-          <div className="absolute bottom-32 right-16 w-24 h-24 rounded-full bg-termo-light-orange/30 animate-pulse delay-1000"></div>
-          <div className="absolute top-1/2 left-1/3 w-16 h-16 rounded-full bg-termo-light-orange/25 animate-pulse delay-500"></div>
+          <div className="absolute top-20 left-20 w-32 h-32 rounded-full bg-termo-light-orange/20 animate-pulse" />
+          <div className="absolute bottom-32 right-16 w-24 h-24 rounded-full bg-termo-light-orange/30 animate-pulse delay-1000" />
         </div>
 
         <div className="w-full max-w-md relative z-10">
           <div className="text-center mb-8">
+            {/* Mobile brand icon */}
+            <motion.div
+              initial={{ scale: 0 }}
+              animate={{ scale: 1 }}
+              transition={{ type: "spring", delay: 0.1 }}
+              className="md:hidden w-16 h-16 mx-auto mb-5 rounded-2xl bg-gradient-to-br from-primary to-primary/70 flex items-center justify-center shadow-lg"
+            >
+              <Atom className="w-8 h-8 text-primary-foreground" />
+            </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-4xl font-bold mb-2 text-gray-900"
+              className="text-3xl sm:text-4xl font-bold mb-2 text-foreground"
             >
               Welcome Back
             </motion.h1>
@@ -63,7 +71,7 @@ const Login = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.3 }}
-              className="text-muted-foreground"
+              className="text-base sm:text-lg text-muted-foreground"
             >
               Login to your account
             </motion.p>
@@ -74,10 +82,10 @@ const Login = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.4 }}
             onSubmit={handleSubmit}
-            className="space-y-6"
+            className="space-y-5"
           >
             <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700 font-medium">Email</Label>
+              <Label htmlFor="email" className="text-base font-medium text-foreground">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -85,12 +93,12 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="h-12 border-gray-200 focus:border-termo-light-orange focus:ring-termo-light-orange/20"
+                className="h-13 text-base border-border focus:border-primary focus:ring-primary/20"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700 font-medium">Password</Label>
+              <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -99,13 +107,13 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
-                className="h-12 border-gray-200 focus:border-termo-light-orange focus:ring-termo-light-orange/20"
+                className="h-13 text-base border-border focus:border-primary focus:ring-primary/20"
               />
             </div>
 
             <Button
               type="submit"
-              className="w-full h-12 text-base font-semibold"
+              className="w-full h-14 text-lg font-semibold"
               variant="hero"
               disabled={loading}
             >
@@ -120,11 +128,11 @@ const Login = () => {
             transition={{ duration: 0.6, delay: 0.6 }}
             className="mt-8 text-center"
           >
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               Don't have an account?{" "}
               <Link
                 to="/register"
-                className="text-termo-light-orange hover:underline font-medium"
+                className="text-primary hover:underline font-semibold"
               >
                 Register
               </Link>
@@ -133,37 +141,29 @@ const Login = () => {
         </div>
       </motion.div>
 
-      {/* Right Side - Brand */}
+      {/* Right Side - Brand (hidden on mobile) */}
       <motion.div
         initial={{ opacity: 0, x: 50 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.8, delay: 0.2 }}
-        className="flex-1 relative overflow-hidden"
+        className="hidden md:flex flex-1 relative overflow-hidden"
         style={{
           clipPath: "polygon(20% 0%, 100% 0%, 100% 100%, 0% 100%)",
-          background: "linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #b45309 100%)",
+          background: "linear-gradient(135deg, hsl(var(--primary)) 0%, hsl(var(--primary) / 0.8) 50%, hsl(var(--primary) / 0.6) 100%)",
         }}
       >
-        {/* Background Pattern */}
         <div className="absolute inset-0">
-          <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-white/10 animate-pulse"></div>
-          <div className="absolute bottom-20 left-20 w-48 h-48 rounded-full bg-white/5 animate-pulse delay-700"></div>
-          <div className="absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-white/8 animate-pulse delay-300"></div>
-          <div className="absolute bottom-1/3 left-1/3 w-24 h-24 rounded-full bg-white/6 animate-pulse delay-1000"></div>
+          <div className="absolute top-10 right-10 w-64 h-64 rounded-full bg-white/10 animate-pulse" />
+          <div className="absolute bottom-20 left-20 w-48 h-48 rounded-full bg-white/5 animate-pulse delay-700" />
         </div>
 
-        {/* Geometric Shapes */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.div
-            animate={{
-              rotateY: [0, 360],
-              scale: [1, 1.1, 1],
-            }}
+            animate={{ rotateY: [0, 360], scale: [1, 1.1, 1] }}
             transition={{
               rotateY: { duration: 8, repeat: Infinity, ease: "linear" },
-              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" }
+              scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
             }}
-            className="relative"
           >
             <div className="w-32 h-32 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center">
               <Atom className="w-16 h-16 text-white" />
@@ -171,7 +171,6 @@ const Login = () => {
           </motion.div>
         </div>
 
-        {/* Brand Text */}
         <div className="absolute bottom-20 left-20 text-white">
           <motion.h2
             initial={{ opacity: 0, x: 20 }}
@@ -190,25 +189,6 @@ const Login = () => {
             AI-Powered Physics Learning
           </motion.p>
         </div>
-
-        {/* Floating Elements */}
-        <motion.div
-          animate={{
-            y: [0, -20, 0],
-            rotate: [0, 5, 0],
-          }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-32 right-32 w-16 h-16 rounded-lg bg-white/10 backdrop-blur-sm"
-        ></motion.div>
-
-        <motion.div
-          animate={{
-            y: [0, 15, 0],
-            rotate: [0, -3, 0],
-          }}
-          transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          className="absolute bottom-40 right-20 w-12 h-12 rounded-full bg-white/15 backdrop-blur-sm"
-        ></motion.div>
       </motion.div>
       <FeedbackModalComponent />
     </div>
