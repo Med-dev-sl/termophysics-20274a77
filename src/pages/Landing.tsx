@@ -180,7 +180,7 @@ export default function Landing() {
                   <span className="w-2 h-2 rounded-full bg-termo-light-orange" />
                   Why 3D & Motion?
                 </p>
-                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
                   Interactive 3D visualizations bring abstract physics concepts to life, making complex theories intuitive and engaging. Smooth animations guide your attention and create immersive learning experiences that enhance understanding and retention.
                 </p>
               </motion.div>
