@@ -136,6 +136,12 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
   return (
     <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center gap-4">
       <h3 className="text-xl font-bold text-foreground">🚀 Projectile Launch</h3>
+      <div className="bg-card/60 border border-border rounded-lg p-3 max-w-sm text-center space-y-1">
+        <p className="text-xs font-semibold text-primary">📖 Concept: Projectile Motion & Kinematics</p>
+        <p className="text-xs text-muted-foreground leading-relaxed">
+          A projectile follows a parabolic path determined by its launch angle and initial velocity. Understand how horizontal and vertical motion are independent — key to <span className="font-medium text-foreground">2D Kinematics (v = v₀ + at)</span>.
+        </p>
+      </div>
       <p className="text-sm text-muted-foreground text-center max-w-xs">
         Set angle & power to hit the target!
       </p>
