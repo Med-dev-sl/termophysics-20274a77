@@ -21,7 +21,7 @@ export default function Landing() {
     <div className="min-h-screen bg-gradient-to-b from-background via-background to-background/95">
       {/* Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-lg border-b border-border safe-area-inset-top">
-        <div className="container mx-auto px-3 sm:px-4 h-16 flex items-center justify-between">
+        <div className="container mx-auto px-4 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
           <div className="flex items-center gap-2 sm:gap-3">
             <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center flex-shrink-0">
               <Atom className="w-5 h-5 sm:w-6 sm:h-6 text-termo-light-orange" />
