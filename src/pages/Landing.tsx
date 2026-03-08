@@ -491,143 +491,190 @@ export default function Landing() {
       </section>
 
       {/* Team Section */}
-      <section id="team" className="py-12 sm:py-20 px-3 sm:px-4 bg-card/50">
-        <div className="container mx-auto max-w-6xl">
-          <motion.h3
+      <section id="team" className="py-16 sm:py-24 px-3 sm:px-4 bg-card/50 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-10 left-1/4 w-64 h-64 rounded-full bg-termo-light-orange/5 blur-3xl" />
+          <div className="absolute bottom-10 right-1/4 w-48 h-48 rounded-full bg-termo-deep-blue/5 blur-3xl" />
+        </div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-2xl sm:text-3xl md:text-4xl font-bold text-center mb-16 sm:mb-24"
+            className="text-center mb-16 sm:mb-20"
           >
-            {t("landing.team.title")}
-          </motion.h3>
+            <p className="text-sm font-semibold tracking-widest uppercase text-termo-light-orange mb-3">Our Brilliant Minds</p>
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold">
+              {t("landing.team.title")}
+            </h3>
+            <p className="text-muted-foreground mt-4 max-w-2xl mx-auto text-sm sm:text-base">
+              A dedicated team of researchers, designers, and developers committed to transforming physics education through technology and innovation.
+            </p>
+          </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
-            {/* Team Member 1 - Circle */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
+            {/* Michael Braima - Project Lead */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0 }}
+              transition={{ duration: 0.7, delay: 0 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center space-y-6"
+              className="group relative"
             >
-              <motion.div
-                animate={{
-                  rotateY: [0, Math.PI * 2],
-                  y: [0, -10, 0],
-                }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
-              >
-                <motion.div
-                  className="w-40 h-40 sm:w-48 sm:h-48 rounded-full bg-gradient-to-br from-termo-light-orange/40 to-termo-light-orange/10 flex items-center justify-center shadow-2xl border-2 border-termo-light-orange/50 flex-shrink-0"
-                  animate={{
-                    boxShadow: [
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                      "0 0 50px rgba(245, 158, 11, 0.8)",
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                    ],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <span className="text-5xl sm:text-6xl font-bold texto-gradient">👨</span>
-                </motion.div>
-              </motion.div>
+              <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
+                {/* Decorative corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
-              <div className="space-y-2">
-                <h4 className="text-xl sm:text-2xl font-bold">Dr. Alex Chen</h4>
-                <p className="text-sm text-termo-light-orange font-semibold">Lead Physics AI Researcher</p>
-                <p className="text-xs sm:text-sm text-muted-foreground max-w-xs">
-                  Expert in quantum mechanics and machine learning integration
-                </p>
+                {/* Avatar */}
+                <motion.div
+                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <span className="text-5xl sm:text-6xl">👨‍🔬</span>
+                  {/* Status indicator */}
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  </div>
+                </motion.div>
+
+                {/* Role badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-termo-light-orange/10 border border-termo-light-orange/20 mb-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-termo-light-orange" />
+                  <span className="text-xs font-semibold text-termo-light-orange uppercase tracking-wider">Project Lead</span>
+                </div>
+
+                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Michael Braima</h4>
+                <p className="text-sm font-semibold text-termo-light-orange mb-4">Lead Physics AI Research</p>
+
+                {/* Qualifications */}
+                <div className="space-y-2 mb-5">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Pursuing Ph.D. in Pedagogical Science at Peoples' Friendship University of Russia (RUDN University)
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-termo-light-orange/40 to-transparent mx-auto mb-4" />
+
+                {/* Contact */}
+                <a href="tel:+23276338549" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-termo-light-orange transition group/link">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span className="group-hover/link:underline">+232 76 338 549</span>
+                </a>
               </div>
             </motion.div>
 
-            {/* Team Member 2 - Diamond */}
+            {/* Magbie Princess - UI/UX Designer */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
+              transition={{ duration: 0.7, delay: 0.15 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center space-y-6"
+              className="group relative md:-translate-y-4"
             >
-              <motion.div
-                animate={{
-                  rotate: [0, 360],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="relative"
-              >
-                <motion.div
-                  className="w-40 h-40 sm:w-48 sm:h-48 bg-gradient-to-br from-termo-light-orange/40 to-termo-light-orange/10 flex items-center justify-center shadow-2xl border-2 border-termo-light-orange/50"
-                  style={{ transform: "rotate(45deg)" }}
-                  animate={{
-                    boxShadow: [
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                      "0 0 50px rgba(245, 158, 11, 0.8)",
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                    ],
-                    x: [0, 10, 0],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                >
-                  <span className="text-5xl sm:text-6xl" style={{ transform: "rotate(-45deg)" }}>👩</span>
-                </motion.div>
-              </motion.div>
+              <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
+                {/* Featured highlight */}
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full bg-gradient-to-r from-termo-light-orange to-amber-500 text-xs font-bold text-white shadow-lg">
+                  ✦ Creative Lead
+                </div>
 
-              <div className="space-y-2">
-                <h4 className="text-xl sm:text-2xl font-bold">Sarah Johnson</h4>
-                <p className="text-sm text-termo-light-orange font-semibold">3D Visualization Director</p>
-                <p className="text-xs sm:text-sm text-muted-foreground max-w-xs">
-                  Specializes in creating immersive learning experiences with graphics
-                </p>
+                {/* Decorative corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
+
+                {/* Avatar */}
+                <motion.div
+                  className="mx-auto mb-6 mt-2 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-purple-500/30 to-pink-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <span className="text-5xl sm:text-6xl">👩‍🎨</span>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  </div>
+                </motion.div>
+
+                {/* Role badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 mb-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-purple-500" />
+                  <span className="text-xs font-semibold text-purple-400 uppercase tracking-wider">UI/UX Designer</span>
+                </div>
+
+                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Magbie Princess</h4>
+                <p className="text-sm font-semibold text-termo-light-orange mb-4">UI/UX Designer</p>
+
+                {/* Qualifications */}
+                <div className="space-y-2 mb-5">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Higher Diploma in ICT <span className="text-termo-light-orange font-medium">(Distinction)</span> · Pursuing B.Tech in Information System Management at Eastern Technical University of Sierra Leone
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-purple-500/40 to-transparent mx-auto mb-4" />
+
+                {/* Contact */}
+                <a href="tel:+23278192988" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-purple-400 transition group/link">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span className="group-hover/link:underline">+232 78 192 988</span>
+                </a>
               </div>
             </motion.div>
 
-            {/* Team Member 3 - Hexagon */}
+            {/* Mohamed Sallu - Lead Developer */}
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
               viewport={{ once: true }}
-              className="flex flex-col items-center text-center space-y-6"
+              className="group relative"
             >
-              <motion.div
-                animate={{
-                  rotateX: [0, Math.PI * 2],
-                  rotateZ: [0, -Math.PI * 2],
-                }}
-                transition={{ duration: 7, repeat: Infinity, ease: "linear" }}
-                className="relative"
-              >
-                <motion.div
-                  className="w-40 h-40 sm:w-48 sm:h-48 flex items-center justify-center shadow-2xl border-2 border-termo-light-orange/50 flex-shrink-0"
-                  style={{
-                    clipPath: "polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%)",
-                    background: "linear-gradient(135deg, rgba(245, 158, 11, 0.4), rgba(245, 158, 11, 0.1))",
-                  }}
-                  animate={{
-                    boxShadow: [
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                      "0 0 50px rgba(245, 158, 11, 0.8)",
-                      "0 0 30px rgba(245, 158, 11, 0.4)",
-                    ],
-                    y: [0, -15, 0],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity, delay: 0.5 }}
-                >
-                  <span className="text-5xl sm:text-6xl">🧑</span>
-                </motion.div>
-              </motion.div>
+              <div className="relative bg-card border border-border rounded-2xl p-6 sm:p-8 text-center hover:border-termo-light-orange/50 transition-all duration-500 hover:shadow-[0_0_40px_rgba(245,158,11,0.15)]">
+                {/* Decorative corner accents */}
+                <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-termo-light-orange/40 rounded-tl-2xl" />
+                <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
-              <div className="space-y-2">
-                <h4 className="text-xl sm:text-2xl font-bold">Marcus Williams</h4>
-                <p className="text-sm text-termo-light-orange font-semibold">Education Technology Lead</p>
-                <p className="text-xs sm:text-sm text-muted-foreground max-w-xs">
-                  Innovative approach to modern physics education and student engagement
-                </p>
+                {/* Avatar */}
+                <motion.div
+                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                >
+                  <span className="text-5xl sm:text-6xl">👨‍💻</span>
+                  <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-white" />
+                  </div>
+                </motion.div>
+
+                {/* Role badge */}
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 mb-4">
+                  <div className="w-1.5 h-1.5 rounded-full bg-cyan-500" />
+                  <span className="text-xs font-semibold text-cyan-400 uppercase tracking-wider">Lead Developer</span>
+                </div>
+
+                <h4 className="text-xl sm:text-2xl font-bold text-foreground mb-1">Mohamed Sallu</h4>
+                <p className="text-sm font-semibold text-termo-light-orange mb-4">Lead Developer</p>
+
+                {/* Qualifications */}
+                <div className="space-y-2 mb-5">
+                  <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+                    Higher Diploma in ICT <span className="text-termo-light-orange font-medium">(Distinction)</span> at Eastern Technical University of Sierra Leone
+                  </p>
+                </div>
+
+                {/* Divider */}
+                <div className="w-12 h-0.5 bg-gradient-to-r from-transparent via-cyan-500/40 to-transparent mx-auto mb-4" />
+
+                {/* Contact */}
+                <a href="tel:+23272150563" className="inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-cyan-400 transition group/link">
+                  <Phone className="w-3.5 h-3.5" />
+                  <span className="group-hover/link:underline">+232 72 150 563</span>
+                </a>
               </div>
             </motion.div>
           </div>
