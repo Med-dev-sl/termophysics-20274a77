@@ -17,7 +17,7 @@ export default function ProjectileLaunchGame({ onComplete }: Props) {
 
   const W = 400, H = 300;
   const groundY = H - 40;
-  const targetX = 280 + Math.random() * 80;
+  const targetX = targetXRef.current;
 
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
