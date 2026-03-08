@@ -223,7 +223,7 @@ export default function Landing() {
                 <Button
                   size="lg"
                   onClick={() => navigate("/chat")}
-                  className="gap-2 text-sm sm:text-base font-bold px-8"
+                  className="gap-2 text-base sm:text-lg font-bold px-6 sm:px-8 h-12 sm:h-auto"
                 >
                   {t("landing.hero.getStarted")} <ArrowRight className="w-5 h-5" />
                 </Button>
