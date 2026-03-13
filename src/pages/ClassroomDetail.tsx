@@ -130,7 +130,7 @@ const ClassroomDetail = () => {
               </TabsContent>
               {isOwner && (
                 <TabsContent value="students" className="mt-0" forceMount={activeTab === "students" ? true : undefined}>
-                  {activeTab === "students" && <StudentsTab classroomId={classroom.id} isTeacher={isOwner} />}
+                  {activeTab === "students" && <StudentsTab classroomId={classroom.id} classCode={classroom.class_code} isTeacher={isOwner} />}
                 </TabsContent>
               )}
             </motion.div>
