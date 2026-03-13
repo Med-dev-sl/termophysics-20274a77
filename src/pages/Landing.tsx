@@ -516,7 +516,7 @@ export default function Landing() {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-10">
-            {/* Michael Braima - Project Lead */}
+            {/* Michael Brima - Project Lead */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -529,11 +529,15 @@ export default function Landing() {
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
                 <motion.div
-                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-termo-deep-blue to-termo-deep-blue-dark shadow-xl border-3 border-termo-light-orange/30 relative overflow-hidden"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span className="text-5xl sm:text-6xl">🧑🏾</span>
+                  <img 
+                    src="/Projectlead.jpg" 
+                    alt="Michael Brima" 
+                    className="w-full h-full object-cover"
+                  />
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
@@ -551,7 +555,7 @@ export default function Landing() {
                   transition={{ duration: 0.6, delay: 0.3 }}
                   viewport={{ once: true }}
                 >
-                  Michael Braima
+                  Michael Brima
                 </motion.h4>
                 <motion.p
                   className="text-sm font-semibold text-termo-light-orange mb-4"
@@ -653,11 +657,15 @@ export default function Landing() {
                 <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-termo-light-orange/40 rounded-br-2xl" />
 
                 <motion.div
-                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-500/20 flex items-center justify-center shadow-xl border-3 border-termo-light-orange/30 relative"
+                  className="mx-auto mb-6 w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-gradient-to-br from-cyan-500/30 to-blue-500/20 shadow-xl border-3 border-termo-light-orange/30 relative overflow-hidden"
                   whileHover={{ scale: 1.05 }}
                   transition={{ type: "spring", stiffness: 300 }}
                 >
-                  <span className="text-5xl sm:text-6xl">🧑🏾</span>
+                  <img 
+                    src="/Leaddeveloper.jpg" 
+                    alt="Mohamed Sallu" 
+                    className="w-full h-full object-cover object-top"
+                  />
                   <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-green-500 border-2 border-card flex items-center justify-center">
                     <div className="w-2 h-2 rounded-full bg-white" />
                   </div>
